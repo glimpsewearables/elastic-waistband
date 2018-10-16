@@ -1,3 +1,3 @@
 # elastic-waistband
 
-Services for Glimpse Wearables
+Service Repository for Glimpse Wearables
