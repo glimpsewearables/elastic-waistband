@@ -13,7 +13,10 @@ RUN apt-get install -y \
     libfreetype6-dev \
     zlib1g-dev \
     net-tools \
-    vim
+    vim \ 
+    python-pip \ 
+    python-dev
+    
 RUN pyvenv /venv
 
 ADD nginx.conf /etc/nginx/
