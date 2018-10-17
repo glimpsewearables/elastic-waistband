@@ -34,7 +34,7 @@ RUN apt-get install -y nginx && \
 ADD nginx.conf /etc/nginx/
 
 RUN virtualenv /venv
-RUN ./venv/bin/activate
+RUN /bin/bash -c "source /venv/bin/activate && pip install pyserial && deactivate"
 
 # Server
 EXPOSE 80
