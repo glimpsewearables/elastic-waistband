@@ -41,3 +41,4 @@ EXPOSE 80
 STOPSIGNAL SIGINT
 ENTRYPOINT ["python", "manage.py"]
 CMD ["runserver", "0.0.0.0:80"]
+RUN python manage.py runserver
