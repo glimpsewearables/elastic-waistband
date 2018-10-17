@@ -34,10 +34,7 @@ RUN apt-get install -y nginx && \
 
 ADD nginx.conf /etc/nginx/
 
-RUN virtualenv /venv
-RUN /bin/bash -c "source /venv/bin/activate && pip install pyserial && deactivate"
-
 # Server
 EXPOSE 80
 STOPSIGNAL SIGINT
-ENTRYPOINT ENTRYPOINT ["/usr/local/bin/gunicorn", "glimpseAPI:glimpseAPI"]
+ENTRYPOINT ["/usr/local/bin/gunicorn", "glimpseAPI.wsgi"]
