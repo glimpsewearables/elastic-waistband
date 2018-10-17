@@ -14,12 +14,14 @@ RUN apt-get install -y \
     net-tools \
     vim
 RUN pyvenv /venv
+RUN apk --update add nginx php5-fpm && \
+    mkdir -p /var/log/nginx && \
+    touch /var/log/nginx/access.log && \
+    mkdir -p /run/nginx
 
-# Project Files and Settings
-ARG PROJECT=myproject
-ARG PROJECT_DIR=/var/www/${PROJECT}
-RUN mkdir -p $PROJECT_DIR
-WORKDIR $PROJECT_DIR
+ADD nginx.conf /etc/nginx/
+ADD php-fpm.conf /etc/php5/php-fpm.conf
+
 # Server
 EXPOSE 8000
 STOPSIGNAL SIGINT
