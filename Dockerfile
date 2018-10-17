@@ -16,7 +16,12 @@ RUN apt-get install -y \
     vim \ 
     python-pip \ 
     python-dev
-    
+
+RUN apt-get install -y nginx && \
+    mkdir -p /var/log/nginx && \
+    touch /var/log/nginx/access.log && \
+    mkdir -p /run/nginx
+
 RUN pyvenv /venv
 
 ADD nginx.conf /etc/nginx/
