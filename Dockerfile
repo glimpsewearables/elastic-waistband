@@ -34,7 +34,7 @@ RUN apt-get install -y nginx && \
 ADD nginx.conf /etc/nginx/
 
 RUN virtualenv /venv
-RUN source venv/bin/activate
+RUN venv/bin/activate
 
 # Server
 EXPOSE 80
