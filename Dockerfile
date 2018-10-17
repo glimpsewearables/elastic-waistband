@@ -40,4 +40,4 @@ RUN /bin/bash -c "source /venv/bin/activate && pip install pyserial && deactivat
 # Server
 EXPOSE 80
 STOPSIGNAL SIGINT
-ENTRYPOINT ENTRYPOINT ["/usr/local/bin/gunicorn", "--config", "/gunicorn.conf", "--log-config", "/logging.conf", "-b", ":8000", "myapp:app"]
+ENTRYPOINT ENTRYPOINT ["/usr/local/bin/gunicorn", "glimpseAPI:glimpseAPI"]
