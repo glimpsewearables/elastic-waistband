@@ -32,9 +32,12 @@ RUN apt-get install -y nginx && \
     touch /var/log/nginx/access.log && \
     mkdir -p /run/nginx
 
+RUN python manage.py collectstatic --no-input
+
 ADD nginx.conf /etc/nginx/
+RUN nginx -t
 
 # Server
 EXPOSE 80
 STOPSIGNAL SIGINT
-ENTRYPOINT ["/usr/local/bin/gunicorn", "glimpseAPI.wsgi"]
+ENTRYPOINT ["gunicorn", "glimpseAPI.wsgi.application"]
