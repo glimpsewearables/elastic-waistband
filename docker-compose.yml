@@ -1,14 +1,22 @@
 version: '3'
 
 services:
-  db:
-    image: postgres
   web:
     build: .
     command: python3 manage.py runserver 0.0.0.0:80
     volumes:
       - .:/code
     ports:
-      - "8000:80"
+      - "80:80"
     depends_on:
       - db
+  nginx:
+    restart: always
+    container_name: nginx_server
+    build:
+      context: ./bookme/docker_compose/nginx/
+      dockerfile: Dockerfile
+    depends_on:
+      - django_web
+    ports:
+      - "0.0.0.0:80:80"
