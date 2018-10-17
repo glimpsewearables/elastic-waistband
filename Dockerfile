@@ -19,7 +19,7 @@ RUN pyvenv /venv
 ADD nginx.conf /etc/nginx/
 
 # Server
-EXPOSE 8000
+EXPOSE 80
 STOPSIGNAL SIGINT
 ENTRYPOINT ["python", "manage.py"]
-CMD ["runserver", "0.0.0.0:8000"]
+CMD ["runserver", "0.0.0.0:80"]
