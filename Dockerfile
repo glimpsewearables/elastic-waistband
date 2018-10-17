@@ -24,6 +24,7 @@ RUN mkdir /code
 WORKDIR /code
 ADD requirements.txt /code/
 RUN pip3 install -r requirements.txt
+RUN pip3 install gunicorn
 ADD . /code/
 
 RUN apt-get install -y nginx && \
@@ -39,5 +40,4 @@ RUN /bin/bash -c "source /venv/bin/activate && pip install pyserial && deactivat
 # Server
 EXPOSE 80
 STOPSIGNAL SIGINT
-ENTRYPOINT ["python", "manage.py"]
-CMD ["runserver", "0.0.0.0:80"]
+ENTRYPOINT ENTRYPOINT ["/usr/local/bin/gunicorn", "--config", "/gunicorn.conf", "--log-config", "/logging.conf", "-b", ":8000", "myapp:app"]
