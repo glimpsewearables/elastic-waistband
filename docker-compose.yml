@@ -1,22 +1,26 @@
 version: '3'
-
 services:
-  web:
-    build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/code
+  nginx:
+    image: nginx:latest
+    container_name: ngglimpse
     ports:
       - "8000:8000"
+    volumes:
+      - ./src:/src
+      - ./config/nginx:/etc/nginx/conf.d
+    depends_on:
+      - web
+  web:
+    build: .
+    container_name: webglimpse
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn glimpseAPI.wsgi -b 0.0.0.0:8000"
     depends_on:
       - db
-  nginx:
-    restart: always
-    container_name: nginx_server
-    build:
-      context: ./bookme/docker_compose/nginx/
-      dockerfile: Dockerfile
-    depends_on:
-      - django_web
-    ports:
-      - "0.0.0.0:80:80"
+    volumes:
+      - ./src:/src
+    expose:
+      - "8000"
+    
+  db:
+    image: postgres:latest
+    container_name: dbglimpse
