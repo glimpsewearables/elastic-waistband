@@ -40,4 +40,4 @@ RUN nginx -t
 # Server
 EXPOSE 80
 STOPSIGNAL SIGINT
-ENTRYPOINT ["gunicorn", "glimpseAPI.wsgi.application"]
+CMD ["gunicorn"  , "-b", "0.0.0.0:8000", "glimpseAPI.wsgi:application"]
