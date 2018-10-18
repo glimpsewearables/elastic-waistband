@@ -38,6 +38,6 @@ ADD nginx.conf /etc/nginx/
 RUN nginx -t
 
 # Server
-EXPOSE 80
+EXPOSE 8000
 STOPSIGNAL SIGINT
 CMD ["gunicorn"  , "-b", "0.0.0.0:8000", "glimpseAPI.wsgi:application"]
