@@ -62,7 +62,7 @@
       "dockerLabels": null,
       "systemControls": null,
       "privileged": false,
-      "name": "web"
+      "name": "webglimpse"
     }
   ],
   "placementConstraints": [],
