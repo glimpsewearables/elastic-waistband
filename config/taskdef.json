@@ -10,9 +10,20 @@
             "portMappings": [
                 {
                     "containerPort": 8000,
-                    "hostPort": 8000
+                    "hostPort": 8000,
+                    "protocal": "tcp"
                 }
-            ]
+            ],
+            "command": [
+                "python manage.py makemigrations && python manage.py migrate && gunicorn glimpseAPI.wsgi -b 0.0.0.0:8000"
+            ],
+            "volumesFrom": [
+                {
+                    "sourceContainer": "/src",
+                    "readOnly": true
+                }
+            ],
+            "workingDirectory": "/src",
         }
     ]
 }
