@@ -2,7 +2,7 @@ version: '3'
 
 services:
   web:
-    image: webglimpse:latest
+    image: :web_latest
     build: .
     container_name: webglimpse
     command: bash -c "python manage.py makemigrations && python manage.py migrate && gunicorn glimpseAPI.wsgi -b 0.0.0.0:8000"
