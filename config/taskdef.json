@@ -3,14 +3,27 @@
     "containerDefinitions": [
         {
             "image": "%REPOSITORY_URI%:v_%BUILD_NUMBER%",
-            "name": "glimpse",
+            "name": "webglimpse",
             "cpu": 10,
             "memory": 256,
             "essential": true,
             "portMappings": [
                 {
-                    "containerPort": 80,
-                    "hostPort": 80
+                    "containerPort": 8000,
+                    "hostPort": 8000
+                }
+            ]
+        },
+        {
+            "image": "nginx:latest",
+            "name": "ngglimpse",
+            "cpu": 10,
+            "memory": 256,
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000
                 }
             ]
         }
