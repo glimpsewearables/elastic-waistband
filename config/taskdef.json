@@ -15,13 +15,5 @@
                 }
             ]
         }
-    ],
-    "volumes": [
-        {
-            "name": "src",
-            "host": {
-                "sourcePath": "/src"
-            }
-        }
     ]
 }
