@@ -15,7 +15,7 @@
                 }
             ],
             "command": [
-                "gunicorn glimpseAPI.wsgi -b 0.0.0.0:8000"
+                "bash -c gunicorn glimpseAPI.wsgi -b 0.0.0.0:8000"
             ]
         }
     ]
