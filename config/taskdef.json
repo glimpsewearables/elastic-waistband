@@ -10,14 +10,13 @@
             "portMappings": [
                 {
                     "containerPort": 8000,
-                    "hostPort": 8000,
-                    "protocol": "tcp"
+                    "hostPort": 8000
                 }
             ],
             "command": [
                 "/bin/sh", 
                 "-c",
-                "\"echo hello\""
+                "\"gunicorn glimpseAPI.wsgi -b 0.0.0.0:8000\""
             ]
         }
     ]
