@@ -13,6 +13,9 @@
                     "hostPort": 8000,
                     "protocol": "tcp"
                 }
+            ],
+            "command": [
+                "gunicorn glimpseAPI.wsgi -b 0.0.0.0:8000"
             ]
         }
     ]
