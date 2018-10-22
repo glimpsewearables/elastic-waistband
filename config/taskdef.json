@@ -17,7 +17,7 @@
             "command": [
                 "/bin/sh", 
                 "-c",
-                "\"gunicorn glimpseAPI.wsgi -b 0.0.0.0:8000\""
+                "\"echo hello\""
             ]
         }
     ]
