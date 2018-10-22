@@ -48,7 +48,7 @@
       "memory": 512,
       "memoryReservation": null,
       "volumesFrom": [],
-      "image": "471137844663.dkr.ecr.us-west-2.amazonaws.com/docker-images:web_latest",
+      "image": "webglimpse:web_latest",
       "disableNetworking": null,
       "interactive": null,
       "healthCheck": null,
