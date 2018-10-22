@@ -1,5 +1,5 @@
 {
-    "family": "glimpse",
+    "family": "glimpse-server",
     "containerDefinitions": [
         {
             "image": "%REPOSITORY_URI%:v_%BUILD_NUMBER%",
