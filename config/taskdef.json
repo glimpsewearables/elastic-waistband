@@ -1,8 +1,8 @@
 {
-    "family": "glimpse-server",
+    "family": "webglimpse",
     "containerDefinitions": [
         {
-            "image": "%REPOSITORY_URI%:v_%BUILD_NUMBER%",
+            "image": "471137844663.dkr.ecr.us-west-2.amazonaws.com/docker-images:web_latest",
             "name": "webglimpse",
             "cpu": 10,
             "memory": 256,
