@@ -1,3 +1,0 @@
-FROM nginx:latest
-ADD /config/nginx /etc/nginx/conf.d
-EXPOSE 8000
