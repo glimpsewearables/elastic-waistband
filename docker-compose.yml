@@ -5,7 +5,6 @@ services:
     image: 471137844663.dkr.ecr.us-west-2.amazonaws.com/docker-images:web_latest
     build: .
     container_name: webglimpse
-    command: bash -c "gunicorn glimpseAPI.wsgi -b 0.0.0.0:8000"
     ports:
       - "8000:8000"
     volumes:

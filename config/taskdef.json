@@ -1,113 +1,18 @@
 {
-  "executionRoleArn": null,
-  "containerDefinitions": [
-    {
-      "dnsSearchDomains": [],
-      "logConfiguration": null,
-      "entryPoint": [],
-      "portMappings": [
+    "family": "elastic-waistband",
+    "containerDefinitions": [
         {
-          "hostPort": 8000,
-          "protocol": "tcp",
-          "containerPort": 8000
+            "image": "471137844663.dkr.ecr.us-west-2.amazonaws.com/docker-images:web_latest",
+            "name": "hello-world",
+            "cpu": 10,
+            "memory": 256,
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000
+                }
+            ]
         }
-      ],
-      "command": [
-        "bash",
-        "-c",
-        "python manage.py makemigrations && python manage.py migrate && gunicorn glimpseAPI.wsgi -b 0.0.0.0:8000"
-      ],
-      "linuxParameters": {
-        "capabilities": {
-          "add": null,
-          "drop": null
-        },
-        "sharedMemorySize": null,
-        "tmpfs": null,
-        "devices": [],
-        "initProcessEnabled": null
-      },
-      "cpu": 0,
-      "environment": [],
-      "ulimits": null,
-      "dnsServers": [],
-      "mountPoints": [
-        {
-          "readOnly": false,
-          "containerPath": "/src",
-          "sourceVolume": "volume-0"
-        },
-        {
-          "readOnly": false,
-          "containerPath": "/etc/nginx/conf.d",
-          "sourceVolume": "volume-1"
-        }
-      ],
-      "workingDirectory": null,
-      "dockerSecurityOptions": [],
-      "memory": 512,
-      "memoryReservation": null,
-      "volumesFrom": [],
-      "image": "webglimpse:web_latest",
-      "disableNetworking": null,
-      "interactive": null,
-      "healthCheck": null,
-      "essential": true,
-      "links": [],
-      "hostname": null,
-      "extraHosts": [],
-      "pseudoTerminal": null,
-      "user": null,
-      "readonlyRootFilesystem": false,
-      "dockerLabels": null,
-      "systemControls": null,
-      "privileged": false,
-      "name": "webglimpse"
-    }
-  ],
-  "placementConstraints": [],
-  "memory": null,
-  "taskRoleArn": null,
-  "compatibilities": [
-    "EC2"
-  ],
-  "taskDefinitionArn": "arn:aws:ecs:us-west-2:471137844663:task-definition/elastic-waistband:13",
-  "family": "elastic-waistband",
-  "requiresAttributes": [
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.ecr-auth"
-    }
-  ],
-  "requiresCompatibilities": [
-    "EC2"
-  ],
-  "networkMode": null,
-  "cpu": null,
-  "revision": 13,
-  "status": "ACTIVE",
-  "volumes": [
-    {
-      "name": "volume-0",
-      "host": {
-        "sourcePath": "/Users/keeganbbjordan/code/elastic-waistband/src"
-      },
-      "dockerVolumeConfiguration": null
-    },
-    {
-      "name": "volume-1",
-      "host": {
-        "sourcePath": "/Users/keeganbbjordan/code/elastic-waistband/config/nginx"
-      },
-      "dockerVolumeConfiguration": null
-    }
-  ]
+    ]
 }
