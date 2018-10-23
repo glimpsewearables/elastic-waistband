@@ -3,7 +3,7 @@
     "containerDefinitions": [
         {
             "image": "471137844663.dkr.ecr.us-west-2.amazonaws.com/docker-images:web_latest",
-            "name": "hello-world",
+            "name": "elastic-waistband",
             "cpu": 10,
             "memory": 256,
             "essential": true,
