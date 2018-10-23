@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: ngglimpse
+    ports:
+      - "80:80"
+    volumes:
+      - /etc/nginx/conf.d:/etc/nginx/conf.d
