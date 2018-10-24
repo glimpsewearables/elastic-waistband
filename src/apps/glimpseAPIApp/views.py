@@ -224,7 +224,7 @@ def jsonifyUserEventData(data):
 
 # all the endpoint functions for retrieving media information
 def index(request): # this is the standard endpoint that will not return anything
-    response = "here is the standard page that will be seen when the user enters the blank url"
+    response = "hello-world"
     return HttpResponse(response)
 
 def mediaHome(request):
