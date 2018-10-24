@@ -6,7 +6,13 @@
             "name": "elastic-waistband",
             "cpu": 10,
             "memory": 256,
-            "essential": true
+            "essential": true,
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 8000
+                }
+            ]
         }
     ]
 }
