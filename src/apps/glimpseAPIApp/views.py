@@ -3,7 +3,7 @@ import bcrypt, sys, os, base64, datetime, hashlib, hmac
 import boto3, csv, json
 import requests
 from django.db import models
-from .models import User, Device, Event, Media, UserEvent
+from .models import User, Device, Event, Media
 client = boto3.client('s3') #low-level functional API
 resource = boto3.resource('s3') #high-level object-oriented API
 v1_raw_bucket = resource.Bucket('pi-1')
@@ -58,7 +58,6 @@ def updateDatabase(request):
             print(data.key + "data.key already exists")
         else:
             # If else statement that helps decide whether or not this media type is a image or video
-            data_key = "https://s3.amazonaws.com/pi-4/" + data.key
             check_image_video = data.key.lower()
             data_type = ""
             if check_image_video.endswith(".jpg") or check_image_video.endswith(".jpeg") or check_image_video.endswith(".png"):
@@ -71,10 +70,9 @@ def updateDatabase(request):
                 data_type = "this is a folder"
             else:
                 data_type = "not a jpg/jpeg or mp4"
-            data_key = "https://s3.amazonaws.com/pi-4/" + data.key
             Media.objects.create(
                 media_type = data_type,
-                link = data_key,
+                link = data.key,
                 DeviceId = Device.objects.get(id=1),
                 UserId = User.objects.get(id=1),
                 event = Event.objects.get(id=1),
@@ -89,7 +87,6 @@ def updateDatabase(request):
         else:
             # If else statement that helps decide whether or not this media type is a image or video
             # Reuse this function for adding image to database every time a new image is uploaded to the s3 database
-            data_key = "https://s3.amazonaws.com/pi-5/" + data.key
             check_image_video = data.key.lower()
             data_type = ""
             if check_image_video.endswith(".jpg") or check_image_video.endswith(".jpeg") or check_image_video.endswith(".png"):
@@ -152,9 +149,10 @@ def updateSingleMedia(): # figure out the put request to update an existing obje
 # Converting the object based data into json data that can be parsed and returned by the api
 def jsonifyMediaData(data):
     context = {}
+    all_media = []
     for data_point in data:
-        context[data_point.link] = {
-                "id" : data_point.id,
+        adding_context = {
+                "link" : "https://s3.amazonaws.com/pi-4/" + data_point.link,
                 "user_id" : data_point.UserId.id,
                 "device_id" : data_point.DeviceId.id,
                 "event_id" : data_point.event.id,
@@ -165,13 +163,16 @@ def jsonifyMediaData(data):
                 "created_at" : str(data_point.created_at),
                 "updated_at" : str(data_point.updated_at)
             }
+        all_media.append(adding_context)
+    context.update({"media" : all_media})
     return context
 
 def jsonifyEventData(data):
     context = {}
+    all_events = []
     for data_point in data:
-        context[data_point.name] = {
-                "id" : data_point.id,
+        adding_context = {
+                "name" : data_point.name,
                 "address" : data_point.address,
                 "start_date" : str(data_point.start_date),
                 "end_date" : str(data_point.end_date),
@@ -180,24 +181,30 @@ def jsonifyEventData(data):
                 "created_at" : str(data_point.created_at),
                 "updated_at" : str(data_point.updated_at)
             }
+        all_events.append(adding_context)
+    context.update({"events" : all_events})
     return context
 
 def jsonifyDeviceData(data):
     context = {}
+    all_events = []
     for data_point in data:
-        context[data_point.id] = {
+        adding_context = {
             "serial_number" : data_point.serial_number,
             "device_number" : data_point.device_number,
             "user_id" : data_point.UserId.id,
             "created_at" : str(data_point.created_at),
             "updated_at" : str(data_point.updated_at)
         }
+        all_events.append(adding_context)
+    context.update({"devices" : all_events})
     return context
 
 def jsonifyUserData(data):
     context = {}
+    all_users = []
     for data_point in data:
-        context[data_point.id] = {
+        adding_context = {
             "first_name" : data_point.first_name,
             "last_name" : data_point.last_name,
             "email" : data_point.email,
@@ -206,16 +213,9 @@ def jsonifyUserData(data):
             "created_at" : str(data_point.created_at),
             "updated_at" : str(data_point.updated_at)
         }
+        all_users.append({"users" : all_users})
     return context
 
-def jsonifyUserEventData(data):
-    context = {}
-    for data_point in data:
-        context[data_point.id] = {
-            "user_id" : data_point.user_id,
-            "event_id" : data_point.event_id
-        }
-    return context
 
 # All of the endpoints for retrieving information from the api call
 # functions divider
@@ -249,15 +249,13 @@ def getAllVideos(request): # grabs ALL videos that are being stored in the raw b
 def getAllUserImages(request, user_id): # grabs ALL images connected to the specific user that are being stored in the raw bucket
     context = {}
     if User.objects.filter(id = user_id):
+        response = "Getting all images specific to user " + user_id + "..!! "
         raw_images = Media.objects.filter(UserId = User.objects.get(id=user_id), media_type = "image", raw_or_edited = "raw")
         edited_images = Media.objects.filter(UserId = User.objects.get(id=user_id), media_type = "image", raw_or_edited = "edited")
-        event_data = UserEvent.objects.filter(user_id = user_id)
         json_raw_images = jsonifyMediaData(raw_images)
         json_edited_images = jsonifyMediaData(edited_images)
-        json_event_data = jsonifyUserEventData(event_data)
         context["raw_images"] = json_raw_images
         context["edited_images"] = json_edited_images
-        context["users_events"] = json_event_data
     else:
         context["error"] = "You entered a user that does not exist"
     newContext = json.dumps(context)
@@ -269,13 +267,10 @@ def getAllUserVideos(request, user_id): # grabs ALL videos connected to the spec
         response = "Getting all videos specific to a user..."
         videos_raw = Media.objects.filter(UserId = User.objects.get(id = user_id), media_type = "video", raw_or_edited = "raw")
         videos_edited = Media.objects.filter(UserId = User.objects.get(id = user_id), media_type = "video", raw_or_edited = "edited")
-        event_data = UserEvent.objects.filter(user_id = user_id)
         json_raw_videos = jsonifyMediaData(videos_raw)
         json_edited_videos = jsonifyMediaData(videos_edited)
-        json_event_data = jsonifyUserEventData(event_data)
         context["raw_videos"] = json_raw_videos
         context["edited_videos"] = json_edited_videos
-        context["users_events"] = json_event_data
     else:
         context["error"] = "You entered a user that does not exist"
     newContext = json.dumps(context)
@@ -358,9 +353,7 @@ def getSpecificUser(request, user_id): # grabs all users from the mySQL database
     context = {}
     if User.objects.filter(id = user_id):
         this_user = User.objects.filter(id=user_id)
-        this_user_events = UserEvent.objects.filter(user_id = user_id)
-        context["user_data"] = jsonifyUserData(this_user)
-        context["user_events"] = jsonifyUserEventData(this_user_events)
+        context = jsonifyUserData(this_user)
     else:
         context["error"] = "You entered a user that does not exist"
     newContext = json.dumps(context)
