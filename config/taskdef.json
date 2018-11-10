@@ -2,7 +2,7 @@
     "family": "elastic-waistband",
     "containerDefinitions": [
         {
-            "image": "471137844663.dkr.ecr.us-west-2.amazonaws.com/docker-images:web_latest",
+            "image": "471137844663.dkr.ecr.us-west-2.amazonaws.com/docker-images:service_latest",
             "name": "elastic-waistband",
             "cpu": 10,
             "memory": 256,
