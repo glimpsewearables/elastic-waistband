@@ -68,9 +68,10 @@ def updateDatabase(request):
                 data_type = "this is a folder"
             else:
                 data_type = "not a jpg/jpeg or mp4"
+            newDataKey = "https://s3.amazonaws.com/pi-4/" + data.key
             Media.objects.create(
                 media_type = data_type,
-                link = data.key,
+                link = newDataKey,
                 DeviceId = Device.objects.get(id=1),
                 UserId = User.objects.get(id=1),
                 event = Event.objects.get(id=1),
@@ -97,9 +98,10 @@ def updateDatabase(request):
                 data_type = "this is a folder"
             else:
                 data_type = "not a jpg/jpeg or mp4"
+            newDataKey = "https://s3.amazonaws.com/pi-5/" + data.key
             Media.objects.create(
                 media_type = data_type,
-                link = data.key,
+                link = newDataKey,
                 DeviceId = Device.objects.last(),
                 UserId = User.objects.last(),
                 event = Event.objects.last(),
@@ -148,7 +150,7 @@ def jsonifyMediaData(data):
     all_media = []
     for data_point in data:
         adding_context = {
-                "link" : "https://s3.amazonaws.com/pi-4/" + data_point.link,
+                "link" : data_point.link,
                 "user_id" : data_point.UserId.id,
                 "device_id" : data_point.DeviceId.id,
                 "event_id" : data_point.event.id,
@@ -358,8 +360,16 @@ def getSpecificUser(request, user_id): # grabs all users from the mySQL database
 def getSpecificUserByEmail(request, user_email):
     context = {}
     if User.objects.filter(email = user_email):
-        this_user = User.objects.filter(email = user_email)
-        context = jsonifyUserData(this_user)
+        this_user = User.objects.get(email = user_email)
+        context = {
+            "first_name" : this_user.first_name,
+            "last_name" : this_user.last_name,
+            "email" : this_user.email,
+            "phone" : this_user.phone,
+            "password" : this_user.password,
+            "created_at" : str(this_user.created_at),
+            "updated_at" : str(this_user.updated_at)
+        }
     else:
         context["error"] = "You entered a user that does not exist"
     newContext = json.dumps(context)
