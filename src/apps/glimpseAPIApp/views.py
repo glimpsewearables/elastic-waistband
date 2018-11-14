@@ -23,14 +23,12 @@ def updateDatabase(request):
     if (User.objects.filter(id = 1)):
         print("Initial User exists")
     else:
-        salt = bcrypt.gensalt()
-        hashed_password = bcrypt.hashpw('password', salt)
         User.objects.create(
             first_name = "glimpse",
             last_name = "project",
             email = "drose@glimpsewearables.com",
             phone = "5094818244",
-            password = hashed_password,
+            password = "password",
             created_at = datetime.time,
             updated_at = datetime.time
         )
@@ -117,14 +115,12 @@ def updateDatabase(request):
 # functions divider
 # functions divider
 def createUser(first_name, last_name, email, password, phone):
-    salt = bcrypt.gensalt()
-    hashed_password = bcrypt.hashpw(password, salt)
     User.objects.create(
         first_name = first_name,
         last_name = last_name,
         email = email,
         phone = phone,
-        password = hashed_password,
+        password = password,
         created_at = datetime.time,
         updated_at = datetime.time
     )
