@@ -14,7 +14,7 @@ class User(models.Model):
 
 class Device(models.Model):
     # DeviceId = models.IntegerField()
-    UserId = models.ForeignKey(User, related_name="devices", null=True)
+    user_id = models.IntegerField(default=False)
     device_number = models.IntegerField()
     serial_number = models.CharField(max_length = 45)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -33,9 +33,9 @@ class Event(models.Model):
 
 class Media(models.Model):
     # MediaId = models.IntegerField()
-    UserId = models.ForeignKey(User, related_name="uploads", null=True)
-    DeviceId = models.ForeignKey(Device, related_name="content", null=True)
-    event = models.ForeignKey(Event, related_name="media_at_event", null=True)
+    user_id = models.IntegerField(default=False)
+    device_id = models.IntegerField(default=False)
+    event_id = models.IntegerField(default=False)
     media_type = models.CharField(max_length=10)# either image, or video
     link = models.CharField(max_length=245)
     raw_or_edited = models.CharField(max_length=45)
@@ -47,6 +47,18 @@ class Media(models.Model):
 class UserEvent(models.Model):
     user_id = models.ForeignKey(User, related_name="user_at_events", null=True)
     event_id = models.ForeignKey(Event, related_name="event_attending", null=True)
+
+class MediaComment(models.Model):
+    user_id = models.IntegerField(default=False)
+    media_id = models.IntegerField(default=False)
+    comment = models.TextField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+class MediaLike(models.Model):
+    user_id = models.IntegerField(default=False)
+    media_id = models.IntegerField(default=False)
+    comment = models.TextField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 def __str__(self):
         return '%s %s' % (self.title, self.body)
