@@ -24,6 +24,7 @@ def updateDatabase(request):
         print("Initial User exists")
     else:
         User.objects.create(
+            # user_name = "glimpse",
             first_name = "glimpse",
             last_name = "project",
             email = "drose@glimpsewearables.com",
@@ -71,9 +72,9 @@ def updateDatabase(request):
             Media.objects.create(
                 media_type = data_type,
                 link = "https://s3.amazonaws.com/users-raw-content/" + data.key,
-                device_id = 1,
-                user_id = 1,
-                event_id = 1,
+                device_id = 0,
+                user_id = 0,
+                event_id = 0,
                 raw_or_edited = "raw"
             )
             print("adding new edited media with " + data.key + " as a the link")
@@ -100,9 +101,9 @@ def updateDatabase(request):
             Media.objects.create(
                 media_type = data_type,
                 link = "https://s3.amazonaws.com/users-edited-content/" + data.key,
-                device_id = 1,
-                user_id = 1,
-                event_id = 1,
+                device_id = 0,
+                user_id = 0,
+                event_id = 0,
                 raw_or_edited = "edited"
             )
             print("adding new edited media with " + data.key + " as a the link")
@@ -163,23 +164,18 @@ def jsonifyMediaData(data):
     context.update({"media" : all_media})
     return context
 
-def jsonifyEventData(data):
-    context = {}
-    all_events = []
-    for data_point in data:
-        adding_context = {
-                "name" : data_point.name,
-                "address" : data_point.address,
-                "start_date" : str(data_point.start_date),
-                "end_date" : str(data_point.end_date),
-                "long" : str(data_point.long),
-                "lat" : str(data_point.lat),
-                "created_at" : str(data_point.created_at),
-                "updated_at" : str(data_point.updated_at)
-            }
-        all_events.append(adding_context)
-    context.update({"events" : all_events})
-    return context
+def jsonifyEventData(data_point):
+    adding_context = {
+            "name" : data_point.name,
+            "address" : data_point.address,
+            "start_date" : str(data_point.start_date),
+            "end_date" : str(data_point.end_date),
+            "long" : str(data_point.long),
+            "lat" : str(data_point.lat),
+            "created_at" : str(data_point.created_at),
+            "updated_at" : str(data_point.updated_at)
+        }
+    return adding_context
 
 def jsonifyDeviceData(data):
     context = {}
@@ -242,16 +238,16 @@ def getAllVideos(request): # grabs ALL videos that are being stored in the raw b
     newContext = json.dumps(json_videos)
     return HttpResponse(newContext)
 
-def getAllUserImages(request, userId): # grabs ALL images connected to the specific user that are being stored in the raw bucket
+def getAllUserMedia(request, userId): # grabs ALL images connected to the specific user that are being stored in the raw bucket
     context = {}
     if User.objects.filter(id = userId):
-        response = "Getting all images specific to user " + userId + "..!! "
-        raw_images = Media.objects.filter(user_id = User.objects.get(id=userId), media_type = "image", raw_or_edited = "raw")
-        edited_images = Media.objects.filter(user_id= User.objects.get(id=userId), media_type = "image", raw_or_edited = "edited")
-        json_raw_images = jsonifyMediaData(raw_images)
-        json_edited_images = jsonifyMediaData(edited_images)
-        context["raw_images"] = json_raw_images
-        context["edited_images"] = json_edited_images
+        response = "Getting all media specific to user " + userId + "..!! "
+        raw_media = Media.objects.filter(user_id = userId, raw_or_edited = "raw")
+        edited_media = Media.objects.filter(user_id= userId, raw_or_edited = "edited")
+        json_raw_media = jsonifyMediaData(raw_media)
+        json_edited_media = jsonifyMediaData(edited_media)
+        context["raw_media"] = json_raw_media
+        context["edited_media"] = json_edited_media
     else:
         context["error"] = "You entered a user that does not exist"
     newContext = json.dumps(context)
@@ -307,19 +303,19 @@ def getAllEvents(request): # grabs ALL events from mysql database
     newContext = json.dumps(context)
     return HttpResponse(newContext)
 
-def getSpecificEvent(request, event_id): # grabs a specific event from the mySQL database
+def getSpecificEvent(request, eventId): # grabs a specific event from the mySQL database
     context = {}
-    if Event.objects.filter(id = event_id):
+    newContext = {}
+    if Event.objects.filter(id = eventId):
         response = "Getting a single specific event with a event id of"
-        context = {}
-        this_event = Event.objects.get(id = event_id)
-        this_event_content = Media.objects.filter(event = Event.objects.get(id=event_id))
-        context["this_event"] = this_event
-        context["this_event_content"] = this_event_content
+        this_event = Event.objects.get(id = eventId)
+        this_event_content = Media.objects.filter(event_id = eventId)
+        context["this_event"] = jsonifyEventData(this_event)
+        context["this_event_content"] = jsonifyMediaData(this_event_content)
+        newContext = json.dumps(context)
     else:
-        context["error"] = "You entered a event that does not exist"
-    context.json()
-    return HttpResponse(context)
+        newContext["error"] = "You entered a event that does not exist"
+    return HttpResponse(newContext)
 
 # all of the endpoint functions for retrieving device information
 def getAllDevices(request): # grabs a specific user from the mySQL database
