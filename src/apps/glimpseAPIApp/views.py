@@ -272,7 +272,7 @@ def getAllImagesUserEvent(request, userId, eventId): # grabs all images for a sp
     context = {}
     if Event.objects.filter(id = eventId) and User.objects.filter(id = userId):
         response = "Getting all images for a single user at a specific event with a event id of" + eventId
-        user_event_content = Media.objects.filter(event = Event.objects.get(id=eventId), user_id = User.objects.get(id=userId).id, media_type="image")
+        user_event_content = Media.objects.filter(event = Event.objects.get(id=eventId), user_id = userId, media_type="image")
         context["user_event_content"] = user_event_content
     else:
         context["error"] = "You entered a user or event that does not exist"
@@ -283,7 +283,7 @@ def getAllVideosUserEvent(request, userId, eventId): # grabs all videos for a sp
     context = {}
     if Event.objects.filter(id = eventId) and User.objects.filter(id = userId):
         response = "Getting all videos for a single user at a specific event with a event id of" + event_id
-        user_event_content = Media.objects.filter(event = Event.objects.get(id=eventId), user_id = User.objects.get(id=userId).id, media_type="video")
+        user_event_content = Media.objects.filter(event = Event.objects.get(id=eventId), user_id = userId, media_type="video")
         context["user_event_content"] = user_event_content
     else:
         context["error"] = "You entered a user or event that does not exist"
