@@ -272,12 +272,12 @@ def getAllImagesUserEvent(request, userId, eventId): # grabs all images for a sp
     context = {}
     if Event.objects.filter(id = eventId) and User.objects.filter(id = userId):
         response = "Getting all images for a single user at a specific event with a event id of" + eventId
-        user_event_content = Media.objects.filter(event = Event.objects.get(id=eventId), user_id = User.objects.get(id=userd), media_type="image")
+        user_event_content = Media.objects.filter(event = Event.objects.get(id=eventId), user_id = User.objects.get(id=userId), media_type="image")
         context["user_event_content"] = user_event_content
     else:
         context["error"] = "You entered a user or event that does not exist"
-    newContext = json.dumps(context)
-    return HttpResponse(newContext)
+    context.json()
+    return HttpResponse(context)
 
 def getAllVideosUserEvent(request, userId, eventId): # grabs all videos for a specific user at a specific event
     context = {}
@@ -287,8 +287,8 @@ def getAllVideosUserEvent(request, userId, eventId): # grabs all videos for a sp
         context["user_event_content"] = user_event_content
     else:
         context["error"] = "You entered a user or event that does not exist"
-    newContext = json.dumps(context)
-    return HttpResponse(newContext)
+    context.json()
+    return HttpResponse(context)
 
 # all of the endpoint functions for retrieving event information
 def getAllEvents(request): # grabs ALL events from mysql database
