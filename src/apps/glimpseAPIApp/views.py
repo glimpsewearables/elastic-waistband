@@ -276,8 +276,8 @@ def getAllImagesUserEvent(request, userId, eventId): # grabs all images for a sp
         context["user_event_content"] = user_event_content
     else:
         context["error"] = "You entered a user or event that does not exist"
-    context.json()
-    return HttpResponse(context)
+    newContext = json.dumps(context)
+    return HttpResponse(newContext)
 
 def getAllVideosUserEvent(request, userId, eventId): # grabs all videos for a specific user at a specific event
     context = {}
@@ -287,8 +287,8 @@ def getAllVideosUserEvent(request, userId, eventId): # grabs all videos for a sp
         context["user_event_content"] = user_event_content
     else:
         context["error"] = "You entered a user or event that does not exist"
-    context.json()
-    return HttpResponse(context)
+    newContext = json.dumps(context)
+    return HttpResponse(newContext)
 
 # all of the endpoint functions for retrieving event information
 def getAllEvents(request): # grabs ALL events from mysql database
