@@ -272,8 +272,9 @@ def getAllImagesUserEvent(request, userId, eventId): # grabs all images for a sp
     context = {}
     if Event.objects.filter(id = eventId) and User.objects.filter(id = userId):
         response = "Getting all images for a single user at a specific event with a event id of" + eventId
-        user_event_content = Media.objects.filter(event_id = eventId, user_id = userId, media_type="image")
-        context["user_event_content"] = user_event_content
+        user_event_images = Media.objects.filter(event_id = eventId, user_id = userId, media_type="image")
+        json_user_event_images = jsonifyMediaData(user_event_images)
+        context["user_event_images"] = json_user_event_images
     else:
         context["error"] = "You entered a user or event that does not exist"
     newContext = json.dumps(context)
@@ -283,8 +284,9 @@ def getAllVideosUserEvent(request, userId, eventId): # grabs all videos for a sp
     context = {}
     if Event.objects.filter(id = eventId) and User.objects.filter(id = userId):
         response = "Getting all videos for a single user at a specific event with a event id of" + event_id
-        user_event_content = Media.objects.filter(event_id = eventId, user_id = userId, media_type="video")
-        context["user_event_content"] = user_event_content
+        user_event_videos    = Media.objects.filter(event_id = eventId, user_id = userId, media_type="video")
+        json_user_event_videos = jsonifyMediaData(user_event_videos)
+        context["user_event_videos"] = json_user_event_videos
     else:
         context["error"] = "You entered a user or event that does not exist"
     newContext = json.dumps(context)
