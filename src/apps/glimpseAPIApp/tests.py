@@ -46,11 +46,11 @@ class EventTests(TestCase):
 class MediaTests(TestCase):
 	def setUp(self):
 		Media.objects.create(user_id=1, device_id=1, event_id=1, media_type="image", 
-			link="a.com", raw_or_edited="raw", downloaded=0, ranking=1)
+			link="a.com", raw_or_edited="raw", downloaded=0, ranking=1, gif_link="a.com")
 
 	def test_jsonify_media(self):
 		media = Media.objects.get(user_id=1)
 		createdAt = media.created_at
 		updatedAt = media.updated_at
-		expectedJson = "{'media': [{'downloaded': 0, 'link': u'a.com', 'ranking': 1, 'media_type': u'image', 'event_id': '1', 'user_id': '1', 'created_at': '%s', 'raw_or_edited': u'raw', 'updated_at': '%s', 'device_id': '1'}]}" % (createdAt, updatedAt)
+		expectedJson = "{'media': [{'ranking': 1, 'updated_at': '%s', 'downloaded': 0, 'link': u'a.com', 'device_id': '1', 'user_id': '1', 'event_id': '1', 'created_at': '%s', 'raw_or_edited': u'raw', 'media_type': u'image', 'gif_link': u'a.com'}]}" % (updatedAt, createdAt)
 		self.assertEqual(str(jsonifyMediaData([media])), expectedJson.encode('ascii','ignore'))

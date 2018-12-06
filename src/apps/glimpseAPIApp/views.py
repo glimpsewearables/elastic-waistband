@@ -158,7 +158,8 @@ def jsonifyMediaData(data):
                 "downloaded" : data_point.downloaded,
                 "ranking" : data_point.ranking,
                 "created_at" : str(data_point.created_at),
-                "updated_at" : str(data_point.updated_at)
+                "updated_at" : str(data_point.updated_at),
+                "gif_link" : data_point.gif_link
             }
         all_media.append(adding_context)
     context.update({"media" : all_media})

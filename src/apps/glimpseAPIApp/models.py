@@ -44,6 +44,7 @@ class Media(models.Model):
     ranking = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    gif_link = models.CharField(max_length=245)
 
 class UserEvent(models.Model):
     user_id = models.IntegerField(default=False)
