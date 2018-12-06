@@ -284,7 +284,7 @@ def getAllImagesUserEvent(request, userId, eventId): # grabs all images for a sp
 def getAllVideosUserEvent(request, userId, eventId): # grabs all videos for a specific user at a specific event
     context = {}
     if Event.objects.filter(id = eventId) and Device.objects.filter(id = userId):
-        response = "Getting all videos for a single user at a specific event with a event id of" + event_id
+        response = "Getting all videos for a single user at a specific event with a event id of" + eventId
         user_event_videos = Media.objects.filter(event_id = eventId, user_id = userId, media_type="video")
         json_user_event_videos = jsonifyMediaData(user_event_videos)
         context["user_event_videos"] = json_user_event_videos
