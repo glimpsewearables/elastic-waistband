@@ -197,6 +197,7 @@ def jsonifyUserData(data):
     all_users = []
     for data_point in data:
         adding_context = {
+            "user_name" : data_point.user_name,
             "first_name" : data_point.first_name,
             "last_name" : data_point.last_name,
             "email" : data_point.email,
@@ -205,7 +206,8 @@ def jsonifyUserData(data):
             "created_at" : str(data_point.created_at),
             "updated_at" : str(data_point.updated_at)
         }
-        all_users.append({"users" : all_users})
+        all_users.append(adding_context)
+    context.update({"users" : all_users})
     return context
 
 

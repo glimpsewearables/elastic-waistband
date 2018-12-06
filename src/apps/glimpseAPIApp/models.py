@@ -4,7 +4,7 @@ import re, bcrypt
 
 class User(models.Model):
     # UserId = models.IntegerField()
-    # user_name = models.CharField(max_length = 45)
+    user_name = models.CharField(max_length = 45)
     first_name = models.CharField(max_length = 45)
     last_name = models.CharField(max_length = 45)
     email = models.CharField(max_length = 45)
