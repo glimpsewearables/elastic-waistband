@@ -270,11 +270,11 @@ def getAllUserVideos(request, userId): # grabs ALL videos connected to the speci
     newContext = json.dumps(context)
     return HttpResponse(newContext)
 
-def getAllImagesUserEvent(request, userId, eventId): # grabs all images for a specific user at a specific event
+def getAllImagesUserEvent(request, deviceId, eventId): # grabs all images for a specific user at a specific event
     context = {}
-    if Event.objects.filter(id = eventId) and User.objects.filter(id = userId):
+    if Event.objects.filter(id = eventId) and Device.objects.filter(id = deviceId):
         response = "Getting all images for a single user at a specific event with a event id of" + eventId
-        user_event_images = Media.objects.filter(event_id = eventId, user_id = userId, media_type="image")
+        user_event_images = Media.objects.filter(event_id = eventId, user_id = deviceId, media_type="image")
         json_user_event_images = jsonifyMediaData(user_event_images)
         context["user_event_images"] = json_user_event_images
         context = json.dumps(json_user_event_images)
@@ -282,11 +282,11 @@ def getAllImagesUserEvent(request, userId, eventId): # grabs all images for a sp
         context["error"] = "You entered a user or event that does not exist"
     return HttpResponse(context)
 
-def getAllVideosUserEvent(request, userId, eventId): # grabs all videos for a specific user at a specific event
+def getAllVideosUserEvent(request, deviceId, eventId): # grabs all videos for a specific user at a specific event
     context = {}
-    if Event.objects.filter(id = eventId) and User.objects.filter(id = userId):
+    if Event.objects.filter(id = eventId) and Device.objects.filter(id = deviceId):
         response = "Getting all videos for a single user at a specific event with a event id of" + event_id
-        user_event_videos = Media.objects.filter(event_id = eventId, user_id = userId, media_type="video")
+        user_event_videos = Media.objects.filter(event_id = eventId, user_id = deviceId, media_type="video")
         json_user_event_videos = jsonifyMediaData(user_event_videos)
         context["user_event_videos"] = json_user_event_videos
         context = json.dumps(json_user_event_videos)
