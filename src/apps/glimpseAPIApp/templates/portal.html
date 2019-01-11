@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Glimpse Portal</title>
+    {% load static from staticfiles%}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-login">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-4">
+                                <a href="#" class="active" id="login-form-link">User Login</a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="#" id="register-form-link">Register</a>
+                            </div>
+                            <div class="col-xs-4">
+                                <a href="#" id="admin-form-link">Admin</a>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form id="login-form" action="/login" method="POST" role="form" style="display: block;">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="text" name="emailsLogin" id="username" tabindex="1" class="form-control" placeholder="E-Mail" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="deviceNumber" id="deviceNumber" tabindex="2" class="form-control" placeholder="Enter Device Number">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form id="register-form" action="/registerUser" method="POST" role="form" style="display: none;">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="text" name="usersName" id="usersName" tabindex="1" class="form-control" placeholder="User Name" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="firstName" id="firstName" tabindex="1" class="form-control" placeholder="First Name" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="lastName" id="lastName" tabindex="1" class="form-control" placeholder="Last Name" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" name="usersEmail" id="usersEmail" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="usersPhone" id="usersPhone" tabindex="2" class="form-control" placeholder="Phone Number">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="deviceNumber" class="form-control" placeholder="Device Number">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="password" id="password" tabindex="1" class="form-control" placeholder="Password" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Sign Up">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form id="admin-form" action="/adminLogin" method="POST" role="form" style="display: none;">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <input type="text" name="adminName" id="adminName" tabindex="1" class="form-control" placeholder="Name" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="adminPassword" id="adminPassword" tabindex="2" class="form-control" placeholder="Password">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <input type="submit" name="admin-submit" id="admin-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                {% if messages %}
+                                    <h3 style="text-align: center"><u>Please Fix The Following Errors</u></h3>
+                                    {% for message in messages %}
+                                    <p style="text-align: center">{{ message }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+$(function() {
+    $('#login-form-link').click(function(e) {
+        $("#login-form").delay(100).fadeIn(100);
+        $("#admin-form").fadeOut(100);
+        $("#register-form").fadeOut(100);
+        $('#register-form-link').removeClass('active');
+        $('#admin-form-link').removeClass('active');
+        $(this).addClass('active');
+    e.preventDefault();
+    });
+    $('#register-form-link').click(function(e) {
+        $("#register-form").delay(100).fadeIn(100);
+        $("#login-form").fadeOut(100);
+        $("#admin-form").fadeOut(100);
+        $('#login-form-link').removeClass('active');
+        $('#admin-form-link').removeClass('active');
+        $(this).addClass('active');
+    e.preventDefault();
+    });
+    $('#admin-form-link').click(function(e) {
+        $("#admin-form").delay(100).fadeIn(100);
+        $("#login-form").fadeOut(100);
+        $("#register-form").fadeOut(100);
+        $('#login-form-link').removeClass('active');
+        $('#register-form-link').removeClass('active');
+        $(this).addClass('active');
+    e.preventDefault();
+    });
+});
+</script>
+</html>

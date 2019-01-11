@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Admin Page</title>
+    {% load static from staticfiles%}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    {% include 'header.html' %}
+    <div id="mainContainer">
+        <h1 style="text-align: center;">Admin Portal</h1>
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-xs-3">
+                    <button id="userInfoAreaButton" class="form-control btn btn-login active" onclick="openArea('userInfoArea')">Users</button>
+                </div>
+                <div class="col-xs-3">
+                    <button id="mediaInfoAreaButton" class="form-control btn btn-login" onclick="openArea('mediaInfoArea')">Media</button>
+                </div>
+                <div class="col-xs-3">
+                    <button id="eventInfoAreaButton" class="form-control btn btn-login" onclick="openArea('eventInfoArea')">Events</button>
+                </div>
+                <div class="col-xs-3">
+                    <button id="deviceInfoAreaButton" class="form-control btn btn-login" onclick="openArea('deviceInfoArea')">Devices</button>
+                </div>
+            </div>
+            <hr>
+        </div>
+        <div class="informationArea" id="userInfoArea">
+            <div id="allUsersInformation">
+                <div class="table-wrapper">
+                    <h3>Registered Users</h3>
+                    <button onclick="scrollToTab('createNewUser')" class="scrollToButton">Create New</button>
+                    <div class="informationalArea">
+                        <p>The users are not associated with any devices, they are simply people that are in the database and can have media associated with them depending on if they claim a device</p>
+                        <p>Users are not being used to keep track of media at all yet...</p>
+                    </div>
+                    <table class="table">
+                        <thead >
+                            <tr>
+                                <th scope="col">UserName</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Created</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in all_users %}
+                            {% csrf_token %}
+                        <tr>
+                            <td>{{user.user_name}}</td>
+                            <td>{{user.first_name}}</td>
+                            <td>{{user.last_name}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.phone}}</td>
+                            <td>{{user.created_at}}</td>
+                            <td><a href="deleteUser/{{user.id}}">Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <form action="/createUser" method="POST" role="form" id="createNewUser">
+                {% csrf_token %}
+                <h3 style="text-align:center">Add A New User</h3>
+                <div class="form-group">
+                    <input type="text" name="usersName" id="users-name" tabindex="1" class="form-control" placeholder="User Name" value="">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="firstName" id="users-first-name" tabindex="1" class="form-control" placeholder="First Name" value="">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="lastName" id="users-last-name" tabindex="1" class="form-control" placeholder="Last Name" value="">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="usersEmail" id="users-email" tabindex="2" class="form-control" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="usersPhone" id="users-phone" tabindex="2" class="form-control" placeholder="Phone Number">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" name="form-control btn btn-login" tabindex="4" class="form-control btn btn-login" value="Create User">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="informationArea" id="mediaInfoArea" style="display: none">
+            <div id="allMediaInformation">
+                <div id="mediaMetricArea" style="margin-left: 10%">
+                    <p>Currently {{image_number}} images in the db</p>
+                    <p>Currently {{video_number}} videos in the db</p>
+                    <p>The last video was taken at {{last_video.created_at}} by device {{last_video.device_id}}</p>
+                    <p><a href="{{last_video.link}}">{{last_video.link}}</a></p>
+                </div>
+                <div class="everyVideo">
+                    <h1 style="text-align:center">All Videos</h1>
+                    <button onclick="scrollToTab('createNewMedia')" class="scrollToButton">Create New</button>
+                    {% for video in all_videos %}
+                        <p><a href="{{video.link}}" target="_blank">{{video.link}}</a></p>
+                    {% endfor %}
+                </div>
+            </div>
+            <form action="/createMedia" method="POST" role="form" id="createNewMedia">
+                <h1 style="text-align: center">Add New Media</h1>
+                <h6 style="text-align: center">Make sure the link you are entering is an active URL link to the S3 Database</h6>
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="url_link" tabindex="1" class="form-control" placeholder="Url Link" value="">
+                </div>
+                <div class="form-group">
+                    <input type="number" name="device_id" tabindex="2" class="form-control" placeholder="Device/User Id">
+                </div>
+                <div class="form-group">
+                    <input type="number" name="event_id" tabindex="2" class="form-control" placeholder="Event Id">
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" name="login-submit" tabindex="4" class="form-control btn btn-login" value="Create Media">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="informationArea" id="eventInfoArea" style="display: none">
+            <h1 style="text-align:center">Current Event</h1>
+            <h1 style="text-align:center">{{currentEvent.name}}</h1>
+            <div id="allEventInformation">
+                <div class="table-wrapper">
+                    <h3 style="text-align:center">All Events</h3>
+                    <button onclick="scrollToTab('createNewEvent')" class="scrollToButton">Create New</button>
+                    <table class="table">
+                        <thead class="thead-dark" onclick="eventPage()">
+                            <tr>
+                                <th scope="col">Event Name</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        {% for event in all_events %}
+                        {% csrf_token %}
+                        <tbody onclick="openEventContent('{{event.id}}')">
+                            <td><a href="viewEventMedia/{{event.id}}">{{event.name}}</a></td>
+                            <td>{{event.address}}</td>
+                            <td>{{event.start_date}}</td>
+                            <td>{{event.end_date}}</td>
+                            <td><a href="setCurrentEvent/{{event.id}}" class="form-control">Set Current</a></td>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+                <form action="/createEvent" method="POST" role="form" id="createNewEvent">
+                    <h1 style="text-align: center">Add New Event</h1>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" name="eventName" id="eventName" tabindex="1" class="form-control" placeholder="Event Name" value="">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="address" id="eventAddress" tabindex="2" class="form-control" placeholder="Event Address">
+                    </div>
+                    <div class="form-group">
+                        <input type="date" name="startDate" id="startDate" tabindex="2" class="form-control" placeholder="Start Date">
+                    </div>
+                    <div class="form-group">
+                        <input type="date" name="endDate" id="endDate" tabindex="2" class="form-control" placeholder="End Date">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <input type="submit" name="login-submit" tabindex="4" class="form-control btn btn-login" value="Create Event">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="informationArea" id="deviceInfoArea" style="display: none">
+            <div class="table-wrapper">
+                <h3 style="text-align:center">Registered Devices</h3>
+                <button onclick="scrollToTab('createNewDevice')" class="scrollToButton">Create New</button>
+                <table class="table">
+                    <thead >
+                        <tr>
+                            <th scope="col">Device Id</th>
+                            <th scope="col">Device Number</th>
+                            <th scope="col">Owner Id</th>
+                            <th scope="col">Serial Number</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for device in all_devices %}
+                            {% csrf_token %}
+                            <tr>
+                                <td onclick="openDeviceContent('{{device.device_number}}')">{{device.id}}</td>
+                                <td onclick="openDeviceContent('{{device.device_number}}')">{{device.device_number}}</td>
+                                <td onclick="openDeviceContent('{{device.device_number}}')">{{device.user_id}}</td>
+                                <td onclick="openDeviceContent('{{device.device_number}}')">{{device.serial_number}}</td>
+                                <td>
+                                    <form action="/deleteDevice/{{device.id}}">
+                                        <button type="submit" class="form-control">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <form action="/createDevice" method="POST" role="form" id="createNewDevice">
+                <h1 style="text-align: center">Add Device</h1>
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="user_id" tabindex="1" class="form-control" placeholder="User Owner Id" value="">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="device_id" tabindex="2" class="form-control" placeholder="Device Id">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="serial_number" tabindex="2" class="form-control" placeholder="Serial Number">
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" name="login-submit" tabindex="4" class="form-control btn btn-login" value="Create Device">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script>
+function openArea(areaOpening){
+    var allAreas = ["userInfoArea","mediaInfoArea","eventInfoArea", "deviceInfoArea"];
+    var i;
+    for(i = 0; i < allAreas.length; i++){
+        var element = document.getElementById(allAreas[i]);
+        var elementButton = document.getElementById(allAreas[i] + "Button");
+        if(allAreas[i] == areaOpening){
+            element.style.display = "block";
+            $(elementButton).addClass("active");
+        } else {
+            element.style.display = "none";
+            $(elementButton).removeClass("active");
+        }
+    }
+}
+function openEventContent(eventId){
+    location.replace("/viewEventMedia/" + eventId.toString());
+}
+function scrollToTab(tabName){
+    document.getElementById(tabName).scrollIntoView({behavior :"smooth"});
+}
+function openDeviceContent(deviceId){
+    location.replace("/userPage/" + deviceId.toString());
+}
+
+</script>
+</html>

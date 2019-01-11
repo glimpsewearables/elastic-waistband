@@ -1,5 +1,5 @@
 from django.conf.urls import url, include
-from . import views, models
+from . import views, models, adding, rendering, currentEvent
 from .resources import UserResource, EventResource, MediaResource, DeviceResource, CommentResource, LikeResource
 
 user_resource = UserResource()
@@ -10,9 +10,12 @@ comment_resource = CommentResource()
 like_resource = LikeResource()
 
 urlpatterns = [
-    url(r'^$', views.index),
+    url(r'^$', rendering.index),
     url(r'^media$', views.mediaHome),
     url(r'^updateDatabase$', views.updateDatabase),
+    url(r'^checkUrls$', views.checkUrls),
+    url(r'^removeDuplicates$', views.removeDuplicates),
+    url(r'^logout$', views.logout),
     url(r'^media/getAllImages$', views.getAllImages),
     url(r'^media/getAllVideos$', views.getAllVideos),
     url(r'^media/getAllUserMedia/(?P<userId>\d+)$', views.getAllUserMedia),
@@ -33,4 +36,19 @@ urlpatterns = [
     url(r'^api/', include(event_resource.urls)),
     url(r'^api/', include(comment_resource.urls)),
     url(r'^api/', include(like_resource.urls)),
+    # Views for portal
+    url(r'^login$', rendering.login),
+    url(r'^userPage/(?P<device_number>\d+)$', rendering.userPage),
+    url(r'^adminLogin$', rendering.adminLogin),
+    url(r'^adminPage$', rendering.adminPage),
+    url(r'^viewEventMedia/(?P<event_id>\d+)$', rendering.viewEventMedia),
+    url(r'^setCurrentEvent/(?P<event_id>\d+)$', currentEvent.setCurrentEvent),
+    # Adding/Deleting information to the database
+    url(r'^registerUser$', adding.registerUser),
+    url(r'^createEvent$', adding.createEvent),
+    url(r'^createMedia$', adding.createMedia),
+    url(r'^createDevice$', adding.createDevice),
+    url(r'^deleteUser/(?P<user_id>\d+)$', adding.deleteUser),
+    url(r'^deleteEvent/(?P<event_id>\d+)$', adding.deleteEvent),
+    url(r'^deleteDevice/(?P<device_id>\d+)$', adding.deleteDevice),
 ]  

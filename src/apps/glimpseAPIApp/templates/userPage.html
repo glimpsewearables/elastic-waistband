@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Glimpse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    {% load static from staticfiles%}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/userPage.css' %}">
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+</head>
+<body>
+{% include 'header.html' %}
+<div class="mainContainer">
+    <h1 style="text-align: center;">User {{device_number}} Content</h1>
+    <div id="yourInformation">
+        <h4 style="text-align: center;">Total Videos: {{total_vids}}</h4>
+    </div>
+    <div class="allEvents">
+        <h1 style="text-align: center;"> Available Events</h1>
+        <button class="eventButton form-control btn btn-login" onclick="openEvent('mostRecent')">Recent</button>
+        <hr>
+        {% for event in all_events %}
+        {% csrf_token %}
+        <div class="singleEventHeader">
+            <button class="eventButton form-control btn btn-login" onclick="openEvent('{{event.id}}')">{{event.name}}</button>
+            <!-- <img src="{{event.header_image}}"> -->
+            <!-- <img src="{% static 'img/wide-format-2839089_960_720.jpg' %}" onclick="openEvent('{{event.id}}')" class="eventHeaderImage"> -->
+        </div>
+        {% endfor %}
+    </div>
+    <div class="allUsersContent">
+        <div id="my_events">
+            {% csrf_token %}
+            <div class="singleEventTab" id="mostRecent" style="display: none">
+                <h2 style="text-align:center">Most Recent</h2>
+                {% for video in most_recent %}
+                <video class="singleVideo" controls>
+                    <source src="{{video.link}}" type="video/mp4">
+                </video>
+                {% endfor %}
+            </div>
+            <div class="singleEventTab" id="event0" style="display: none">
+                <h2 style="text-align:center">Miscellaneous</h2>
+                {% for video in event0.videos %}
+                <video class="singleVideo" controls>
+                    <source src="{{video.link}}" type="video/mp4">
+                </video>
+                {% endfor %}    
+            </div>
+            <div class="singleEventTab" id="event1" style="display: none">
+                <h2 style="text-align:center">Glimpse Wearables Concert</h2>
+                {% for video in event1.videos %}
+                <video class="singleVideo" controls>
+                    <source src="{{video.link}}" type="video/mp4">
+                </video>
+                {% endfor %}    
+            </div>
+            <div class="singleEventTab" id="event2" style="display: none">
+                <h2 style="text-align:center">Louis The Child</h2>
+                {% for video in event2.videos %}
+                <video class="singleVideo" controls>
+                    <source src="{{video.link}}" type="video/mp4">
+                </video>
+                {% endfor %}    
+            </div>
+            <div class="singleEventTab" id="event4" style="display: none">
+                <h2 style="text-align:center">Mill Testing</h2>
+                {% for video in event3.videos %}
+                <video class="singleVideo" controls>
+                    <source src="{{video.link}}" type="video/mp4">
+                </video>
+                {% endfor %}    
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var allEventTabs = ["mostRecent", "event0", "event1", "event2", "event4"]
+    function openEvent(event_id){
+        if(event_id == "mostRecent"){
+            var eventOpeningName = event_id.toString();
+        } else {
+            var eventOpeningName = "event" + event_id.toString();
+        }
+        for(i = 0; i < allEventTabs.length; i++){
+            if(eventOpeningName == allEventTabs[i]){
+                document.getElementById(allEventTabs[i]).style.display = "block"
+            } else {
+                document.getElementById(allEventTabs[i]).style.display = "none"
+            }
+        }
+    }
+</script>
+</html>

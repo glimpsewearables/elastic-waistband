@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Event Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% load static from staticfiles%}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    {% include 'header.html' %}
+    <div id="contentContainer">
+        <h1>Show Video</h1>
+        <button onclick="closeTab('contentContainer')">X</button>
+        <div id="videoToShow">
+            <video class="displayEventVid" id="videoEl" controls>
+            </video>
+        </div>
+    </div>
+    <div id="mainContainer">
+        <a href="/adminPage">Back To Admin Page</a>
+        <h1>{{this_event.name}}</h1>
+        <div id="allVideosArea">
+            <div class="table-wrapper">
+                <h3>Videos</h3>
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">User</th>
+                            <th scope="col">Device</th>
+                            <th scope="col">Link</th>
+                            <th scope="col">Ranking</th>
+                        </tr>
+                    </thead>
+                    {% for image in this_event_videos %}
+                    {% csrf_token %}
+                    <tbody>
+                        <td>{{image.user_id}}</td>
+                        <td>{{image.device_id}}</td>
+                        <td><a href="{{image.link}}" target="_blank">{{image.link}}</a></td>
+                        <td>{{image.ranking}}</td>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+        <div id="allImagesArea">
+            <div class="table-wrapper">
+                <h3>Images</h3>
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">User</th>
+                            <th scope="col">Device</th>
+                            <th scope="col">Link</th>
+                            <th scope="col">Ranking</th>
+                        </tr>
+                    </thead>
+                    {% for image in this_event_images %}
+                    {% csrf_token %}
+                    <tbody>
+                        <td>{{image.user_id}}</td>
+                        <td>{{image.device_id}}</td>
+                        <td><a href="{{image.link}}" target="_blank">{{image.link}}</a></td>
+                        <td>{{image.ranking}}</td>
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+
+</script>
+</html>
