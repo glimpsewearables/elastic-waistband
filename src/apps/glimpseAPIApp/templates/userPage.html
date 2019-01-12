@@ -27,7 +27,7 @@
         {% for event in all_events %}
         {% csrf_token %}
         <div class="singleEventHeader">
-            <button class="eventButton form-control btn btn-login" onclick="openEvent('{{event.id}}')">{{event.name}}</button>
+            <button class="eventButton form-control btn btn-login" onclick="openEvent('{{event.event_id}}')">{{event.name}}</button>
             <!-- <img src="{{event.header_image}}"> -->
             <!-- <img src="{% static 'img/wide-format-2839089_960_720.jpg' %}" onclick="openEvent('{{event.id}}')" class="eventHeaderImage"> -->
         </div>
@@ -44,16 +44,8 @@
                 </video>
                 {% endfor %}
             </div>
-            <div class="singleEventTab" id="event0" style="display: none">
-                <h2 style="text-align:center">Miscellaneous</h2>
-                {% for video in event0.videos %}
-                <video class="singleVideo" controls>
-                    <source src="{{video.link}}" type="video/mp4">
-                </video>
-                {% endfor %}    
-            </div>
             <div class="singleEventTab" id="event1" style="display: none">
-                <h2 style="text-align:center">Glimpse Wearables Concert</h2>
+                <h2 style="text-align:center">{{event1.eventInfo.name}}</h2>
                 {% for video in event1.videos %}
                 <video class="singleVideo" controls>
                     <source src="{{video.link}}" type="video/mp4">
@@ -61,15 +53,16 @@
                 {% endfor %}    
             </div>
             <div class="singleEventTab" id="event2" style="display: none">
-                <h2 style="text-align:center">Louis The Child</h2>
+                <h2 style="text-align:center">{{event2.eventInfo.name}}</h2>
                 {% for video in event2.videos %}
+                <h1>Hello</h1>
                 <video class="singleVideo" controls>
                     <source src="{{video.link}}" type="video/mp4">
                 </video>
                 {% endfor %}    
             </div>
-            <div class="singleEventTab" id="event4" style="display: none">
-                <h2 style="text-align:center">Mill Testing</h2>
+            <div class="singleEventTab" id="event3" style="display: none">
+                <h2 style="text-align:center">{{event3.eventInfo.name}}</h2>
                 {% for video in event3.videos %}
                 <video class="singleVideo" controls>
                     <source src="{{video.link}}" type="video/mp4">
@@ -81,8 +74,9 @@
 </div>
 </body>
 <script>
-    var allEventTabs = ["mostRecent", "event0", "event1", "event2", "event4"]
+    var allEventTabs = ["mostRecent", "event1", "event2", "event3"]
     function openEvent(event_id){
+        console.log(event_id);
         if(event_id == "mostRecent"){
             var eventOpeningName = event_id.toString();
         } else {

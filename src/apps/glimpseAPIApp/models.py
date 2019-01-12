@@ -24,10 +24,10 @@ class Device(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
 
 class Event(models.Model):
-    # EventId = models.IntegerField()
+    event_id = models.IntegerField()
     name = models.CharField(max_length = 245)
     address = models.CharField(max_length = 245)
-    # header_image = models.CharField(max_length = 245)
+    header_image = models.CharField(max_length = 245)
     start_date = models.DateTimeField(blank=True, null=True)
     end_date = models.DateTimeField(blank=True, null=True)
     long = models.DecimalField(max_digits=8, decimal_places=3)
@@ -37,8 +37,8 @@ class Event(models.Model):
 
 class Media(models.Model):
     # Adding features to allow more functionality with the front end
-    # views = models.IntegerField(default = 0)
-    # starred = models.TinyInt(default = 0)
+    views = models.IntegerField(default = 0)
+    starred = models.IntegerField(default = 0)
     user_id = models.IntegerField(default=False)
     device_id = models.IntegerField(default=False)
     
@@ -50,6 +50,8 @@ class Media(models.Model):
     raw_or_edited = models.CharField(max_length=45) # either raw, edited, or curated
     downloaded = models.IntegerField(default=False)
     ranking = models.IntegerField(default=1)
+    date = models.CharField(max_length = 245)
+    date_time = models.CharField(max_length = 245)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     gif_link = models.CharField(max_length=245)

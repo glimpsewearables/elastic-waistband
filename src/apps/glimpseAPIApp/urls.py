@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^setCurrentEvent/(?P<event_id>\d+)$', currentEvent.setCurrentEvent),
     # Adding/Deleting information to the database
     url(r'^registerUser$', adding.registerUser),
+    url(r'^createUser$', adding.createUser),
     url(r'^createEvent$', adding.createEvent),
     url(r'^createMedia$', adding.createMedia),
     url(r'^createDevice$', adding.createDevice),

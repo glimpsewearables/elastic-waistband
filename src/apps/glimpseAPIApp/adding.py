@@ -27,7 +27,7 @@ def createEvent(request):
         if request.session["userType"] != "admin":
             return redirect("/")
         else:
-            createNewEvent(request, request.POST["eventName"], request.POST["address"], request.POST["startDate"], request.POST["endDate"], )
+            createNewEvent(request, request.POST["eventName"], request.POST["address"], request.POST["startDate"], request.POST["endDate"], request.POST["imageHeader"])
     return redirect("/adminPage")
 
 def createMedia(request):
@@ -69,7 +69,7 @@ def deleteDevice(request, device_id):
 
 #  Creation functions
 def createNewDevice(deviceNum, userId, serialNumber):
-    now = datetime.datetime.now(pytz.timezone('US/Pacific'))
+    now = datetime.date.today()
     Device.objects.create(
         user_id = userId,
         device_number = deviceNum,
@@ -87,15 +87,15 @@ def createNewUser(request, user_name, first_name, last_name, email, password, ph
         email = email,
         phone = phone,
         password = password,
-        created_at = datetime.time,
-        updated_at = datetime.time
+        created_at = datetime.date.today(),
+        updated_at = datetime.date.today()
     )
 
-def createNewEvent(request, name, address, start_date, end_date):
+def createNewEvent(request, name, address, start_date, end_date, image_header):
     if request.session["userType"] != "admin":
         return redirect("/")
     else:
-        now = datetime.datetime.now(pytz.timezone('US/Pacific'))
+        now = datetime.date.today()
         Event.objects.create(
             name = name,
             address = address,
@@ -104,7 +104,8 @@ def createNewEvent(request, name, address, start_date, end_date):
             long = 0.00,
             lat = 0.00,
             created_at = now,
-            updated_at = now
+            updated_at = now,
+            image_header = image_header
         )
 
 def createNewMedia(request, url_link, device_id, event_id):
@@ -122,5 +123,10 @@ def createNewMedia(request, url_link, device_id, event_id):
             downloaded = 0,
             ranking = 1,
             created_at = now,
-            updated_at = now
+            updated_at = now,
+            gif_link = "",
+            views = 0,
+            starred = 0,
+            date = datetime.date.today(),
+            date_time = datetime.datetime.now().time()
         )

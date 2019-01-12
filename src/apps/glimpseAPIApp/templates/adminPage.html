@@ -105,11 +105,12 @@
                 <div id="mediaMetricArea" style="margin-left: 10%">
                     <p>Currently {{image_number}} images in the db</p>
                     <p>Currently {{video_number}} videos in the db</p>
-                    <p>The last video was taken at {{last_video.created_at}} by device {{last_video.device_id}}</p>
+                    <p>The last video was taken on {{last_video.date}} at {{last_video.date_time}} by device {{last_video.device_id}}</p>
                     <p><a href="{{last_video.link}}">{{last_video.link}}</a></p>
                 </div>
                 <div class="everyVideo">
                     <h1 style="text-align:center">All Videos</h1>
+                    <p style="text-align:center">In order from newest to oldest</p>
                     <button onclick="scrollToTab('createNewMedia')" class="scrollToButton">Create New</button>
                     {% for video in all_videos %}
                         <p><a href="{{video.link}}" target="_blank">{{video.link}}</a></p>
@@ -175,6 +176,9 @@
                     </div>
                     <div class="form-group">
                         <input type="text" name="address" id="eventAddress" tabindex="2" class="form-control" placeholder="Event Address">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="imageHeader" id="imageHeader" tabindex="2" class="form-control" placeholder="URL for Image Header">
                     </div>
                     <div class="form-group">
                         <input type="date" name="startDate" id="startDate" tabindex="2" class="form-control" placeholder="Start Date">
