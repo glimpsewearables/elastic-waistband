@@ -33,6 +33,9 @@
             </div>
             <hr>
         </div>
+        <div id="downloadCSVFile">
+            <button id="deviceInfoAreaButton" class="form-control btn btn-login" onclick="downloadCSVFile()">Download Metrics</button>
+        </div>
         <div class="informationArea" id="userInfoArea">
             <div id="allUsersInformation">
                 <div class="table-wrapper">
@@ -277,6 +280,9 @@ function scrollToTab(tabName){
 }
 function openDeviceContent(deviceId){
     location.replace("/userPage/" + deviceId.toString());
+}
+function downloadCSVFile(){
+    location.replace("/exportCsv");
 }
 
 </script>

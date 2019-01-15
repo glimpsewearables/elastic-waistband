@@ -39,13 +39,35 @@ def userPage(request, device_number):
         this_users_event_content["last_video"] = this_device_content[:1]
         this_users_event_content["userType"] = request.session["userType"]
         for event in all_events:
+            this_id = event.event_id
             if this_device_content.filter(event_id = event.event_id):
-                this_users_event_content["event" + str(event.event_id)] = {
-                    "videos" : this_device_content.filter(event_id = event.event_id),
-                    "eventInfo" : event
+                allTheseVideos = this_device_content.filter(event_id = this_id)
+                # partedVideos = partitionVideos(request, this_id, device_number)
+                # print partedVideos
+                this_users_event_content["event" + str(this_id)] = {
+                    "videos" : this_device_content.filter(event_id = this_id),
+                    "eventInfo" : event,
+                    "numVids" : len(allTheseVideos)
                     }
                 this_users_event_content["my_events"].append(event.event_id)
         return render(request, "userPage.html", this_users_event_content)
+
+
+# Break up all of the videos into segments of nine in order to deal with rendering issues for massive ammounts of videos in html
+def partitionVideos(request, event_id, device_id):
+    allVideos = Media.objects.filter(device_id = device_id, event_id = event_id, media_type = "video")
+    all_videos = []
+    groupedVideos = {}
+    for video in allVideos:
+        all_videos.append(video.link)
+    for i in range(0, (len(all_videos) / 9) + 1):
+        groupedVideos["video" + str(i)] = []
+    section = 0
+    for i in range(0, len(all_videos)):
+        groupedVideos["video" + str(section)].append(all_videos[i])
+        if i % 9 == 0:
+            section += 1
+    return groupedVideos
 
 def checkLogin():
     if request.session["deviceNumber"]:

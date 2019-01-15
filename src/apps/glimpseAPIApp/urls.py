@@ -52,4 +52,6 @@ urlpatterns = [
     url(r'^deleteUser/(?P<user_id>\d+)$', adding.deleteUser),
     url(r'^deleteEvent/(?P<event_id>\d+)$', adding.deleteEvent),
     url(r'^deleteDevice/(?P<device_id>\d+)$', adding.deleteDevice),
+    # CSV work for metrics
+    url(r'^exportCsv$', views.fromDatabase),
 ]  

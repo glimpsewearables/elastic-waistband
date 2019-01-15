@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from datetime import datetime
 import bcrypt, sys, os, base64, datetime, hashlib, hmac, pytz
-import boto3, csv, json
+import boto3, csv, json, wget, inspect, urllib, tinys3
 import requests
 from django.db import models
 from .models import User, Device, Event, Media, MediaComment
@@ -18,6 +18,41 @@ v2_edited_bucket = resource.Bucket('users-edited-content')
 # to the api that we are using
 # Once the api is able to continually update the sql database every time an image is uploaded 
 # this function will never have to be run again
+def fromDatabase(request):
+    allMedia = Media.objects.all() 
+    myFields = ['media_id', 'user_id', 'device_id', 'event_id', 'link', 'date', 'date_time', 'views', 'starred', 'media_type', 'raw_or_edited', 'downloaded', 'ranking', 'created_at', 'updated_at', 'gif_link']  
+    response = HttpResponse(content_type='text/csv')
+    today = datetime.date.today()
+    response['Content-Disposition'] = 'attachment; filename="glimpseMetrics.csv"'
+    writer = csv.writer(response)
+    writer.writerow(myFields)
+    for data_point in allMedia:
+        adding_context = [
+            data_point.id,
+            str(data_point.user_id),
+            str(data_point.device_id),
+            str(data_point.event_id),
+            data_point.link,
+            data_point.date,
+            data_point.date_time,
+            data_point.views,
+            data_point.starred,
+            data_point.media_type,
+            data_point.raw_or_edited,
+            data_point.downloaded,
+            data_point.ranking,
+            str(data_point.created_at),
+            str(data_point.updated_at),
+            data_point.gif_link
+        ]
+        writer.writerow(adding_context)
+    return response
+    # return redirect('/adminPage')
+
+# def downloadCsv(request):
+
+
+
 def updateDatabase(request):
     request.session["currentEventId"] = 1
     thisUsersContentRaw = v2_raw_bucket.objects.filter()
@@ -361,37 +396,40 @@ def jsonifyMediaData(data):
     all_media = []
     for data_point in data:
         adding_context = {
-                "link" : data_point.link,
-                "user_id" : str(data_point.user_id),
-                "device_id" : str(data_point.device_id),
-                "event_id" : str(data_point.event_id),
-                "media_type" : data_point.media_type,
-                "raw_or_edited" : data_point.raw_or_edited,
-                "downloaded" : data_point.downloaded,
-                "ranking" : data_point.ranking,
-                "created_at" : str(data_point.created_at),
-                "updated_at" : str(data_point.updated_at),
-                "gif_link" : data_point.gif_link,
-                "date": data_point.date,
-                "date_time": data_point.date_time
-            }
+            "views" : data_point.views,
+            "starred" : data_point.starred,
+            "link" : data_point.link,
+            "user_id" : str(data_point.user_id),
+            "device_id" : str(data_point.device_id),
+            "event_id" : str(data_point.event_id),
+            "media_type" : data_point.media_type,
+            "raw_or_edited" : data_point.raw_or_edited,
+            "downloaded" : data_point.downloaded,
+            "ranking" : data_point.ranking,
+            "created_at" : str(data_point.created_at),
+            "updated_at" : str(data_point.updated_at),
+            "gif_link" : data_point.gif_link,
+            "date": data_point.date,
+            "date_time": data_point.date_time
+        }
         all_media.append(adding_context)
     context.update({"media" : all_media})
     return context
 
 def jsonifyEventData(data_point):
     adding_context = {
-            "name" : data_point.name,
-            "header_image": data_point.header_image,
-            "address" : data_point.address,
-            "start_date" : str(data_point.start_date),
-            "end_date" : str(data_point.end_date),
-            "header_image": str(data_point.header_image),
-            "long" : str(data_point.long),
-            "lat" : str(data_point.lat),
-            "created_at" : str(data_point.created_at),
-            "updated_at" : str(data_point.updated_at)
-        }
+        "event_id" : data_point.event_id,
+        "name" : data_point.name,
+        "header_image": data_point.header_image,
+        "address" : data_point.address,
+        "start_date" : str(data_point.start_date),
+        "end_date" : str(data_point.end_date),
+        "header_image": str(data_point.header_image),
+        "long" : str(data_point.long),
+        "lat" : str(data_point.lat),
+        "created_at" : str(data_point.created_at),
+        "updated_at" : str(data_point.updated_at)
+    }
     return adding_context
 
 def jsonifyDeviceData(data):
