@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include # make sure to add include 
+from django.conf.urls import url, include # make sure to add include
 from django.contrib import admin
 # from apps.glimpseAPIApp.resources import UserResource, EventResource, MediaResource, DeviceResource
 
@@ -25,8 +25,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('apps.glimpseAPIApp.urls')),
-    url(r'^', include('apps.userInteractionApp.urls')),
-    # # Api function calls 
+    # # Api function calls
     # url(r'^api/', include(user_resource.urls)),
     # url(r'^api/', include(device_resource.urls)),
     # url(r'^api/', include(media_resource.urls)),

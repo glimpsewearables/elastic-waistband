@@ -10,17 +10,17 @@ resource = boto3.resource('s3') #high-level object-oriented API
 v1_raw_bucket = resource.Bucket('pi-1')
 v1_edited_bucket = resource.Bucket('pi-2')
 v2_raw_bucket = resource.Bucket('users-raw-content')
-v2_edited_bucket = resource.Bucket('users-edited-content') 
+v2_edited_bucket = resource.Bucket('users-edited-content')
 
-# Initializing the database 
-# Only to be used once at the very beginning of launching the website to transfer all of the 
+# Initializing the database
+# Only to be used once at the very beginning of launching the website to transfer all of the
 # existing files that are stored in the s3 database but not yet tracked in the sql database specific
 # to the api that we are using
-# Once the api is able to continually update the sql database every time an image is uploaded 
+# Once the api is able to continually update the sql database every time an image is uploaded
 # this function will never have to be run again
 def fromDatabase(request):
-    allMedia = Media.objects.all() 
-    myFields = ['media_id', 'user_id', 'device_id', 'event_id', 'link', 'date', 'date_time', 'views', 'starred', 'media_type', 'raw_or_edited', 'downloaded', 'ranking', 'created_at', 'updated_at', 'gif_link']  
+    allMedia = Media.objects.all()
+    myFields = ['media_id', 'user_id', 'device_id', 'event_id', 'link', 'date', 'date_time', 'views', 'starred', 'media_type', 'raw_or_edited', 'downloaded', 'ranking', 'created_at', 'updated_at', 'gif_link']
     response = HttpResponse(content_type='text/csv')
     today = datetime.date.today()
     response['Content-Disposition'] = 'attachment; filename="glimpseMetrics.csv"'
@@ -229,18 +229,18 @@ def checkUrls(request):
             old = Media.objects.filter(id = oldId)
             old.link = newLink
             old.save()
-            print newLink + " is the new link"
+            # print newLink + " is the new link"
         else:
-            print "good link"
+            print("good link")
     return redirect("/")
 
 def removeDuplicates(request):
     allMedia =  Media.objects.all()
     for media in allMedia:
         if allMedia.filter(link = media.link):
-            print "duplicate"
+            print( "duplicate")
         else:
-            print "not a duplicate"
+            print( "not a duplicate")
     return redirect("/")
 
 def logout(request):
