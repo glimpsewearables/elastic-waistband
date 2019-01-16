@@ -47,11 +47,6 @@ def fromDatabase(request):
         ]
         writer.writerow(adding_context)
     return response
-    # return redirect('/adminPage')
-
-# def downloadCsv(request):
-
-
 
 def updateDatabase(request):
     request.session["currentEventId"] = 1
@@ -66,6 +61,96 @@ def updateDatabase(request):
             last_name = "project",
             email = "drose@glimpsewearables.com",
             phone = "5094818244",
+            password = "password",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        User.objects.create(
+            user_name = "ElasticWaistband",
+            first_name = "Clayton",
+            last_name = "Novotney",
+            email = "clayton-novotney@hotmail.com",
+            phone = "5094818244",
+            password = "password",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        User.objects.create(
+            user_name = "TonyStark",
+            first_name = "Dylan",
+            last_name = "Rose",
+            email = "drose@gmail.com",
+            phone = "8473630989",
+            password = "password",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        User.objects.create(
+            user_name = "CaptainMagma",
+            first_name = "Keegan",
+            last_name = "Jordan",
+            email = "keeganbbjordan@gmail.com",
+            phone = "2068522550",
+            password = "password",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        User.objects.create(
+            user_name = "StarLord",
+            first_name = "Achyuth",
+            last_name = "Naidu",
+            email = "ac@hotmail.com",
+            phone = "2066175455",
+            password = "password",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        User.objects.create(
+            user_name = "MissAppear",
+            first_name = "Alexis",
+            last_name = "Macaskill",
+            email = "alexis9@uw.edu",
+            phone = "3142625437",
+            password = "password",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        User.objects.create(
+            user_name = "TheQuickster",
+            first_name = "Kelson",
+            last_name = "Flint",
+            email = "Kelson.flint@gmail.com",
+            phone = "2062062062",
+            password = "password",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        User.objects.create(
+            user_name = "MermaidMan",
+            first_name = "Michael",
+            last_name = "Fernandez",
+            email = "michael10@uw.edu",
+            phone = "2064340881",
+            password = "password",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        User.objects.create(
+            user_name = "HarryTheHusky",
+            first_name = "Kyle",
+            last_name = "Kusche",
+            email = "kylerkusche@gmail.com",
+            phone = "3609915429",
+            password = "password",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        User.objects.create(
+            user_name = "PatrickStar",
+            first_name = "Ronak",
+            last_name = "Patel",
+            email = "ronak0624@gmail.com",
+            phone = "6505216699",
             password = "password",
             created_at = datetime.time,
             updated_at = datetime.time
@@ -110,6 +195,16 @@ def updateDatabase(request):
             end_date = "2018-12-01",
             header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/louisTheChildHeaderImage.jpg"
         )
+        Event.objects.create(
+            name = "Alan Walker",
+            event_id = 4,
+            lat = 47.6062,
+            long = 122.3321,
+            address = "ShowBox Sodo",
+            start_date = "2019-02-02",
+            end_date = "2019-02-02",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/alanWalkerLogo.jpg"
+        )
     # This function is the most important for updating the database, checking to see if all of the images
     # that are in the s3 database are accounted for in the sql database
     for data in thisUsersContentRaw:
@@ -126,6 +221,7 @@ def updateDatabase(request):
             dateOf = "not given"
             dateTimeOf = "not given"
             event_id = 1
+            allEvents = Event.objects.all()
             for part in splitLink:
                 if part.startswith("user"):
                     newPart = part.split("user")
@@ -144,6 +240,8 @@ def updateDatabase(request):
                 event_id = 3
             elif dateOf =="2018-08-31" or dateOf == "2018-09-01" or dateOf =="2018-09-02":
                 event_id = 2
+            elif dateOf == "2019-02-02":
+                event_id = 4
         # If else statement that helps decide whether or not this media type is a image or video
             Media.objects.create(
                 user_id = int(userId),

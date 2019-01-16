@@ -62,7 +62,6 @@ def fromS3():
             elif part.endswith(".mp4"):
                 endingPart = part.split(".mp4")
                 dateTimeOf = endingPart[0]
-        
         print " the user id is " + userId + ". With a media_type of " + media_type + ". Date is " + date + ", time of " + dateTimeOf
 
 # fromS3()

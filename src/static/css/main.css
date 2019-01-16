@@ -1,6 +1,19 @@
 body {
     padding-top: 90px;
-    background-color: #FABA08;
+    background-color: #931a00;
+    color: #fff
+}
+a{
+   color: #212529;
+}
+a:hover{
+    color: black;
+}
+tr:hover{
+    background-color: #666;
+}
+thead{
+    background: black;
 }
 .panel-login {
     -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
@@ -22,7 +35,7 @@ body {
     transition: all 0.1s linear;
 }
 .panel-login>.panel-heading a.active{
-    color: #029f5b;
+    color: #212529;
     font-size: 18px;
 }
 .panel-login>.panel-heading hr{
@@ -53,7 +66,7 @@ body {
     border-color: #ccc;
 }
 .btn-login {
-    background-color: #59B2E0;
+    background-color: black;
     outline: none;
     color: #fff;
     font-size: 14px;
@@ -61,13 +74,13 @@ body {
     font-weight: normal;
     padding: 14px 0;
     text-transform: uppercase;
-    border-color: #59B2E6;
+    border-color: #212529;
 }
 .btn-login:hover,
 .btn-login:focus {
     color: #fff;
-    background-color: #53A3CD;
-    border-color: #53A3CD;
+    background-color: #212529;
+    border-color: #212529;
 }
 .forgot-password {
     text-decoration: underline;
@@ -80,20 +93,20 @@ body {
 }
 
 .btn-register {
-    background-color: #FABA08;
+    background-color: #931a00;
     color: #fff;
     font-size: 14px;
     height: auto;
     font-weight: normal;
     padding: 14px 0;
     text-transform: uppercase;
-    border-color: #FABA08;
+    border-color: #212529;
 }
 .btn-register:hover,
 .btn-register:focus {
     color: #fff;
     opacity: .7;
-    border-color: #FABA08;
+    border-color: #212529;
 }
 button{
     border: none;
@@ -105,16 +118,33 @@ button{
     top: 0;
     height: 3%;
     width: 100%;
-    background-color: #FABA08;
 }
-
-.informationArea{
-
+.eventHeaderImage{
+    width: 100%l
 }
-
-#videoArea{
-
+.headerButton{
+    background-color: #212529;
+    color: #ccc;
+    float: right;
+    border-radius: 5px;
 }
-#imageArea{
-    
+.headerButton:hover{
+    opacity: 0.7;
+}
+.scrollToButton{
+    background: #212529;
+    color: #ccc;
+    text-align: center;
+}
+#contentContainer{
+    width: 70%;
+    height: 70%;
+    margin: 15%;
+    top: 0;
+    position: fixed;
+    background-color: yellow;
+    display: none;
+}
+.displayEventVid{
+    width: 100%;
 }

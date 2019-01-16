@@ -105,7 +105,7 @@ def createNewEvent(request, name, address, start_date, end_date, image_header):
             lat = 0.00,
             created_at = now,
             updated_at = now,
-            image_header = image_header
+            header_image = image_header
         )
 
 def createNewMedia(request, url_link, device_id, event_id):

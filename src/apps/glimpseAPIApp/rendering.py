@@ -30,11 +30,13 @@ def userPage(request, device_number):
         this_device_content = Media.objects.filter(user_id = device_number, media_type = "video").order_by('created_at')
         all_events = Event.objects.all().order_by('id').reverse()
         most_recent = this_device_content.order_by('-date', "-date_time")[:9]
+        featured = this_device_content.filter(raw_or_edited = "edited", ranking = 3 or 4 or 5)
         this_users_event_content = {}
         this_users_event_content["all_events"] = all_events
         this_users_event_content["my_events"] = []
         this_users_event_content["device_number"] = device_number
         this_users_event_content["most_recent"] = most_recent
+        this_users_event_content["featured"] = featured
         this_users_event_content["total_vids"] = len(this_device_content)
         this_users_event_content["last_video"] = this_device_content[:1]
         this_users_event_content["userType"] = request.session["userType"]
@@ -44,12 +46,22 @@ def userPage(request, device_number):
                 allTheseVideos = this_device_content.filter(event_id = this_id)
                 # partedVideos = partitionVideos(request, this_id, device_number)
                 # print partedVideos
+                # this_users_event_content["event" + str(this_id)] = {
+                #     "videos" : partedVideos,
+                #     "eventInfo" : event,
+                #     "numVids" : len(allTheseVideos)
+                # }
+                # Working code
                 this_users_event_content["event" + str(this_id)] = {
                     "videos" : this_device_content.filter(event_id = this_id),
                     "eventInfo" : event,
                     "numVids" : len(allTheseVideos)
-                    }
+                }
                 this_users_event_content["my_events"].append(event.event_id)
+            else: 
+                this_users_event_content["event" + str(this_id)] = {
+                    "eventInfo" : event,
+                }
         return render(request, "userPage.html", this_users_event_content)
 
 
@@ -61,11 +73,11 @@ def partitionVideos(request, event_id, device_id):
     for video in allVideos:
         all_videos.append(video.link)
     for i in range(0, (len(all_videos) / 9) + 1):
-        groupedVideos["video" + str(i)] = []
+        groupedVideos["videos" + str(i)] = []
     section = 0
     for i in range(0, len(all_videos)):
-        groupedVideos["video" + str(section)].append(all_videos[i])
-        if i % 9 == 0:
+        groupedVideos["videos" + str(section)].append(all_videos[i])
+        if i % 9 == 0 and i != 0:
             section += 1
     return groupedVideos
 

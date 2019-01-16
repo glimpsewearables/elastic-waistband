@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/userPage.css' %}">
     <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    <LINK REL="SHORTCUT ICON" HREF="{% static 'img/clipcamicon.png' %}" >
 </head>
 <body>
 {% include 'header.html' %}
@@ -23,6 +24,7 @@
     <div class="allEvents">
         <h1 style="text-align: center;"> Available Events</h1>
         <button class="eventButton form-control btn btn-login" onclick="openEvent('mostRecent')">Recent</button>
+        <button class="eventButton form-control btn btn-login" onclick="openEvent('featuredContent')">Featured</button>
         <hr>
         {% for event in all_events %}
         {% csrf_token %}
@@ -44,6 +46,14 @@
                 </video>
                 {% endfor %}
             </div>
+            <div class="singleEventTab" id="featuredContent" style="display: none">
+                <h2 style="text-align:center">Your Featured Content</h2>
+                {% for video in featured %}
+                <video class="singleVideo" controls>
+                    <source src="{{video.link}}" type="video/mp4">
+                </video>
+                {% endfor %}
+            </div>
             <div class="singleEventTab" id="event1" style="display: none">
                 <h2 style="text-align:center">{{event1.eventInfo.name}}</h2>
                 {% for video in event1.videos %}
@@ -52,7 +62,7 @@
                 </video>
                 {% endfor %}    
             </div>
-            <div class="singleEventTab" id="event2">
+            <div class="singleEventTab" id="event2" style="display: none">
                 <h2 style="text-align:center">{{event2.eventInfo.name}}</h2>
                 {% for video in event2.videos %}
                 <h1>Hello</h1>
@@ -69,15 +79,23 @@
                 </video>
                 {% endfor %}    
             </div>
+            <div class="singleEventTab" id="event4" style="display: none">
+                <h2 style="text-align:center">{{event4.eventInfo.name}}</h2>
+                {% for video in event4.videos %}
+                <video class="singleVideo" controls>
+                    <source src="{{video.link}}" type="video/mp4">
+                </video>
+                {% endfor %}    
+            </div>
         </div>
     </div>
 </div>
 </body>
 <script>
-    var allEventTabs = ["mostRecent", "event1", "event2", "event3"]
+    var allEventTabs = ['featuredContent', "mostRecent", "event1", "event2", "event3", "event4"]
     function openEvent(event_id){
         console.log(event_id);
-        if(event_id == "mostRecent"){
+        if(event_id == "mostRecent" || event_id == "featuredContent"){
             var eventOpeningName = event_id.toString();
         } else {
             var eventOpeningName = "event" + event_id.toString();

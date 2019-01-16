@@ -15,17 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include # make sure to add include 
 from django.contrib import admin
-# from apps.glimpseAPIApp.resources import UserResource, EventResource, MediaResource, DeviceResource
-
-# user_resource = UserResource()
-# event_resource = EventResource()
-# media_resource = MediaResource()
-# device_resource = DeviceResource()
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', include('apps.glimpseAPIApp.urls')),
-    url(r'^', include('apps.userInteractionApp.urls')),
+    url(r'^', include('apps.glimpseAPIApp.urls'))
     # # Api function calls 
     # url(r'^api/', include(user_resource.urls)),
     # url(r'^api/', include(device_resource.urls)),

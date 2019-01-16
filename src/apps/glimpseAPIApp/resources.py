@@ -1,6 +1,8 @@
 from tastypie.resources import ModelResource
 from .models import User, Event, Device, Media, MediaComment, MediaLike
+import requests
 from tastypie.authorization import Authorization
+from .currentEvent import getCurrentEventId
 
 # These files are used for the querying of data on the server side of the applications
 class UserResource(ModelResource):
@@ -16,6 +18,7 @@ class EventResource(ModelResource):
         queryset = Event.objects.all()
         resource_name = "event"
         authorization = Authorization()
+        # Event.event_id = getCurrentEventId(request)
 
 class DeviceResource(ModelResource):
     http_method_names = ['get', 'post', 'head', 'put']
