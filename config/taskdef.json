@@ -4,7 +4,7 @@
         {
             "image": "471137844663.dkr.ecr.us-west-2.amazonaws.com/docker-images:service_latest",
             "name": "elastic-waistband",
-            "cpu": 10,
+            "cpu": 2,
             "memory": 256,
             "essential": true,
             "portMappings": [
