@@ -14,7 +14,7 @@ v2_edited_bucket = resource.Bucket('users-edited-content')
 
 # This is the page with all of the functions for viewing and rendering pages 
 def index(request): # this is the standard endpoint that will not return anything
-    return render(request, "portal.html")
+    return render(request, "portal.html", status=200)
 
 def login(request):
     if request.method=="POST":
