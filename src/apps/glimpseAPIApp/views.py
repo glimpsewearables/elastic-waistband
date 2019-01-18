@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, redirect
 from datetime import datetime
 import bcrypt, sys, os, base64, datetime, hashlib, hmac, pytz
-import boto3, csv, json, wget, inspect, urllib, tinys3
+import boto3, csv, json, inspect, urllib
 import requests
 from django.db import models
 from .models import User, Device, Event, Media, MediaComment
@@ -327,18 +327,18 @@ def checkUrls(request):
             old = Media.objects.filter(id = oldId)
             old.link = newLink
             old.save()
-            print newLink + " is the new link"
+            print(newLink + " is the new link")
         else:
-            print "good link"
+            print("good link")
     return redirect("/")
 
 def removeDuplicates(request):
     allMedia =  Media.objects.all()
     for media in allMedia:
         if allMedia.filter(link = media.link):
-            print "duplicate"
+            print("duplicate")
         else:
-            print "not a duplicate"
+            print("not a duplicate")
     return redirect("/")
 
 def logout(request):
