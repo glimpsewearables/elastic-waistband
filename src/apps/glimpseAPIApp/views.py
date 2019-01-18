@@ -220,7 +220,7 @@ def jsonifyUserData(data):
 # all the endpoint functions for retrieving media information
 def index(request): # this is the standard endpoint that will not return anything
     response = "here is the standard page that will be seen when the user enters the blank url"
-    return HttpResponse(response, status=500)
+    return HttpResponse(response, status=200)
 
 def mediaHome(request):
     response = "here is the home page from the media application portion of the api"
