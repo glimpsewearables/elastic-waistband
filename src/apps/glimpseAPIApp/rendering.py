@@ -24,45 +24,42 @@ def login(request):
     return redirect("/userPage/" + device_number)
 
 def userPage(request, device_number):
-    if request.session["userType"] != "user" and request.session["userType"] != "admin" :
-        return redirect("/")
-    else:
-        this_device_content = Media.objects.filter(user_id = device_number, media_type = "video").order_by('created_at')
-        all_events = Event.objects.all().order_by('id').reverse()
-        most_recent = this_device_content.order_by('-date', "-date_time")[:9]
-        featured = this_device_content.filter(raw_or_edited = "edited", ranking = 3 or 4 or 5)
-        this_users_event_content = {}
-        this_users_event_content["all_events"] = all_events
-        this_users_event_content["my_events"] = []
-        this_users_event_content["device_number"] = device_number
-        this_users_event_content["most_recent"] = most_recent
-        this_users_event_content["featured"] = featured
-        this_users_event_content["total_vids"] = len(this_device_content)
-        this_users_event_content["last_video"] = this_device_content[:1]
-        this_users_event_content["userType"] = request.session["userType"]
-        for event in all_events:
-            this_id = event.event_id
-            if this_device_content.filter(event_id = event.event_id):
-                allTheseVideos = this_device_content.filter(event_id = this_id)
-                # partedVideos = partitionVideos(request, this_id, device_number)
-                # print partedVideos
-                # this_users_event_content["event" + str(this_id)] = {
-                #     "videos" : partedVideos,
-                #     "eventInfo" : event,
-                #     "numVids" : len(allTheseVideos)
-                # }
-                # Working code
-                this_users_event_content["event" + str(this_id)] = {
-                    "videos" : this_device_content.filter(event_id = this_id),
-                    "eventInfo" : event,
-                    "numVids" : len(allTheseVideos)
-                }
-                this_users_event_content["my_events"].append(event.event_id)
-            else: 
-                this_users_event_content["event" + str(this_id)] = {
-                    "eventInfo" : event,
-                }
-        return render(request, "userPage.html", this_users_event_content)
+    this_device_content = Media.objects.filter(user_id = device_number, media_type = "video").order_by('created_at')
+    all_events = Event.objects.all().order_by('id').reverse()
+    most_recent = this_device_content.order_by('-date', "-date_time")[:9]
+    featured = this_device_content.filter(raw_or_edited = "edited", ranking = 3 or 4 or 5)
+    this_users_event_content = {}
+    this_users_event_content["all_events"] = all_events
+    this_users_event_content["my_events"] = []
+    this_users_event_content["device_number"] = device_number
+    this_users_event_content["most_recent"] = most_recent
+    this_users_event_content["featured"] = featured
+    this_users_event_content["total_vids"] = len(this_device_content)
+    this_users_event_content["last_video"] = this_device_content[:1]
+    this_users_event_content["userType"] = request.session["userType"]
+    for event in all_events:
+        this_id = event.event_id
+        if this_device_content.filter(event_id = event.event_id):
+            allTheseVideos = this_device_content.filter(event_id = this_id)
+            # partedVideos = partitionVideos(request, this_id, device_number)
+            # print partedVideos
+            # this_users_event_content["event" + str(this_id)] = {
+            #     "videos" : partedVideos,
+            #     "eventInfo" : event,
+            #     "numVids" : len(allTheseVideos)
+            # }
+            # Working code
+            this_users_event_content["event" + str(this_id)] = {
+                "videos" : this_device_content.filter(event_id = this_id),
+                "eventInfo" : event,
+                "numVids" : len(allTheseVideos)
+            }
+            this_users_event_content["my_events"].append(event.event_id)
+        else: 
+            this_users_event_content["event" + str(this_id)] = {
+                "eventInfo" : event,
+            }
+    return render(request, "userPage.html", this_users_event_content)
 
 
 # Break up all of the videos into segments of nine in order to deal with rendering issues for massive ammounts of videos in html
@@ -98,29 +95,29 @@ def adminLogin(request):
             return redirect('/adminPage')
 
 def adminPage(request):
-    if request.session["userType"] != "admin":
-        return redirect("/")
-    else:
-        all_images = Media.objects.filter(media_type = "image")
-        all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
-        if 'currentEventId' not in request.session:
-            request.session["currentEventId"] = 1
-        currentEvent = Event.objects.get(id = request.session["currentEventId"])
-        last_video = all_videos.first()
-        context = {
-            "userType" : request.session["userType"],
-            "image_number" : len(all_images), 
-            "all_videos" : all_videos,
-            "video_number" : len(all_videos),
-            "all_users" : User.objects.all(),
-            "all_events" : Event.objects.all(),
-            "event_number" :len(Event.objects.all()),
-            "currentEvent" : currentEvent,
-            "all_devices" : Device.objects.all(),
-            "device_number" : len(Device.objects.all()),
-            "last_video" : last_video
-        }
-        return render(request, "adminPage.html", context)
+    # if request.session["userType"] != "admin":
+    #     return redirect("/")
+    # else:
+    all_images = Media.objects.filter(media_type = "image")
+    all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
+    if 'currentEventId' not in request.session:
+        request.session["currentEventId"] = 1
+    currentEvent = Event.objects.get(id = request.session["currentEventId"])
+    last_video = all_videos.first()
+    context = {
+        "userType" : request.session["userType"],
+        "image_number" : len(all_images), 
+        "all_videos" : all_videos,
+        "video_number" : len(all_videos),
+        "all_users" : User.objects.all(),
+        "all_events" : Event.objects.all(),
+        "event_number" :len(Event.objects.all()),
+        "currentEvent" : currentEvent,
+        "all_devices" : Device.objects.all(),
+        "device_number" : len(Device.objects.all()),
+        "last_video" : last_video
+    }
+    return render(request, "adminPage.html", context)
 
 def viewEventMedia(request, event_id):
     if request.session["userType"] != "admin":

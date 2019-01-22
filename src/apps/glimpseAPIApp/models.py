@@ -79,17 +79,5 @@ class MediaLike(models.Model):
     comment = models.TextField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
-class MediaComment(models.Model):
-    user_id = models.IntegerField(default=False)
-    media_id = models.IntegerField(default=False)
-    comment = models.TextField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-class MediaLike(models.Model):
-    user_id = models.IntegerField(default=False)
-    media_id = models.IntegerField(default=False)
-    # comment = models.TextField(default=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-
 def __str__(self):
         return '%s %s' % (self.title, self.body)
