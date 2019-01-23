@@ -1,4 +1,11 @@
 .singleVideo{
     width: 30%;
-    margin: 1.5%;
+    margin: 1.25%;
 }
+
+@media only screen and (max-width: 600px) {
+    .singleVideo{
+        width: 49%;
+        margin: 0;
+    }
+  }
