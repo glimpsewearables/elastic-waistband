@@ -12,7 +12,7 @@ like_resource = LikeResource()
 urlpatterns = [
     url(r'^$', rendering.index),
     url(r'^media$', views.mediaHome),
-    url(r'^updateDatabase$', views.updateDatabase),
+    url(r'^updateDatabase$', adding.updateDatabase),
     url(r'^checkUrls$', views.checkUrls),
     url(r'^removeDuplicates$', views.removeDuplicates),
     url(r'^logout$', views.logout),
@@ -54,4 +54,7 @@ urlpatterns = [
     url(r'^deleteDevice/(?P<device_id>\d+)$', adding.deleteDevice),
     # CSV work for metrics
     url(r'^exportCsv$', views.fromDatabase),
+    # S3 Calls
+    url(r'^testS3Download$', adding.testS3Download),
+    url(r'^testS3Upload$', adding.testS3Upload),     
 ]  

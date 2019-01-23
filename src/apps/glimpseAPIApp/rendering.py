@@ -123,6 +123,7 @@ def viewEventMedia(request, event_id):
     if request.session["userType"] != "admin":
         return redirect("/")
     else:
+        desktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop') 
         context = {}
         this_event = Event.objects.get(id = event_id)
         this_event_images = Media.objects.filter(event_id = event_id, media_type = "image").order_by('-date', "-date_time")
@@ -131,4 +132,5 @@ def viewEventMedia(request, event_id):
         context["userType"] = request.session["userType"]
         context["this_event_images"] = this_event_images
         context["this_event_videos"] = this_event_videos
+        context["desktop"] =  desktop
         return render(request, "viewMedia.html", context)

@@ -1,4 +1,5 @@
 import boto3, csv, json
+import botocore
 import requests, datetime
 from django.db import models
 from .models import User, Device, Event, Media, MediaComment
@@ -9,6 +10,7 @@ v1_raw_bucket = resource.Bucket('pi-1')
 v1_edited_bucket = resource.Bucket('pi-2')
 v2_raw_bucket = resource.Bucket('users-raw-content')
 v2_edited_bucket = resource.Bucket('users-edited-content') 
+
 
 def fromDatabase():
     myFile = open('export.csv', 'w') 
@@ -34,10 +36,7 @@ def fromDatabase():
                 "date_time": data_point.date_time
             }
             writer.writerow(adding_context)
-
-fromDatabase()
-    
-
+# fromDatabase()
 
 def fromS3():
     raw_content = v2_raw_bucket.objects.filter()
@@ -63,7 +62,6 @@ def fromS3():
                 endingPart = part.split(".mp4")
                 dateTimeOf = endingPart[0]
         print " the user id is " + userId + ". With a media_type of " + media_type + ". Date is " + date + ", time of " + dateTimeOf
-
 # fromS3()
 
 # def checkDateTime():
