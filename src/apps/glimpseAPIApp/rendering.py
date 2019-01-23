@@ -36,7 +36,6 @@ def userPage(request, device_number):
     this_users_event_content["featured"] = featured
     this_users_event_content["total_vids"] = len(this_device_content)
     this_users_event_content["last_video"] = this_device_content[:1]
-    this_users_event_content["userType"] = request.session["userType"]
     for event in all_events:
         this_id = event.event_id
         if this_device_content.filter(event_id = event.event_id):
@@ -105,7 +104,6 @@ def adminPage(request):
     currentEvent = Event.objects.get(id = request.session["currentEventId"])
     last_video = all_videos.first()
     context = {
-        "userType" : request.session["userType"],
         "image_number" : len(all_images), 
         "all_videos" : all_videos,
         "video_number" : len(all_videos),
@@ -120,17 +118,16 @@ def adminPage(request):
     return render(request, "adminPage.html", context)
 
 def viewEventMedia(request, event_id):
-    if request.session["userType"] != "admin":
-        return redirect("/")
-    else:
-        desktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop') 
-        context = {}
-        this_event = Event.objects.get(id = event_id)
-        this_event_images = Media.objects.filter(event_id = event_id, media_type = "image").order_by('-date', "-date_time")
-        this_event_videos = Media.objects.filter(event_id = event_id, media_type = "video").order_by('-date', "-date_time")
-        context["this_event"] = this_event
-        context["userType"] = request.session["userType"]
-        context["this_event_images"] = this_event_images
-        context["this_event_videos"] = this_event_videos
-        context["desktop"] =  desktop
-        return render(request, "viewMedia.html", context)
+    # if request.session["userType"] != "admin":
+    #     return redirect("/")
+    # else:
+    desktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop') 
+    context = {}
+    this_event = Event.objects.get(id = event_id)
+    this_event_images = Media.objects.filter(event_id = event_id, media_type = "image").order_by('-date', "-date_time")
+    this_event_videos = Media.objects.filter(event_id = event_id, media_type = "video").order_by('-date', "-date_time")
+    context["this_event"] = this_event
+    context["this_event_images"] = this_event_images
+    context["this_event_videos"] = this_event_videos
+    context["desktop"] =  desktop
+    return render(request, "viewMedia.html", context)
