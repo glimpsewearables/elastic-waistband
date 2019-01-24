@@ -1,99 +1,19 @@
 {
-  "ipcMode": null,
-  "executionRoleArn": null,
-  "containerDefinitions": [
-    {
-      "dnsSearchDomains": [],
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "glimpse-stack-Service-1DF414JSSYL7D",
-          "awslogs-region": "us-west-2"
-        }
-      },
-      "entryPoint": [],
-      "portMappings": [
+    "family": "elastic-waistband",
+    "containerDefinitions": [
         {
-          "hostPort": 0,
-          "protocol": "tcp",
-          "containerPort": 8000
+            "image": "471137844663.dkr.ecr.us-west-2.amazonaws.com/docker-images:service_latest",
+            "name": "glimpse-service",
+            "cpu": 0,
+            "memory": 128,
+            "essential": true,
+            "portMappings": [
+                {
+                    "hostPort": 0,
+                    "protocol": "tcp",
+                    "containerPort": 8000
+                }
+            ]
         }
-      ],
-      "command": [],
-      "linuxParameters": null,
-      "cpu": 0,
-      "environment": [],
-      "ulimits": [],
-      "dnsServers": [],
-      "mountPoints": [],
-      "workingDirectory": null,
-      "secrets": null,
-      "dockerSecurityOptions": [],
-      "memory": 128,
-      "memoryReservation": null,
-      "volumesFrom": [],
-      "image": "471137844663.dkr.ecr.us-west-2.amazonaws.com/docker-images:service_latest",
-      "disableNetworking": null,
-      "interactive": null,
-      "healthCheck": null,
-      "essential": true,
-      "links": [],
-      "hostname": null,
-      "extraHosts": [],
-      "pseudoTerminal": null,
-      "user": null,
-      "readonlyRootFilesystem": null,
-      "dockerLabels": {},
-      "systemControls": null,
-      "privileged": null,
-      "name": "glimpse-service"
-    }
-  ],
-  "placementConstraints": [],
-  "memory": null,
-  "taskRoleArn": null,
-  "compatibilities": [
-    "EC2"
-  ],
-  "taskDefinitionArn": "arn:aws:ecs:us-west-2:471137844663:task-definition/glimpse-service:7",
-  "family": "glimpse-service",
-  "requiresAttributes": [
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.ecr-auth"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
-    }
-  ],
-  "pidMode": null,
-  "requiresCompatibilities": [],
-  "networkMode": null,
-  "cpu": null,
-  "revision": 7,
-  "status": "ACTIVE",
-  "volumes": []
+    ]
 }
