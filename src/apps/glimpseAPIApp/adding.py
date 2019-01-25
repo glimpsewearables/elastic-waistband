@@ -5,7 +5,7 @@ import urllib
 import botocore
 import requests
 from django.db import models
-from .models import User, Artist, ArtistEvent, Device, Event, Media, MediaComment
+from .models import User, UserEvent, Artist, ArtistEvent, Device, Event, Media, MediaComment
 
 client = boto3.client('s3') #low-level functional API
 resource = boto3.resource('s3') #high-level object-oriented API
@@ -357,6 +357,11 @@ def updateDatabase(request):
             elif dateOf == "2019-02-09":
                 event_id = 6
         # If else statement that helps decide whether or not this media type is a image or video
+            if (not UserEvent.objects.filter(user_id = userId, event_id = event_id)) and event_id != 1 and event_id != 0:
+                UserEvent.objects.create(
+                    user_id = userId,
+                    event_id = event_id
+                )
             Media.objects.create(
                 user_id = int(userId),
                 device_id = int(userId),

@@ -170,10 +170,10 @@ def getSpecificUser(request, user_id): # grabs all users from the mySQL database
     context = {}
     if User.objects.filter(id = user_id):
         this_user = User.objects.filter(id=user_id)
-        featured_content = Media.objects.filter(user_id = user_id)
+        all_media = Media.objects.filter(user_id = user_id).order_by('-date', "-date_time")
         thisUsersEvents = UserEvent.objects.filter(user_id = user_id)
-        json_media = jsonifyMediaData(featured_content)
-        json_events = jsonifyUserEventData(thisUsersEvents)
+        json_media = jsonifyMediaData(all_media)
+        json_events = jsonifyUserEventData(thisUsersEvents, user_id)
         context["user"] = jsonifyUserData(this_user)
         context["user_events"] = json_events
         context["media"] = json_media
@@ -368,13 +368,13 @@ def jsonifyDeviceData(data):
     context.update({"devices" : all_events})
     return context
 
-def jsonifyUserEventData(data):
+def jsonifyUserEventData(data, user_id):
     context = {}
     all_events = []
     all_events_media = []
     for data_point in data:
         all_events.append(jsonifyEventData(Event.objects.filter(event_id = data_point.event_id)))
-        all_events_media.append(jsonifyMediaData(Media.objects.filter(event_id = data_point.event_id)))
+        all_events_media.append(jsonifyMediaData(Media.objects.filter(event_id = data_point.event_id, user_id = user_id, media_type = "video").order_by('-date', "-date_time")))
     context["events"] = all_events
     context["events_media"] = all_events_media
     return context
