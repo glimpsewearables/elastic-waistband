@@ -3,7 +3,7 @@ import bcrypt, sys, os, base64, datetime, hashlib, hmac, pytz
 import boto3, csv, json
 import requests
 from django.db import models
-from .models import User, Device, Event, Media, MediaComment
+from .models import User, UserEvent, Artist, ArtistEvent, Device, Event, Media, MediaComment
 client = boto3.client('s3') #low-level functional API
 resource = boto3.resource('s3') #high-level object-oriented API
 v1_raw_bucket = resource.Bucket('pi-1')
@@ -23,12 +23,17 @@ def login(request):
         request.session["userType"] = "user"
     return redirect("/userPage/" + device_number)
 
+def browsing(request):
+    context = {}
+    return render(request, "browsing.html", context)
+
 def userPage(request, device_number):
     this_device_content = Media.objects.filter(user_id = device_number, media_type = "video").order_by('created_at')
     all_events = Event.objects.all().order_by('id').reverse()
     most_recent = this_device_content.order_by('-date', "-date_time")[:9]
     featured = this_device_content.filter(raw_or_edited = "edited", ranking = 3 or 4 or 5)
     this_users_event_content = {}
+    this_users_event_content["all_artists"] = Artist.objects.all()
     this_users_event_content["all_events"] = all_events
     this_users_event_content["my_events"] = []
     this_users_event_content["device_number"] = device_number
@@ -131,3 +136,20 @@ def viewEventMedia(request, event_id):
     context["this_event_videos"] = this_event_videos
     context["desktop"] =  desktop
     return render(request, "viewMedia.html", context)
+
+def artistPage(request, artist_id):
+    thisArtist = Artist.objects.get(id = artist_id)
+    thisArtistEvents = ArtistEvent.objects.filter(artist_id = artist_id)
+    allEventsWithMedia = []
+    for artistEvent in thisArtistEvents:
+        thisEventMedia = Media.objects.filter(event_id = artistEvent.event_id)
+        thisEvent = {
+            "event": Event.objects.get(event_id = artistEvent.event_id),
+            "eventMedia": thisEventMedia
+        }
+        allEventsWithMedia.append(thisEvent)
+    context = {}
+    context["artist"] = thisArtist
+    context["thisArtistsEvents"] = thisArtistEvents
+    context["eventsWithMedia"] = allEventsWithMedia
+    return render(request, "artistPage.html", context)

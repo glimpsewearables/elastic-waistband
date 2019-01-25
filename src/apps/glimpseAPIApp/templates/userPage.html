@@ -178,7 +178,7 @@ button{
 }
 </style>
 <body>
-{% include 'header.html' %}
+{% include 'header.html'  %}
 <div class="mainContainer">
     <h1 style="text-align: center;">User {{device_number}}</h1>
     <div id="yourInformation">
@@ -228,7 +228,6 @@ button{
             <div class="singleEventTab" id="event2" style="display: none">
                 <h2 style="text-align:center">{{event2.eventInfo.name}}</h2>
                 {% for video in event2.videos %}
-                <h1>Hello</h1>
                 <video class="singleVideo" controls>
                     <source src="{{video.link}}" type="video/mp4">
                 </video>

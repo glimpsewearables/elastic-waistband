@@ -164,10 +164,22 @@ button{
 .displayEventVid{
     width: 100%;
 }
+#glimpseImage{
+    position: fixed;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.centered{
+    width: 100%;
+}
 </style>
 <body>
     <div class="container">
-        <div class="row">
+        <a href="https://www.glimpsewearables.com/" class="centered">
+            <img src="https://s3-us-west-2.amazonaws.com/users-edited-content/profile_pics/user1_image_profile_GlimpseCam.jpg" id="glimpseImage">
+        </a>
+        <div class="row" id="loginContainer">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-login">
                     <div class="panel-heading">
@@ -260,11 +272,21 @@ button{
                         </div>
                     </div>
                 </div>
+                <div>
+                    <button class="form-control btn btn-login" id="browsingButton" onclick="redirectToHomePage()">Just Browsing?</button>
+                </div>
             </div>
         </div>
     </div>
 </body>
 <script>
+function setIcon(){
+    var someDiv = document.getElementById('loginContainer');
+    var distanceToTop = someDiv.getBoundingClientRect().top;
+    var icon = document.getElementById("glimpseImage")
+    icon.setAttribute("height", distanceToTop);
+}
+setIcon();
 $(function() {
     $('#login-form-link').click(function(e) {
         $("#login-form").delay(100).fadeIn(100);
@@ -294,5 +316,8 @@ $(function() {
     e.preventDefault();
     });
 });
+function redirectToHomePage(){
+    window.location.href = "https://www.glimpsewearables.com";
+}
 </script>
 </html>

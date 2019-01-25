@@ -5,7 +5,7 @@ import urllib
 import botocore
 import requests
 from django.db import models
-from .models import User, Device, Event, Media, MediaComment
+from .models import User, Artist, ArtistEvent, Device, Event, Media, MediaComment
 
 client = boto3.client('s3') #low-level functional API
 resource = boto3.resource('s3') #high-level object-oriented API
@@ -30,7 +30,13 @@ def testS3Download(request):
 def testS3Upload(request):
     fileName = ""
 
+# Initializing the database 
 # Update database goes into s3 and checks to see if any links are in the s3 bucket but not in the sqlite database
+# Only to be used once at the very beginning of launching the website to transfer all of the 
+# existing files that are stored in the s3 database but not yet tracked in the sql database specific
+# to the api that we are using
+# Once the api is able to continually update the sql database every time an image is uploaded 
+# this function will never have to be run again
 def updateDatabase(request):
     request.session["currentEventId"] = 1
     thisUsersContentRaw = v2_raw_bucket.objects.filter()
@@ -45,6 +51,7 @@ def updateDatabase(request):
             email = "drose@glimpsewearables.com",
             phone = "5094818244",
             password = "password",
+            profile_pic_link = "",
             created_at = datetime.time,
             updated_at = datetime.time
         )
@@ -55,6 +62,7 @@ def updateDatabase(request):
             email = "clayton-novotney@hotmail.com",
             phone = "5094818244",
             password = "password",
+            profile_pic_link = "https://s3-us-west-2.amazonaws.com/users-edited-content/profile_pics/user2_image_profile_ClaytonNovotney.jpg",
             created_at = datetime.time,
             updated_at = datetime.time
         )
@@ -65,6 +73,7 @@ def updateDatabase(request):
             email = "drose@gmail.com",
             phone = "8473630989",
             password = "password",
+            profile_pic_link = "",
             created_at = datetime.time,
             updated_at = datetime.time
         )
@@ -75,6 +84,7 @@ def updateDatabase(request):
             email = "keeganbbjordan@gmail.com",
             phone = "2068522550",
             password = "password",
+            profile_pic_link = "",
             created_at = datetime.time,
             updated_at = datetime.time
         )
@@ -85,6 +95,7 @@ def updateDatabase(request):
             email = "ac@hotmail.com",
             phone = "2066175455",
             password = "password",
+            profile_pic_link = "",
             created_at = datetime.time,
             updated_at = datetime.time
         )
@@ -95,6 +106,7 @@ def updateDatabase(request):
             email = "alexis9@uw.edu",
             phone = "3142625437",
             password = "password",
+            profile_pic_link = "",
             created_at = datetime.time,
             updated_at = datetime.time
         )
@@ -105,6 +117,7 @@ def updateDatabase(request):
             email = "Kelson.flint@gmail.com",
             phone = "2062062062",
             password = "password",
+            profile_pic_link = "",
             created_at = datetime.time,
             updated_at = datetime.time
         )
@@ -115,6 +128,7 @@ def updateDatabase(request):
             email = "michael10@uw.edu",
             phone = "2064340881",
             password = "password",
+            profile_pic_link = "",
             created_at = datetime.time,
             updated_at = datetime.time
         )
@@ -125,6 +139,7 @@ def updateDatabase(request):
             email = "kylerkusche@gmail.com",
             phone = "3609915429",
             password = "password",
+            profile_pic_link = "",
             created_at = datetime.time,
             updated_at = datetime.time
         )
@@ -135,8 +150,92 @@ def updateDatabase(request):
             email = "ronak0624@gmail.com",
             phone = "6505216699",
             password = "password",
+            profile_pic_link = "",
             created_at = datetime.time,
             updated_at = datetime.time
+        )
+    if (Artist.objects.filter(id = 1)):
+        print("Initial Artist exists")
+    else:
+        Artist.objects.create(
+            user_name = "GlimpseTesting",
+            first_name = "Glimpse",
+            last_name = "Wearables",
+            email = "drose@glimpsewearables.com",
+            phone = "5095095095",
+            password = "password",
+            profile_pic_link = "https://s3-us-west-2.amazonaws.com/users-edited-content/profile_pics/user1_image_profile_GlimpseCam.jpg",
+            header_pic_link = "",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        ArtistEvent.objects.create(
+            artist_id = 1,
+            event_id = 1
+        )
+        Artist.objects.create(
+            user_name = "LouisTheChild",
+            first_name = "Louis",
+            last_name = "TheChild",
+            email = "louisTheChild@gmail.com",
+            phone = "5095095095",
+            password = "password",
+            profile_pic_link = "",
+            header_pic_link = "",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        ArtistEvent.objects.create(
+            artist_id = 2,
+            event_id = 3
+        )
+        Artist.objects.create(
+            user_name = "AlanWalker",
+            first_name = "Alan",
+            last_name = "Walker",
+            email = "alanWalker@gmail.com",
+            phone = "5095095095",
+            password = "password",
+            profile_pic_link = "",
+            header_pic_link = "",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        ArtistEvent.objects.create(
+            artist_id = 3,
+            event_id = 4
+        )
+        Artist.objects.create(
+            user_name = "TwoFriends",
+            first_name = "Two",
+            last_name = "Friends",
+            email = "TwoFriends@gmail.com",
+            phone = "5095095095",
+            password = "password",
+            profile_pic_link = "",
+            header_pic_link = "",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        ArtistEvent.objects.create(
+            artist_id = 4,
+            event_id = 5
+        )
+        Artist.objects.create(
+            user_name = "HippieSabotage",
+            first_name = "Hippie",
+            last_name = "Sabotage",
+            email = "HippieSabotage@gmail.com",
+            phone = "5095095095",
+            password = "password",
+            profile_pic_link = "",
+            header_pic_link = "",
+            created_at = datetime.time,
+            updated_at = datetime.time
+        )
+        ArtistEvent.objects.create(
+            artist_id = 5,
+            event_id = 6
         )
     if(Device.objects.filter(id = 2)):
         print("Inital Device exists")
@@ -156,7 +255,10 @@ def updateDatabase(request):
             lat = 47.6062,
             long = 122.3321,
             address = "4637 21st Ave NE",
-            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/seattle.jpg"
+            start_date = "2018-06-20",
+            end_date = "2018-07-20",
+            start_time = "12:00:00",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event1_header_Seattle.jpg"
         )
         Event.objects.create(
             name = "Bumbershoot Festival",
@@ -166,27 +268,52 @@ def updateDatabase(request):
             address = "Seattle City Center",
             start_date = "2018-08-31",
             end_date = "2018-09-03",
-            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/bumbershoot-festival.jpg"
+            start_time = "12:00:00",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event2_header_BumbershootFestival.jpg"
         )
         Event.objects.create(
             name = "Louis The Child",
             event_id = 3,
-            lat = 47.6062,
-            long = 122.3321,
-            address = "Seattle City Center",
+            lat = 47.594971,
+            long = -122.331520,
+            address = "WaMu Theatre, 800 Occidental Ave S, Seattle, WA 98134",
             start_date = "2018-12-01",
             end_date = "2018-12-01",
-            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/louisTheChildHeaderImage.jpg"
+            start_time = "19:00:00",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event3_header_LouisTheChild.jpg"
         )
         Event.objects.create(
             name = "Alan Walker",
             event_id = 4,
-            lat = 47.6062,
-            long = 122.3321,
-            address = "ShowBox Sodo",
+            lat = 47.587894,
+            long = -122.333717,
+            address = "ShowBox Sodo, 1700 1st Ave S, Seattle, WA 98134",
             start_date = "2019-02-02",
             end_date = "2019-02-02",
-            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/alanWalkerLogo.jpg"
+            start_time = "19:00:00",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event4_header_AlanWalker.jpg"
+        )
+        Event.objects.create(
+            name = "Two Friends",
+            event_id = 5,
+            lat = 47.613959,
+            long = -122.319574,
+            address = "Neumos, 925 East Pike Street, Seattle, WA 98122",
+            start_date = "2019-02-07",
+            end_date = "2019-02-07",
+            start_time = "20:00:00",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event5_header_TwoFriends.jpg"
+        )
+        Event.objects.create(
+            name = "Hippie Sabotage",
+            event_id = 6,
+            lat = 47.6133,
+            long = -122.3313,
+            address = "Paramount Theatre, 911 Pine St, Seattle, WA 98101",
+            start_date = "2019-02-09",
+            end_date = "2019-02-09",
+            start_time = "20:00:00",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event6_header_HippieSabotage.jpg"
         )
     # This function is the most important for updating the database, checking to see if all of the images
     # that are in the s3 database are accounted for in the sql database
@@ -225,12 +352,17 @@ def updateDatabase(request):
                 event_id = 2
             elif dateOf == "2019-02-02":
                 event_id = 4
+            elif dateOf == "2019-02-07":
+                event_id = 5
+            elif dateOf == "2019-02-09":
+                event_id = 6
         # If else statement that helps decide whether or not this media type is a image or video
             Media.objects.create(
                 user_id = int(userId),
                 device_id = int(userId),
                 event_id = event_id,
                 media_type = media_type,
+                featured = 0,
                 link = "https://s3-us-west-2.amazonaws.com/users-raw-content/" + data.key,
                 raw_or_edited = "raw",
                 downloaded = 0,
@@ -252,6 +384,10 @@ def updateDatabase(request):
             print(data.key + "data.key already exists")
         elif not data.key.endswith(".jpg") and not data.key.endswith(".mp4"):
             print("data key is not a proper link")
+        elif "headerImages" in data.key:
+            print("This is a header Image")
+        elif "profile_pics" in data.key: 
+            print("This is a Profile Picture")
         else:
             splitLink = data.key.split("_")
             if "user" in splitLink:
@@ -260,12 +396,15 @@ def updateDatabase(request):
                 dateOf = ""
                 dateTimeOf = ""
                 event_id = 1
+                raw_or_edited = "edited"
                 for part in splitLink:
                     if part.startswith("user"):
                         newPart = part.split("user")
                         userId = newPart[1]
                     elif part == "image" or part == "video":
                         media_type = part
+                    elif part == "profile" or part == "header":
+                        raw_or_edited = part
                     elif part.startswith("201"):
                         dateOf = part
                     elif part.endswith(".jpg") or part.endswith(".jpeg"):
@@ -275,17 +414,24 @@ def updateDatabase(request):
                         endingPart = part.split(".mp4")
                         dateTimeOf = endingPart[0]
                 # If else statement that helps decide whether or not this media type is a image or video
-                if dateOf == "2018-12-01":
-                    event_id = 3
-                elif dateOf =="2018-08-31" or dateOf == "2018-09-01" or dateOf =="2018-09-02":
+                if dateOf =="2018-08-31" or dateOf == "2018-09-01" or dateOf =="2018-09-02":
                     event_id = 2
+                elif dateOf == "2018-12-01":
+                    event_id = 3
+                elif dateOf =="2019-02-02":
+                    event_id = 4
+                elif dateOf =="2019-02-07":
+                    event_id = 5
+                elif dateOf =="2019-02-09":
+                    event_id = 6
                 Media.objects.create(
                     user_id = int(userId),
                     device_id = int(userId),
                     event_id = event_id,
                     media_type = media_type,
+                    featured = 0,
                     link = "https://s3-us-west-2.amazonaws.com/users-edited-content/" + data.key,
-                    raw_or_edited = "edited",
+                    raw_or_edited = raw_or_edited,
                     downloaded = 0,
                     ranking = 1,
                     created_at = datetime.datetime.now(),
@@ -371,7 +517,6 @@ def createNewDevice(deviceNum, userId, serialNumber):
         created_at = now,
         updated_at = now
     )
-
 
 def createNewUser(request, user_name, first_name, last_name, email, password, phone):
     User.objects.create(
