@@ -371,13 +371,12 @@ def jsonifyDeviceData(data):
 def jsonifyUserEventData(data):
     context = {}
     all_events = []
+    all_events_media = []
     for data_point in data:
-        adding_context = {
-            "user_id": data_point.user_id,
-            "event_id": data_point.event_id
-        }
-        all_events.append(adding_context)
-    context.update({"userEvents" : all_events})
+        all_events.append(jsonifyEventData(Event.objects.filter(event_id = data_point.event_id)))
+        all_events_media.append(jsonifyMediaData(Media.objects.filter(event_id = data_point.event_id)))
+    context["events"] = all_events
+    context["events_media"] = all_events_media
     return context
 
 def jsonifyArtistEventData(data):
