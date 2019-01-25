@@ -1,16 +1,17 @@
 {
-    "family": "elastic-waistband",
+    "family": "glimpse-service",
     "containerDefinitions": [
         {
             "image": "471137844663.dkr.ecr.us-west-2.amazonaws.com/docker-images:service_latest",
-            "name": "elastic-waistband",
-            "cpu": 2,
-            "memory": 256,
+            "name": "glimpse-service",
+            "cpu": 0,
+            "memory": 128,
             "essential": true,
             "portMappings": [
                 {
-                    "containerPort": 8000,
-                    "hostPort": 8000
+                    "hostPort": 0,
+                    "protocol": "tcp",
+                    "containerPort": 8000
                 }
             ]
         }
