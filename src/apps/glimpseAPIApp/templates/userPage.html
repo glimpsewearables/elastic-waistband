@@ -192,29 +192,69 @@ button{
     background-color: #212529;
     border-radius: 4px;
 }
+.eventHeaderImage{
+    width: 50%;
+}
+.eventHeaderImage:hover{
+    opacity: 0.7;
+    transition: 0.5s;
+}
+.eventHeaderCaption{
+    display: none; 
+}
+.left{
+    position: absolute;;
+    left: 0
+}
+.right{
+    position: absolute;
+    right: 0
+}
+#allEventHeaders{
+    width: 100%;
+    display: inline;
+}
+.featureRecentButton{
+    width: 49%;
+    margin-left: .45%;
+    height: 40px;
+    background-color: #212529;
+}
+#allContent{
+    position: absolute;
+}
+.hiddenOnLoad{
+    display: none;
+}
+/* .eventButton{
+
+} */
 </style>
 <body>
-{% include 'header.html'  %}
 <div class="mainContainer">
+    <div style="z-index:5">
+        {% include 'header.html'  %}
+    </div>
     <h1 style="text-align: center;">User {{device_number}}</h1>
     <div id="yourInformation">
         <h4 style="text-align: center;">Total Videos: {{total_vids}}</h4>
     </div>
     <div class="allEvents">
         <h1 style="text-align: center;"> Available Events</h1>
-        <button class="eventButton form-control btn btn-login" onclick="openEvent('mostRecent')">Recent</button>
-        <button class="eventButton form-control btn btn-login" onclick="openEvent('featuredContent')">Favorited</button>
+        <button class="eventButton featureRecentButton" onclick="openEvent('mostRecent')">Recent</button>
+        <button class="eventButton featureRecentButton" onclick="openEvent('featuredContent')">Favorited</button>
         <hr>
-        {% for event in all_events %}
-        {% csrf_token %}
-        <div class="singleEventHeader">
-            <button class="eventButton form-control btn btn-login" onclick="openEvent('{{event.event_id}}')">{{event.name}}</button>
-            <!-- <img src="{{event.header_image}}"> -->
-            <!-- <img src="{% static 'img/wide-format-2839089_960_720.jpg' %}" onclick="openEvent('{{event.id}}')" class="eventHeaderImage"> -->
+        <div id="allEventHeaders">
+            {% for event in all_events %}
+            {% csrf_token %}
+            <div class="singleEventHeader">
+                <img src="{{event.header_image}}" onmouseover="addEventName('{{event.id}}')" onmouseout="removeEventName('{{event.id}}')" class="eventHeaderImage" id="event{{event.event_id}}Header" onclick="openEvent('{{event.event_id}}')">
+                <h3 id="event{{event.id}}HeaderCaption" class="eventHeaderCaption">{{event.name}}</h3>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-    <div class="allUsersContent">
+    <div class="allUsersContent" id="allContent">
         <div id="my_events">
             {% csrf_token %}
             <div class="singleEventTab" id="mostRecent" style="display: none">
@@ -229,7 +269,7 @@ button{
                 {% endfor %}
             </div>
             <div class="singleEventTab" id="featuredContent" style="display: none">
-                <h2 style="text-align:center">Your Favorited Content</h2>
+                <h2 style="text-align:center;">Your Favorite Content</h2>
                 {% for video in featured %}
                 <div class="videoContainer">
                     <video class="singleVideo featuredContentVideo" controls preload="metadata">
@@ -322,6 +362,7 @@ button{
 </body>
 <script>
     var allEventTabs = ['featuredContent', "mostRecent", "event1", "event2", "event3", "event4", "event5", "event6", "event7"]
+    var allEventHeaders = ["event2Header","event1Header", "event3Header", "event4Header", "event5Header", "event6Header", "event7Header"]
     function openEvent(event_id){
         if(event_id == "mostRecent" || event_id == "featuredContent"){
             var eventOpeningName = event_id.toString();
@@ -345,6 +386,49 @@ button{
             }
         }
     }
+    function fixEventHeaders(){
+        var lastLeftTop = 330;
+        var trackLeft = 330;
+        var lastRightTop = 300;
+        var trackRight = 330;
+        for(var i = 0; i < allEventHeaders.length - 1; i++){
+            thisEventHeader = document.getElementById(allEventHeaders[i]);
+            thisEventHeaderCaption = document.getElementById(allEventHeaders[i] + "Caption");
+            thisHeight = thisEventHeader.height;
+            if(i % 2 == 0){
+                thisEventHeader.classList.add("left");
+                thisEventHeaderCaption.classList.add("left");
+                thisEventHeader.style.top = trackLeft.toString() + "px";
+                thisEventHeaderCaption.style.top = trackLeft.toString() + "px";
+                trackLeft += thisHeight;
+            } else {
+                thisEventHeader.classList.add("right");
+                thisEventHeaderCaption.classList.add("right");
+                thisEventHeader.style.top = trackRight.toString() + "px";
+                thisEventHeaderCaption.style.top = trackRight.toString() + "px";
+                trackRight += thisHeight;
+            }
+        }
+        maxBottom = Math.max(trackLeft, trackRight);
+        document.getElementById("allContent").style.top = maxBottom.toString() + "px";
+    }
+    window.onload = function () { 
+        fixEventHeaders();
+    }
+    $( window ).resize(function() {
+        fixEventHeaders();
+    });
+    function addEventName(eventId){
+        var thisCaption = document.getElementById("event" + eventId + "HeaderCaption");
+        thisCaption.style.transition = "opacity .5s";
+        thisCaption.style.display = "block";
+    }
+    function removeEventName(eventId){
+        var thisCaption = document.getElementById("event" + eventId + "HeaderCaption");
+        thisCaption.style.transition = "opacity .5s";
+        thisCaption.style.display = "none";
+    }
+    // Adding media to the featured section, or removing
     function featureThisMedia(media_id){
         addFeaturedTpAPI(media_id);
         var button = document.getElementById("media" + media_id + "Button");
@@ -357,6 +441,7 @@ button{
         button.innerHTML = "reload page";
         button.style.backgroundColor ="transparent";
     }
+    // Updating all the backend
     const Http = new XMLHttpRequest();
     function addFeaturedTpAPI(media_id){
         const media_url = "http://api.glimpsewearables.com/api/media/";
