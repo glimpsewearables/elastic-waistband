@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'apps.glimpseAPIApp',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -52,7 +53,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
+
+# All Cores problems
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'api.glimpsewearables.com',
+    'localhost:8000',
+    'localhost:3000',
+    'localhost:5000',
+    '127.0.0.1:9000'
+)
 
 ROOT_URLCONF = 'glimpseAPI.urls'
 
@@ -67,6 +80,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media'
             ],
         },
     },

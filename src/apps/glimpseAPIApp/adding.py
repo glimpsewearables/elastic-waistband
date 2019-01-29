@@ -5,7 +5,7 @@ import urllib
 import botocore
 import requests
 from django.db import models
-from .models import User, UserEvent, Artist, ArtistEvent, Device, Event, Media, MediaComment
+from .models import User, UserEvent, Artist, ArtistEvent, Device, DeviceOwner, Event, Media, MediaComment
 
 client = boto3.client('s3') #low-level functional API
 resource = boto3.resource('s3') #high-level object-oriented API
@@ -27,8 +27,29 @@ def testS3Download(request):
     downloadTool.retrieve(urlLink, filePath)
     return HttpResponse(KEY)
 
-def testS3Upload(request):
-    fileName = ""
+def uploadMediaToS3(request):
+    video = request.POST["uploadedVideo"]
+    desktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop') 
+    client.upload_file(desktop+"/"+video, "users-edited-content", video)
+    user_id = request.POST["user_id"]
+    event_id = request.POST["event_id"]
+    device_id = request.POST["device_id"]
+    thisEvent = Event.objects.get(id = event_id)
+    Media.objects.create(
+        user_id = user_id,
+        event_id = event_id,
+        device_id = device_id,
+        featured = 1,
+        media_type = "video",
+        link = "https://s3-us-west-2.amazonaws.com/users-edited-content/" + video,
+        raw_or_edited = "curated",
+        ranking = 5,
+        curator_rating = 5,
+        user_rating = 3,
+        date = thisEvent.start_date,
+        date_time = "12:00"
+    )
+    return redirect("/adminPage")
 
 # Initializing the database 
 # Update database goes into s3 and checks to see if any links are in the s3 bucket but not in the sqlite database
@@ -246,6 +267,7 @@ def updateDatabase(request):
                 serial_number = str(i) + "a" + str(i) + "b" + str(i) + "c",
                 user_id = i
             )
+        DeviceOwner.objects.create(device_id = 1, user_id = 1, start_date = "2019-01-01", end_date = "2019-02-01")
     if(Event.objects.filter(id = 1)):
         print("Inital Event in database exists")
     else:

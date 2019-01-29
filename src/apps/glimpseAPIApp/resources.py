@@ -1,5 +1,5 @@
 from tastypie.resources import ModelResource
-from .models import User, UserEvent, Artist, ArtistEvent, Event, Device, Media, MediaComment, MediaLike
+from .models import User, UserEvent, Artist, ArtistEvent, Event, Device, DeviceOwner, Media, MediaComment, MediaLike
 import requests
 from tastypie.authorization import Authorization
 from .currentEvent import getCurrentEventId
@@ -13,7 +13,7 @@ class UserResource(ModelResource):
         authorization = Authorization()
 
 class UserEventResource(ModelResource):
-    http_method_names = ['get', 'post', 'head', 'put']
+    http_method_names = ['get', 'post', 'head', 'put', "PATCH"]
     class Meta:
         queryset = UserEvent.objects.all()
         resource_name = "userevent"
@@ -46,6 +46,13 @@ class DeviceResource(ModelResource):
     class Meta:
         queryset = Device.objects.all()
         resource_name = "device"
+        authorization = Authorization()
+
+class DeviceOwnerResource(ModelResource):
+    http_method_names = ['get', 'post', 'head', 'put']
+    class Meta:
+        queryset = DeviceOwner.objects.all()
+        resource_name = "deviceowner"
         authorization = Authorization()
 
 class MediaResource(ModelResource):

@@ -31,7 +31,7 @@ def userPage(request, device_number):
     this_device_content = Media.objects.filter(user_id = device_number, media_type = "video").order_by('created_at')
     all_events = Event.objects.all().order_by('id').reverse()
     most_recent = this_device_content.order_by('-date', "-date_time")[:9]
-    featured = this_device_content.filter(raw_or_edited = "edited", ranking = 3 or 4 or 5)
+    featured = this_device_content.filter(featured = 1)
     this_users_event_content = {}
     this_users_event_content["all_artists"] = Artist.objects.all()
     this_users_event_content["all_events"] = all_events
@@ -63,7 +63,7 @@ def userPage(request, device_number):
             this_users_event_content["event" + str(this_id)] = {
                 "eventInfo" : event,
             }
-    return render(request, "userPage.html", this_users_event_content)
+    return render(request, "userPage.html", context=this_users_event_content)
 
 
 # Break up all of the videos into segments of nine in order to deal with rendering issues for massive ammounts of videos in html

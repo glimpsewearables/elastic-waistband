@@ -12,6 +12,9 @@ v2_raw_bucket = resource.Bucket('users-raw-content')
 v2_edited_bucket = resource.Bucket('users-edited-content') 
 
 
+def uploadToS3():
+    
+
 def fromDatabase():
     myFile = open('export.csv', 'w') 
     allMedia = Media.objects.all()

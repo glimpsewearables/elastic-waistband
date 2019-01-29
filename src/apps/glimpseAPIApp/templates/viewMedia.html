@@ -31,6 +31,10 @@ tr:hover{
 thead{
     background: black;
 }
+tbody{
+    background: #666;
+    color:black;
+}
 .panel-login {
     -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
     -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
@@ -158,23 +162,33 @@ button{
     margin: 15%;
     top: 0;
     position: fixed;
-    background-color: yellow;
     display: none;
 }
 .displayEventVid{
     width: 100%;
 }
+.changeButton{
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    color: black;
+    border: none;
+}
+
+.blink_me {
+  animation: blinker 1.5s linear infinite;
+  background-color: #888;
+  border-radius: 3px;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0.2;
+  }
+}
 </style>
 <body>
     {% include 'header.html' %}
-    <div id="contentContainer">
-        <h1>Show Video</h1>
-        <button onclick="closeTab('contentContainer')">X</button>
-        <div id="videoToShow">
-            <video class="displayEventVid" id="videoEl" controls>
-            </video>
-        </div>
-    </div>
     <div id="mainContainer">
         <h1>{{this_event.name}}</h1>
         <div id="allVideosArea">
@@ -186,16 +200,22 @@ button{
                             <th scope="col">User</th>
                             <th scope="col">Device</th>
                             <th scope="col">Link</th>
-                            <th scope="col">Ranking</th>
+                            <th scope="col">Curator Ranking</th>
+                            <th scope="col">User Ranking</th>
+                            <th scope="col"><button class="changeButton" style="color:white;" onclick="pushUpdatedMedia()">Update DB</button></th>
                         </tr>
                     </thead>
                     {% for image in this_event_videos %}
                     {% csrf_token %}
                     <tbody>
-                        <td>{{image.user_id}}</td>
-                        <td>{{image.device_id}}</td>
-                        <td><a href="{{image.link}}" target="_blank">{{image.link}}</a></td>
-                        <td>{{image.ranking}}</td>
+                        <tr>
+                            <td>{{image.user_id}}</td>
+                            <td>{{image.device_id}}</td>
+                            <td><a href="{{image.link}}" target="_blank">{{image.link}}</a></td>
+                            <td onclick="inputTouch('{{image.id}}')"><input type="number" max="5" min="0" value="{{image.curator_rating}}" id="videoCur{{image.id}}" class="changeButton"></td>
+                            <td>{{image.user_rating}}</td>
+                            <td><button class="changeButton" id="changeButton{{image.id}}" onclick="updateCuratorMediaRating('{{image.id}}')">Change</button></td>
+                        </tr>
                     </tbody>
                     {% endfor %}
                 </table>
@@ -231,5 +251,31 @@ button{
 downloadList = [];
 var desktop = "{{desktop}}";
 var desktopDownloadRoute = desktop + "/";
+
+function inputTouch(mediaId){
+    var button = document.getElementById("changeButton" + mediaId);
+    button.classList.add("blink_me");
+}
+function updateCuratorMediaRating(mediaId){
+    var curatorRanking = document.getElementById("videoCur" + mediaId);
+    var button = document.getElementById("changeButton" + mediaId);
+    button.classList.remove("blink_me");
+    var value = curatorRanking.value;
+    updateMediaCuratorAPI(mediaId, value);
+}
+
+const Http = new XMLHttpRequest();
+function updateMediaCuratorAPI(media_id, new_curator_rating){
+    const media_url = "http://api.glimpsewearables.com/api/media/";
+    const media_url_id = media_url + media_id + "/";
+    console.log(media_url_id);
+    var data = Http.open("PATCH", media_url_id, true);
+    Http.setRequestHeader('Content-type', 'application/json');
+    old_data = {
+        "curator_rating": new_curator_rating
+    }
+    put_data = JSON.stringify(old_data);
+    Http.send(put_data);
+}
 </script>
 </html>

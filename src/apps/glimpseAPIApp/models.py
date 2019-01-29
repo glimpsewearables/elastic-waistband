@@ -40,6 +40,12 @@ class Device(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
+class DeviceOwner(models.Model):
+    device_id = models.IntegerField()
+    user_id = models.IntegerField()
+    start_date = models.CharField(max_length = 45)
+    end_date = models.CharField(max_length = 45)
+
 class Event(models.Model):
     event_id = models.IntegerField()
     name = models.CharField(max_length = 245)

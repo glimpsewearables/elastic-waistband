@@ -1,6 +1,8 @@
 from django.conf.urls import url, include
 from . import views, models, adding, rendering, currentEvent
-from .resources import UserResource, UserEventResource, ArtistResource, ArtistEventResource, EventResource, MediaResource, DeviceResource, CommentResource, LikeResource
+from .resources import UserResource, UserEventResource, ArtistResource, ArtistEventResource, EventResource, MediaResource, DeviceResource, DeviceOwnerResource, CommentResource, LikeResource
+from django.conf import settings
+from django.conf.urls.static import static
 
 user_resource = UserResource()
 user_event_resource = UserEventResource()
@@ -9,6 +11,7 @@ artist_event_resource = ArtistEventResource()
 event_resource = EventResource()
 media_resource = MediaResource()
 device_resource = DeviceResource()
+device_owner_resource = DeviceOwnerResource()
 comment_resource = CommentResource()
 like_resource = LikeResource()
 
@@ -44,6 +47,7 @@ urlpatterns = [
     url(r'^api/', include(user_event_resource.urls)),
     url(r'^api/', include(artist_resource.urls)),
     url(r'^api/', include(artist_event_resource.urls)),
+    url(r'^api/', include(device_owner_resource.urls)),
     url(r'^api/', include(device_resource.urls)),
     url(r'^api/', include(media_resource.urls)),
     url(r'^api/', include(event_resource.urls)),
@@ -72,6 +76,6 @@ urlpatterns = [
     # CSV work for metrics
     url(r'^exportCsv$', views.fromDatabase),
     # S3 Calls
-    url(r'^testS3Download$', adding.testS3Download),
-    url(r'^testS3Upload$', adding.testS3Upload),     
-]  
+    url(r'^testS3Download$', adding.testS3Download), 
+    url(r'^uploadMediaToS3$', adding.uploadMediaToS3), 
+]

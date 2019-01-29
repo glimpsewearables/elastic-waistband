@@ -166,15 +166,31 @@ button{
     width: 100%;
 }
 .singleVideo{
-    width: 30%;
-    margin: 1.25%;
+    width: 100%;
 }
 
 @media only screen and (max-width: 600px) {
-    .singleVideo{
+    .videoContainer{
         width: 49%;
         margin: 0;
+        display: inline-block;
     }
+    .featureButton{
+        width: 100%;
+        font-size: 10px;
+    }
+}
+.videoContainer{
+    width: 32%;
+    margin-left: .5%;
+    display: inline-block;
+}
+.featureButton{
+    width: 40%;
+    margin-left: 30%;
+    margin-right: 30%;
+    background-color: #212529;
+    border-radius: 4px;
 }
 </style>
 <body>
@@ -187,7 +203,7 @@ button{
     <div class="allEvents">
         <h1 style="text-align: center;"> Available Events</h1>
         <button class="eventButton form-control btn btn-login" onclick="openEvent('mostRecent')">Recent</button>
-        <button class="eventButton form-control btn btn-login" onclick="openEvent('featuredContent')">Featured</button>
+        <button class="eventButton form-control btn btn-login" onclick="openEvent('featuredContent')">Favorited</button>
         <hr>
         {% for event in all_events %}
         {% csrf_token %}
@@ -204,49 +220,100 @@ button{
             <div class="singleEventTab" id="mostRecent" style="display: none">
                 <h2 style="text-align:center">Most Recent</h2>
                 {% for video in most_recent %}
-                <video class="singleVideo" controls>
-                    <source src="{{video.link}}" type="video/mp4">
-                </video>
+                <div class="videoContainer">
+                    <video class="singleVideo mostRecentVideo" controls preload="metadata">
+                        <source src="{{video.link}}" type="video/mp4">
+                    </video>
+                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
+                </div>
                 {% endfor %}
             </div>
             <div class="singleEventTab" id="featuredContent" style="display: none">
-                <h2 style="text-align:center">Your Featured Content</h2>
+                <h2 style="text-align:center">Your Favorited Content</h2>
                 {% for video in featured %}
-                <video class="singleVideo" controls>
-                    <source src="{{video.link}}" type="video/mp4">
-                </video>
+                <div class="videoContainer">
+                    <video class="singleVideo featuredContentVideo" controls preload="metadata">
+                        <source src="{{video.link}}" type="video/mp4">
+                    </video>
+                    <button class="featureButton" id="media{{video.id}}ButtonFeat" onclick="unfeatureThisMedia('{{video.id}}')">UnFavorite</button>
+                </div>
                 {% endfor %}
             </div>
-            <div class="singleEventTab" id="event1" style="display: none">
+            <div class="singleEventTab regularEvent" id="event1" style="display: none">
                 <h2 style="text-align:center">{{event1.eventInfo.name}}</h2>
                 {% for video in event1.videos %}
-                <video class="singleVideo" controls>
-                    <source src="{{video.link}}" type="video/mp4">
-                </video>
+                <div class="videoContainer">
+                    <video class="singleVideo event1Video" controls preload="metadata">
+                        <source src="{{video.link}}" type="video/mp4">
+                    </video>
+                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
+                </div>
                 {% endfor %}    
             </div>
-            <div class="singleEventTab" id="event2" style="display: none">
+            <div class="singleEventTab regularEvent" id="event2" style="display: none">
                 <h2 style="text-align:center">{{event2.eventInfo.name}}</h2>
                 {% for video in event2.videos %}
-                <video class="singleVideo" controls>
-                    <source src="{{video.link}}" type="video/mp4">
-                </video>
+                <div class="videoContainer">
+                    <video class="singleVideo event2Video" controls preload="metadata">
+                        <source src="{{video.link}}" type="video/mp4">
+                    </video>
+                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
+                </div>
                 {% endfor %}    
             </div>
-            <div class="singleEventTab" id="event3" style="display: none">
+            <div class="singleEventTab regularEvent" id="event3" style="display: none">
                 <h2 style="text-align:center">{{event3.eventInfo.name}}</h2>
                 {% for video in event3.videos %}
-                <video class="singleVideo" controls>
-                    <source src="{{video.link}}" type="video/mp4">
-                </video>
+                <div class="videoContainer">
+                    <video class="singleVideo event3Video" controls preload="metadata">
+                        <source src="{{video.link}}" type="video/mp4">
+                    </video>
+                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
+                </div>
                 {% endfor %}    
             </div>
-            <div class="singleEventTab" id="event4" style="display: none">
+            <div class="singleEventTab regularEvent" id="event4" style="display: none">
                 <h2 style="text-align:center">{{event4.eventInfo.name}}</h2>
                 {% for video in event4.videos %}
-                <video class="singleVideo" controls>
-                    <source src="{{video.link}}" type="video/mp4">
-                </video>
+                <div class="videoContainer">
+                    <video class="singleVideo event4Video" controls preload="metadata">
+                        <source src="{{video.link}}" type="video/mp4">
+                    </video>
+                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
+                </div>
+                {% endfor %}    
+            </div>
+            <div class="singleEventTab regularEvent" id="event5" style="display: none">
+                <h2 style="text-align:center">{{event5.eventInfo.name}}</h2>
+                {% for video in event5.videos %}
+                <div class="videoContainer">
+                    <video class="singleVideo event5Video" controls preload="metadata">
+                        <source src="{{video.link}}" type="video/mp4">
+                    </video>
+                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
+                </div>
+                {% endfor %}    
+            </div>
+            <div class="singleEventTab regularEvent" id="event6" style="display: none">
+                <h2 style="text-align:center">{{event6.eventInfo.name}}</h2>
+                {% for video in event6.videos %}
+                <div class="videoContainer">
+                    <video class="singleVideo event6Video" controls preload="metadata">
+                        <source src="{{video.link}}" type="video/mp4">
+                    </video>
+                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
+                </div>
+                {% endfor %}    
+            </div>
+            <div class="singleEventTab regularEvent" id="event7" style="display: none">
+                <h2 style="text-align:center">{{event7.eventInfo.name}}</h2>
+                {% for video in event7.videos %}
+                <div class="videoContainer">
+                    <video class="singleVideo event7Video" controls preload="metadata">
+                        <source src="{{video.link}}" type="video/mp4">
+                    </video>
+                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
+                </div>
                 {% endfor %}    
             </div>
         </div>
@@ -254,9 +321,8 @@ button{
 </div>
 </body>
 <script>
-    var allEventTabs = ['featuredContent', "mostRecent", "event1", "event2", "event3", "event4"]
+    var allEventTabs = ['featuredContent', "mostRecent", "event1", "event2", "event3", "event4", "event5", "event6", "event7"]
     function openEvent(event_id){
-        console.log(event_id);
         if(event_id == "mostRecent" || event_id == "featuredContent"){
             var eventOpeningName = event_id.toString();
         } else {
@@ -265,10 +331,56 @@ button{
         for(i = 0; i < allEventTabs.length; i++){
             if(eventOpeningName == allEventTabs[i]){
                 document.getElementById(allEventTabs[i]).style.display = "block";
+                window.scrollTo({
+                    top: 700,
+                    left: 0,
+                    behavior: "smooth"    
+                });
+                var theseVideos = document.getElementsByClassName(eventOpeningName + "Video");
+                for(video in theseVideos){
+                    video.preload;
+                }
             } else {
                 document.getElementById(allEventTabs[i]).style.display = "none"
             }
         }
+    }
+    function featureThisMedia(media_id){
+        addFeaturedTpAPI(media_id);
+        var button = document.getElementById("media" + media_id + "Button");
+        button.innerHTML = "reload page";
+        button.style.backgroundColor ="transparent";
+    }
+    function unfeatureThisMedia(media_id){
+        removeFeaturedToAPI(media_id);
+        var button = document.getElementById("media" + media_id + "ButtonFeat");
+        button.innerHTML = "reload page";
+        button.style.backgroundColor ="transparent";
+    }
+    const Http = new XMLHttpRequest();
+    function addFeaturedTpAPI(media_id){
+        const media_url = "http://api.glimpsewearables.com/api/media/";
+        const media_url_id = media_url + media_id + "/";
+        console.log(media_url_id);
+        var data = Http.open("PATCH", media_url_id, true);
+        Http.setRequestHeader('Content-type', 'application/json');
+        old_data = {
+            "featured": 1
+        }
+        put_data = JSON.stringify(old_data);
+        Http.send(put_data);
+    }
+    function removeFeaturedToAPI(media_id){
+        const media_url = "http://api.glimpsewearables.com/api/media/";
+        const media_url_id = media_url + media_id + "/";
+        console.log(media_url_id);
+        var data = Http.open("PATCH", media_url_id, true);
+        Http.setRequestHeader('Content-type', 'application/json');
+        old_data = {
+            "featured": 0
+        }
+        put_data = JSON.stringify(old_data);
+        Http.send(put_data);
     }
 </script>
 </html>
