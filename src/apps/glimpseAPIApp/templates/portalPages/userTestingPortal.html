@@ -223,8 +223,7 @@ function addUserEvent(){
 }
 const Http = new XMLHttpRequest();
 function AddUserEventAPI(user_id, event_id, device_used_id){
-    // const media_url = "http://api.glimpsewearables.com/api/userevent/";
-    const user_event_url = "http://localhost:8000/api/userevent/";
+    const user_event_url = "http://api.glimpsewearables.com/api/userevent/" + userEventId.toString() + "/";
     var data = Http.open("POST", user_event_url, true);
     Http.setRequestHeader('Content-type', 'application/json');
     old_data = {
@@ -236,8 +235,7 @@ function AddUserEventAPI(user_id, event_id, device_used_id){
     Http.send(put_data);
 }
 function deleteUserEvent(userEventId){
-    // const media_url = "http://api.glimpsewearables.com/api/media/";
-    const user_event_url = "http://localhost:8000/api/userevent/" + userEventId.toString() + "/";
+    const user_event_url = "http://api.glimpsewearables.com/api/userevent/" + userEventId.toString() + "/";
     var data = Http.open("DELETE", user_event_url, true);
     Http.send();
 }
