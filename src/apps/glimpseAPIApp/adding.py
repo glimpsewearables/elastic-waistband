@@ -5,7 +5,7 @@ import urllib
 import botocore
 import requests
 from django.db import models
-from .models import User, UserEvent, Artist, ArtistEvent, Device, DeviceOwner, Event, Media, MediaComment
+from .models import User, UserEvent, Artist, ArtistEvent, Device, Event, Media, MediaComment
 
 client = boto3.client('s3') #low-level functional API
 resource = boto3.resource('s3') #high-level object-oriented API
@@ -267,7 +267,6 @@ def updateDatabase(request):
                 serial_number = str(i) + "a" + str(i) + "b" + str(i) + "c",
                 user_id = i
             )
-        DeviceOwner.objects.create(device_id = 1, user_id = 1, start_date = "2019-01-01", end_date = "2019-02-01")
     if(Event.objects.filter(id = 1)):
         print("Inital Event in database exists")
     else:
@@ -382,7 +381,8 @@ def updateDatabase(request):
             if (not UserEvent.objects.filter(user_id = userId, event_id = event_id)) and event_id != 1 and event_id != 0:
                 UserEvent.objects.create(
                     user_id = userId,
-                    event_id = event_id
+                    event_id = event_id,
+                    device_used_id = userId
                 )
             Media.objects.create(
                 user_id = int(userId),
@@ -483,7 +483,7 @@ def registerUser(request):
 
 def createUser(request):
     if request.POST:
-        if request.session["userType"] != "admin":
+        if request.session["userType"] != "masterAdmin" and request.session["userType"] != "userTestingAdmin" and request.session["userType"] != "curatorAdmin":
             return redirect("/")
         else:
             createNewUser(request, request.POST["usersName"], request.POST["firstName"], request.POST["lastName"], request.POST["usersEmail"], request.POST["password"], request.POST["usersPhone"] )
@@ -491,7 +491,7 @@ def createUser(request):
 
 def createEvent(request):
     if request.POST:
-        if request.session["userType"] != "admin":
+        if request.session["userType"] != "masterAdmin" and request.session["userType"] != "userTestingAdmin" and request.session["userType"] != "curatorAdmin":
             return redirect("/")
         else:
             createNewEvent(request, request.POST["eventName"], request.POST["address"], request.POST["startDate"], request.POST["endDate"], request.POST["imageHeader"])
@@ -499,7 +499,7 @@ def createEvent(request):
 
 def createMedia(request):
     if request.POST:
-        if request.session["userType"] != "admin":
+        if request.session["userType"] != "masterAdmin" and request.session["userType"] != "curatorAdmin" and request.session["userType"] != "userTestingAdmin":
             return redirect("/")
         else:
             createNewMedia(request, request.POST["url_link"], request.POST["device_id"], request.POST["event_id"])
@@ -507,28 +507,28 @@ def createMedia(request):
 
 def createDevice(request):
     if request.POST:
-        if request.session["userType"] != "admin":
+        if request.session["userType"] != "masterAdmin" and request.session["userType"] != "deviceAdmin":
             return redirect("/")
         else:
             createNewDevice(request, request.POST["device_number"], request.POST["user_id"], request.POST["serial_number"])
     return redirect("/adminPage")
 
 def deleteUser(request, user_id):
-    if request.session["userType"] != "admin":
+    if request.session["userType"] != "masterAdmin" and request.session["userType"] != "userTestingAdmin":
         return redirect("/")
     else:
         User.objects.get(id = user_id).delete()
         return redirect("/adminPage")
 
 def deleteEvent(request, event_id):
-    if request.session["userType"] != "admin":
+    if request.session["userType"] != "masterAdmin" and request.session["userType"] != "userTestingAdmin":
         return redirect("/")
     else:
         Event.objects.get(id = event_id).delete()
         return redirect("/adminPage")
 
 def deleteDevice(request, device_id):
-    if request.session["userType"] != "admin":
+    if request.session["userType"] != "masterAdmin" and request.session["userType"] != "deviceAdmin":
         return redirect("/")
     else:
         Device.objects.get(id = device_id).delete()

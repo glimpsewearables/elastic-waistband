@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Device Portal</title>
+    {% load static from staticfiles%}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>    
+    <LINK REL="SHORTCUT ICON" HREF="{% static 'img/clipcamicon.png' %}" >
+</head>
+<style>
+#mainContainer{
+    margin-top: 60px;
+}
+</style>
+<body>
+    {% if user_type == "masterAdmin" %}
+    <div id="adminHeader">
+        {% include 'adminHeader.html' %}
+    </div>
+    {% endif %}
+    <div id="mainContainer">
+        <h1 style="text-align:center;"> Device Portal</h1>
+        <div id="importantLinks">
+            <h3>Important Links</h3>
+        </div>
+        <div class="informationArea" id="deviceInfoArea">
+            <div class="table-wrapper">
+                <h3 style="text-align:center">Registered Devices</h3>
+                <button onclick="scrollToTab('createNewDevice')" class="scrollToButton">Create New</button>
+                <table class="table">
+                    <thead >
+                        <tr>
+                            <th scope="col">Device Id</th>
+                            <th scope="col">Device Number</th>
+                            <th scope="col">Owner Id</th>
+                            <th scope="col">Serial Number</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for device in all_devices %}
+                            {% csrf_token %}
+                            <tr>
+                                <td onclick="openDeviceContent('{{device.device_number}}')">{{device.id}}</td>
+                                <td onclick="openDeviceContent('{{device.device_number}}')">{{device.device_number}}</td>
+                                <td onclick="openDeviceContent('{{device.device_number}}')">{{device.user_id}}</td>
+                                <td onclick="openDeviceContent('{{device.device_number}}')">{{device.serial_number}}</td>
+                                <td>
+                                    <form action="/deleteDevice/{{device.id}}">
+                                        <button type="submit" class="form-control">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <form action="/createDevice" method="POST" role="form" id="createNewDevice">
+                <h1 style="text-align: center">Add Device</h1>
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="user_id" tabindex="1" class="form-control" placeholder="User Owner Id" value="">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="device_id" tabindex="2" class="form-control" placeholder="Device Id">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="serial_number" tabindex="2" class="form-control" placeholder="Serial Number">
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit" name="login-submit" tabindex="4" class="form-control btn btn-login" value="Create Device">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

@@ -7,8 +7,6 @@
     {% load static from staticfiles%}
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <LINK REL="SHORTCUT ICON" HREF="{% static 'img/clipcamicon.png' %}" >
@@ -16,8 +14,8 @@
 <style>
 body {
     padding-top: 90px;
-    background-color: #931a00;
-    color: #fff
+    background-color: #fff;
+    color: black;
 }
 a{
    color: #212529;
@@ -169,6 +167,12 @@ button{
     {% include 'header.html' %}
     <div id="mainContainer">
         <h1 style="text-align: center;">Admin Portal</h1>
+        <div id="redirectButtons">
+            <button onclick="redirectTo('curatorPortal')" class="form-control btn btn-login active">Curator Portal</button>
+            <button onclick="redirectTo('devicePortal')" class="form-control btn btn-login active">Device Portal</button>
+            <button onclick="redirectTo('userTestingPortal')" class="form-control btn btn-login active">User Testing Portal</button>
+            <button onclick="redirectTo('softwarePortal')" class="form-control btn btn-login active">Software Portal</button>
+        </div>
         <div class="panel-heading">
             <div class="row">
                 <div class="col-xs-3">
@@ -460,6 +464,8 @@ function openDeviceContent(deviceId){
 function downloadCSVFile(){
     location.replace("/exportCsv");
 }
-
+function redirectTo(url){
+    window.location.replace("/" + url);
+}
 </script>
 </html>

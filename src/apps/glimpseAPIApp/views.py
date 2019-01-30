@@ -4,7 +4,7 @@ import bcrypt, sys, os, base64, datetime, hashlib, hmac, pytz
 import boto3, csv, json, inspect, urllib
 import requests
 from django.db import models
-from .models import User, UserEvent, Artist, ArtistEvent, Device, DeviceOwner, Event, Media, MediaComment
+from .models import User, UserEvent, Artist, ArtistEvent, Device, Event, Media, MediaComment
 client = boto3.client('s3') #low-level functional API
 resource = boto3.resource('s3') #high-level object-oriented API
 v1_raw_bucket = resource.Bucket('pi-1')

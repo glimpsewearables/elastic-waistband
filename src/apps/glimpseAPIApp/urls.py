@@ -1,6 +1,6 @@
 from django.conf.urls import url, include
 from . import views, models, adding, rendering, currentEvent
-from .resources import UserResource, UserEventResource, ArtistResource, ArtistEventResource, EventResource, MediaResource, DeviceResource, DeviceOwnerResource, CommentResource, LikeResource
+from .resources import UserResource, UserEventResource, ArtistResource, ArtistEventResource, EventResource, MediaResource, DeviceResource, CommentResource, LikeResource
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -11,7 +11,6 @@ artist_event_resource = ArtistEventResource()
 event_resource = EventResource()
 media_resource = MediaResource()
 device_resource = DeviceResource()
-device_owner_resource = DeviceOwnerResource()
 comment_resource = CommentResource()
 like_resource = LikeResource()
 
@@ -47,7 +46,6 @@ urlpatterns = [
     url(r'^api/', include(user_event_resource.urls)),
     url(r'^api/', include(artist_resource.urls)),
     url(r'^api/', include(artist_event_resource.urls)),
-    url(r'^api/', include(device_owner_resource.urls)),
     url(r'^api/', include(device_resource.urls)),
     url(r'^api/', include(media_resource.urls)),
     url(r'^api/', include(event_resource.urls)),
@@ -63,6 +61,11 @@ urlpatterns = [
     url(r'^adminPage$', rendering.adminPage),
     url(r'^viewEventMedia/(?P<event_id>\d+)$', rendering.viewEventMedia),
     url(r'^setCurrentEvent/(?P<event_id>\d+)$', currentEvent.setCurrentEvent),
+    # Admin Portal Routes
+    url(r'^curatorPortal$', rendering.curatorPortal),
+    url(r'^userTestingPortal$', rendering.userTestingPortal),
+    url(r'^devicePortal$', rendering.devicePortal),
+    url(r'^softwarePortal$', rendering.softwarePortal),
     
     # Adding/Deleting information to the database
     url(r'^registerUser$', adding.registerUser),

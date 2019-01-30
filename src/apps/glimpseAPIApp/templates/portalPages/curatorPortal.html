@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Curator Portal</title>
+    {% load static from staticfiles%}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <LINK REL="SHORTCUT ICON" HREF="{% static 'img/clipcamicon.png' %}" >
+</head>
+<style>
+#mainContainer{
+    margin-top: 60px;
+}
+</style>
+<body>
+    {% if user_type == "masterAdmin" %}
+    <div id="adminHeader">
+        {% include 'adminHeader.html' %}
+    </div>
+    {%endif%}
+    <div id="mainContainer">
+        <h1 style="text-align:center;"> Content Curator Portal</h1>
+        <div id="importantLinks">
+            <h3>Important Links</h3>
+        </div>
+        <div class="informationArea" id="mediaInfoArea">
+            <div class="informationArea" id="eventInfoArea">
+                    <div id="allEventInformation">
+                        <div class="table-wrapper">
+                            <h3 style="text-align:center">All Events</h3>
+                            <table class="table">
+                                <thead class="thead-dark" onclick="eventPage()">
+                                    <tr>
+                                        <th scope="col">Event Id</th>
+                                        <th scope="col">Event Name</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Start Date</th>
+                                        <th scope="col">End Date</th>
+                                    </tr>
+                                </thead>
+                                {% for event in all_events %}
+                                {% csrf_token %}
+                                <tbody onclick="openEventContent('{{event.id}}')">
+                                    <td>{{event.id}}</td>
+                                    <td><a href="viewEventMedia/{{event.id}}">{{event.name}}</a></td>
+                                    <td>{{event.address}}</td>
+                                    <td>{{event.start_date}}</td>
+                                    <td>{{event.end_date}}</td>
+                                </tbody>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        <form action="/createEvent" method="POST" role="form" id="createNewEvent">
+                            <h1 style="text-align: center">Add New Event</h1>
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" name="eventName" id="eventName" tabindex="1" class="form-control" placeholder="Event Name" value="">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="address" id="eventAddress" tabindex="2" class="form-control" placeholder="Event Address">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="imageHeader" id="imageHeader" tabindex="2" class="form-control" placeholder="URL for Image Header">
+                            </div>
+                            <div class="form-group">
+                                <input type="date" name="startDate" id="startDate" tabindex="2" class="form-control" placeholder="Start Date">
+                            </div>
+                            <div class="form-group">
+                                <input type="date" name="endDate" id="endDate" tabindex="2" class="form-control" placeholder="End Date">
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-6 col-sm-offset-3">
+                                        <input type="submit" name="login-submit" tabindex="4" class="form-control btn btn-login" value="Create Event">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            <div id="allMediaInformation">
+                <div id="mediaMetricArea" style="margin-left: 10%">
+                    <p>Currently {{image_number}} images in the db</p>
+                    <p>Currently {{video_number}} videos in the db</p>
+                    <p>The last video was taken on {{last_video.date}} at {{last_video.date_time}} by device {{last_video.device_id}}</p>
+                    <p><a href="{{last_video.link}}" target="_blank">{{last_video.link}}</a></p>
+                </div>
+                <form action="/createMedia" method="POST" role="form" id="createNewMedia">
+                    <h1 style="text-align: center">Add New Media</h1>
+                    <h6 style="text-align: center">Make sure the link you are entering is an active URL link to the S3 Database</h6>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" name="url_link" tabindex="1" class="form-control" placeholder="Url Link" value="">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="device_id" tabindex="2" class="form-control" placeholder="Device/User Id">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="event_id" tabindex="2" class="form-control" placeholder="Event Id">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <input type="submit" name="login-submit" tabindex="4" class="form-control btn btn-login" value="Create Media">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <form action="/uploadMediaToS3" method="POST" role="form">
+                    <h1 style="text-align: center">Upload Video</h1>
+                    <h3 style="text-align: center">The Video MUST be located on your desktop to upload</h3>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="file"  name="uploadedVideo" accept="video/*" style="margin-left: 41%; width: 20%;"> 
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="user_id" tabindex="1" class="form-control" placeholder="User Id" value="">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="device_id" tabindex="2" class="form-control" placeholder="Device/User Id">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="event_id" tabindex="2" class="form-control" placeholder="Event Id">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <input type="submit" name="login-submit" tabindex="4" class="form-control btn btn-login" value="Upload Media">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div class="everyVideo">
+                    <h1 style="text-align:center">All Videos</h1>
+                    <p style="text-align:center">In order from newest to oldest</p>
+                    {% for video in all_videos %}
+                        <p><a href="{{video.link}}" target="_blank">{{video.link}}</a></p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+function openEventContent(eventId){
+    location.replace("/viewEventMedia/" + eventId.toString());
+}
+function openDeviceContent(deviceId){
+    location.replace("/userPage/" + deviceId.toString());
+}
+</script>
+</html>

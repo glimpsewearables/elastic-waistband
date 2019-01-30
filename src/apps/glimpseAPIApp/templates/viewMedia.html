@@ -16,8 +16,8 @@
 <style>
 body {
     padding-top: 90px;
-    background-color: #931a00;
-    color: #fff
+    background-color: #fff;
+    color: black;
 }
 a{
    color: #212529;
@@ -128,11 +128,6 @@ tbody{
     opacity: .7;
     border-color: #212529;
 }
-button{
-    border: none;
-    outline:none;
-}
-
 .headerStyle{
     position: fixed;
     top: 0;
@@ -174,7 +169,10 @@ button{
     color: black;
     border: none;
 }
-
+button{
+    border: none;
+    outline:none;
+}
 .blink_me {
   animation: blinker 1.5s linear infinite;
   background-color: #888;
@@ -201,7 +199,7 @@ button{
                             <th scope="col">Device</th>
                             <th scope="col">Link</th>
                             <th scope="col">Curator Ranking</th>
-                            <th scope="col">User Ranking</th>
+                            <th scope="col">Favorited</th>
                             <th scope="col"><button class="changeButton" style="color:white;" onclick="pushUpdatedMedia()">Update DB</button></th>
                         </tr>
                     </thead>
@@ -213,7 +211,7 @@ button{
                             <td>{{image.device_id}}</td>
                             <td><a href="{{image.link}}" target="_blank">{{image.link}}</a></td>
                             <td onclick="inputTouch('{{image.id}}')"><input type="number" max="5" min="0" value="{{image.curator_rating}}" id="videoCur{{image.id}}" class="changeButton"></td>
-                            <td>{{image.user_rating}}</td>
+                            <td>{{image.featured}}</td>
                             <td><button class="changeButton" id="changeButton{{image.id}}" onclick="updateCuratorMediaRating('{{image.id}}')">Change</button></td>
                         </tr>
                     </tbody>
@@ -267,6 +265,7 @@ function updateCuratorMediaRating(mediaId){
 const Http = new XMLHttpRequest();
 function updateMediaCuratorAPI(media_id, new_curator_rating){
     const media_url = "http://api.glimpsewearables.com/api/media/";
+    // const media_url = "http://localhost:8000/api/media/";
     const media_url_id = media_url + media_id + "/";
     console.log(media_url_id);
     var data = Http.open("PATCH", media_url_id, true);

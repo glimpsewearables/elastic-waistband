@@ -1,0 +1,29 @@
+<style>
+#adminHeader{
+    position: fixed;
+    top: 0px;
+    height: 50px;
+    width: 100%;
+}
+#redirectButtons{
+    display: flex;
+}
+.btn{
+    background-color: gray;
+    color: black;
+    border-radius: 4px;
+}
+</style>
+<div id="adminHeader">
+    <div id="redirectButtons">
+        <button onclick="redirectTo('curatorPortal')" class="form-control btn btn-login">Curator Portal</button>
+        <button onclick="redirectTo('devicePortal')" class="form-control btn btn-login">Device Portal</button>
+        <button onclick="redirectTo('userTestingPortal')" class="form-control btn btn-login">User Testing Portal</button>
+        <button onclick="redirectTo('softwarePortal')" class="form-control btn btn-login">Software Portal</button>
+    </div>
+</div>
+<script>
+function redirectTo(url){
+    window.location.replace("/" + url);
+}
+</script>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>User Testing Portal</title>
+    {% load static from staticfiles%}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <LINK REL="SHORTCUT ICON" HREF="{% static 'img/clipcamicon.png' %}" >
+</head>
+<style>
+#mainContainer{
+    margin-top: 60px;
+}
+#createUserEvent{
+    width: 25%;
+    margin-top: 15px;
+}
+#userEventTable{
+    width: 75%;
+}
+#tableCreateContainer{
+    display: flex;
+}
+.deleteButton{
+    width: 50%;
+    margin-left: 25%;
+    background-color: #CC0000;
+    border-radius: 6px;
+}
+</style>
+<body>
+    {% if user_type == "masterAdmin" %}
+    <div id="adminHeader">
+        {% include 'adminHeader.html' %}
+    </div>
+    {%endif%}
+    <div id="mainContainer">
+        <h1 style="text-align:center;"> User Testing Portal</h1>
+        <div class="informationArea" id="userInfoArea">
+            <div id="importantLinks">
+                <h3>Important Links</h3>
+            </div>
+            <div id="allUsersInformation">
+                <div class="table-wrapper">
+                    <h3>Registered Users</h3>
+                    <div class="informationalArea">
+                        <p>The users are not associated with any devices, they are simply people that are in the database and can have media associated with them depending on if they claim a device</p>
+                        <p>Users are not being used to keep track of media at all yet...</p>
+                    </div>
+                    <table class="table">
+                        <thead >
+                            <tr>
+                                <th scope="col">UserName</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Created</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in all_users %}
+                            {% csrf_token %}
+                        <tr>
+                            <td>{{user.user_name}}</td>
+                            <td>{{user.first_name}}</td>
+                            <td>{{user.last_name}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.phone}}</td>
+                            <td>{{user.created_at}}</td>
+                            <td><a href="deleteUser/{{user.id}}">Delete</a></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <form action="/createUser" method="POST" role="form" id="createNewUser">
+                {% csrf_token %}
+                <h3 style="text-align:center">Add A New User</h3>
+                <div class="form-group">
+                    <input type="text" name="usersName" id="users-name" tabindex="1" class="form-control" placeholder="User Name" value="">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="firstName" id="users-first-name" tabindex="1" class="form-control" placeholder="First Name" value="">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="lastName" id="users-last-name" tabindex="1" class="form-control" placeholder="Last Name" value="">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="usersEmail" id="users-email" tabindex="2" class="form-control" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <input type="text" name="usersPhone" id="users-phone" tabindex="2" class="form-control" placeholder="Phone Number">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-offset-3">
+                            <input type="submit"  tabindex="4" class="form-control btn btn-login" value="Create User">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="informationArea" id="userEvents">
+            <div id="allUserEvents">
+                <h3 style="text-align:center">All User Events</h3>
+                <p style="margin-left:5%; margin-right:5%; text-align:center">We are using the "UserEvents" to keep track of what user went to what concert so we can best display content for each user.</p>
+                <p style="margin-left:5%; margin-right:5%; text-align:center">Check the User Event Table above to make sure you dont repeat a User Event In the DB already</p>
+                <div id="tableCreateContainer">
+                    <table class="table" id="userEventTable">
+                        <thead >
+                            <tr>
+                                <th scope="col">User Id</th>
+                                <th scope="col">Event Id</th>
+                                <th scope="col">Device Used</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for userEvent in all_user_events %}
+                            {% csrf_token %}
+                        <tr>
+                            <td>{{userEvent.user_id}}</td>
+                            <td>{{userEvent.event_id}}</td>
+                            <td>{{userEvent.device_used_id}}</td>
+                            <td><button class="deleteButton" onclick="deleteUserEvent('{{userEvent.id}}')">Delete</button></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <div id="createUserEvent">
+                        <h4 style="text-align:center;">New User Event</h4>
+                        <select name="user" id="userEventUserChoice" style="width:100%; height: 30px; margin-top: 15px;">
+                            {% for user in all_users %}
+                            <option value="{{user.id}}" >{{user.id}} {{user.first_name}} {{user.last_name}}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="event" id="userEventEventChoice" style="width:100%; height: 30px; margin-top: 15px;">
+                            {% for event in all_events %}
+                            <option value="{{event.id}}">{{event.id}} {{event.name}}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="device" id="userEventDeviceChoice" style="width:100%; height: 30px; margin-top: 15px;">
+                            {% for device in all_devices %}
+                            <option value="{{device.id}}">Device Id {{device.id}}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="form-control btn btn-login" style="margin-top:10px;"  onclick="addUserEvent()">Add New User Event</button>
+                        <p style="text-align:center;">You will have to refresh the page before you will see the new user event added</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="informationArea" id="eventInfoArea">
+            <div id="allEventInformation">
+                <div class="table-wrapper">
+                    <h3 style="text-align:center">All Events</h3>
+                    <table class="table">
+                        <thead class="thead-dark" onclick="eventPage()">
+                            <tr>
+                                <th scope="col">Event Id</th>
+                                <th scope="col">Event Name</th>
+                                <th scope="col">Address</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                            </tr>
+                        </thead>
+                        {% for event in all_events %}
+                        {% csrf_token %}
+                        <tbody onclick="openEventContent('{{event.id}}')">
+                            <td>{{event.id}}</td>
+                            <td><a href="viewEventMedia/{{event.id}}">{{event.name}}</a></td>
+                            <td>{{event.address}}</td>
+                            <td>{{event.start_date}}</td>
+                            <td>{{event.end_date}}</td>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+                <form action="/createEvent" method="POST" role="form" id="createNewEvent">
+                    <h1 style="text-align: center">Add New Event</h1>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" name="eventName" id="eventName" tabindex="1" class="form-control" placeholder="Event Name" value="">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="address" id="eventAddress" tabindex="2" class="form-control" placeholder="Event Address">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="imageHeader" id="imageHeader" tabindex="2" class="form-control" placeholder="URL for Image Header">
+                    </div>
+                    <div class="form-group">
+                        <input type="date" name="startDate" id="startDate" tabindex="2" class="form-control" placeholder="Start Date">
+                    </div>
+                    <div class="form-group">
+                        <input type="date" name="endDate" id="endDate" tabindex="2" class="form-control" placeholder="End Date">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6 col-sm-offset-3">
+                                <input type="submit" name="login-submit" tabindex="4" class="form-control btn btn-login" value="Create Event">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+function addUserEvent(){
+    var userChoice = document.getElementById("userEventUserChoice").value;
+    var eventChoice = document.getElementById("userEventEventChoice").value;
+    var deviceChoice = document.getElementById("userEventDeviceChoice").value;
+    AddUserEventAPI(userChoice,eventChoice,deviceChoice)
+}
+const Http = new XMLHttpRequest();
+function AddUserEventAPI(user_id, event_id, device_used_id){
+    // const media_url = "http://api.glimpsewearables.com/api/userevent/";
+    const user_event_url = "http://localhost:8000/api/userevent/";
+    var data = Http.open("POST", user_event_url, true);
+    Http.setRequestHeader('Content-type', 'application/json');
+    old_data = {
+        "user_id": user_id,
+        "event_id": event_id,
+        "device_used_id": device_used_id
+    }
+    put_data = JSON.stringify(old_data);
+    Http.send(put_data);
+}
+function deleteUserEvent(userEventId){
+    // const media_url = "http://api.glimpsewearables.com/api/media/";
+    const user_event_url = "http://localhost:8000/api/userevent/" + userEventId.toString() + "/";
+    var data = Http.open("DELETE", user_event_url, true);
+    Http.send();
+}
+
+
+
+function openEventContent(eventId){
+    location.replace("/viewEventMedia/" + eventId.toString());
+}
+function openDeviceContent(deviceId){
+    location.replace("/userPage/" + deviceId.toString());
+}
+</script>
+</html>

@@ -40,12 +40,6 @@ class Device(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
-class DeviceOwner(models.Model):
-    device_id = models.IntegerField()
-    user_id = models.IntegerField()
-    start_date = models.CharField(max_length = 45)
-    end_date = models.CharField(max_length = 45)
-
 class Event(models.Model):
     event_id = models.IntegerField()
     name = models.CharField(max_length = 245)
@@ -89,7 +83,10 @@ class Media(models.Model):
 
 class UserEvent(models.Model):
     user_id = models.IntegerField(default=False)
+    device_used_id = models.IntegerField(default=False)
+    # user_name = models.CharField(max_length = 245)
     event_id = models.IntegerField(default=False)
+    # event_name = models.CharField(max_length = 245)
 
 class MediaComment(models.Model):
     user_id = models.IntegerField(default=False)
