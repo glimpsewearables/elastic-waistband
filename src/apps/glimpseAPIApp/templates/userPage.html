@@ -215,6 +215,7 @@ button{
     margin-left: .45%;
     height: 40px;
     background-color: #212529;
+    color: #888;
 }
 #allContent{
     position: absolute;
@@ -234,6 +235,7 @@ button{
     <h1 style="text-align: center;">User {{device_number}}</h1>
     <div id="yourInformation">
         <h4 style="text-align: center;">Total Videos: {{total_vids}}</h4>
+        <input type="hidden" value="{{device_number}}" id="device_id_value">
     </div>
     <div class="allEvents">
         <h1 style="text-align: center;"> Available Events</h1>
@@ -250,9 +252,8 @@ button{
             {% endfor %}
         </div>
     </div>
-    <div class="allUsersContent" id="allContent">
-        <div id="my_events">
-            {% csrf_token %}
+    <div class="allUsersContent" id="allContent">           
+        {% csrf_token %}
             <div class="singleEventTab" id="mostRecent" style="display: none">
                 <h2 style="text-align:center">Most Recent</h2>
                 {% for video in most_recent %}
@@ -275,83 +276,6 @@ button{
                 </div>
                 {% endfor %}
             </div>
-            <div class="singleEventTab regularEvent" id="event1" style="display: none">
-                <h2 style="text-align:center">{{event1.eventInfo.name}}</h2>
-                {% for video in event1.videos %}
-                <div class="videoContainer">
-                    <video class="singleVideo event1Video" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
-                </div>
-                {% endfor %}    
-            </div>
-            <div class="singleEventTab regularEvent" id="event2" style="display: none">
-                <h2 style="text-align:center">{{event2.eventInfo.name}}</h2>
-                {% for video in event2.videos %}
-                <div class="videoContainer">
-                    <video class="singleVideo event2Video" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
-                </div>
-                {% endfor %}    
-            </div>
-            <div class="singleEventTab regularEvent" id="event3" style="display: none">
-                <h2 style="text-align:center">{{event3.eventInfo.name}}</h2>
-                {% for video in event3.videos %}
-                <div class="videoContainer">
-                    <video class="singleVideo event3Video" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
-                </div>
-                {% endfor %}    
-            </div>
-            <div class="singleEventTab regularEvent" id="event4" style="display: none">
-                <h2 style="text-align:center">{{event4.eventInfo.name}}</h2>
-                {% for video in event4.videos %}
-                <div class="videoContainer">
-                    <video class="singleVideo event4Video" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
-                </div>
-                {% endfor %}    
-            </div>
-            <div class="singleEventTab regularEvent" id="event5" style="display: none">
-                <h2 style="text-align:center">{{event5.eventInfo.name}}</h2>
-                {% for video in event5.videos %}
-                <div class="videoContainer">
-                    <video class="singleVideo event5Video" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
-                </div>
-                {% endfor %}    
-            </div>
-            <div class="singleEventTab regularEvent" id="event6" style="display: none">
-                <h2 style="text-align:center">{{event6.eventInfo.name}}</h2>
-                {% for video in event6.videos %}
-                <div class="videoContainer">
-                    <video class="singleVideo event6Video" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
-                </div>
-                {% endfor %}    
-            </div>
-            <div class="singleEventTab regularEvent" id="event7" style="display: none">
-                <h2 style="text-align:center">{{event7.eventInfo.name}}</h2>
-                {% for video in event7.videos %}
-                <div class="videoContainer">
-                    <video class="singleVideo event7Video" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                    <button class="featureButton" id="media{{video.id}}Button" onclick="featureThisMedia('{{video.id}}')">Favorite</button>
-                </div>
-                {% endfor %}    
-            </div>
         </div>
     </div>
 </div>
@@ -360,10 +284,11 @@ button{
     var allEventTabs = ['featuredContent', "mostRecent", "event1", "event2", "event3", "event4", "event5", "event6", "event7"]
     var allEventHeaders = ["event2Header","event1Header", "event3Header", "event4Header", "event5Header", "event6Header", "event7Header"]
     function openEvent(event_id){
+        var user_id = document.getElementById("device_id_value").value;
         if(event_id == "mostRecent" || event_id == "featuredContent"){
             var eventOpeningName = event_id.toString();
         } else {
-            var eventOpeningName = "event" + event_id.toString();
+            window.location.href = "/usersEventPage/" + event_id.toString() + "/" + user_id.toString();
         }
         for(i = 0; i < allEventTabs.length; i++){
             if(eventOpeningName == allEventTabs[i]){

@@ -65,6 +65,17 @@ def userPage(request, device_number):
             }
     return render(request, "userPage.html", context=this_users_event_content)
 
+def usersEventPage(request, eventId, userId):
+    context = {}
+    all_events = Event.objects.all()
+    this_user = User.objects.get(id = userId)
+    this_event = Event.objects.get(id = eventId)
+    this_event_content = Media.objects.filter(device_id = userId, event_id = eventId).order_by('-date', "-date_time")
+    context["media"] = this_event_content
+    context["this_event"] = this_event
+    context["all_events"] = all_events
+    context["this_user"] = this_user
+    return render(request, "userEventPage.html", context)
 
 # Break up all of the videos into segments of nine in order to deal with rendering issues for massive ammounts of videos in html
 def partitionVideos(request, event_id, device_id):

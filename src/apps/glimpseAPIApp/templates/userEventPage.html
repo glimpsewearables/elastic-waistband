@@ -3,12 +3,154 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{event.name}}}</title>
+    <title>{{this_event.name}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
 </head>
+<style>
+#headerImage{
+    width: 100%;
+    height: 100px;
+}
+#contentContainer{
+}
+.singleVideo{
+    width: 100%;
+}
+@media only screen and (max-width: 600px) {
+    .videoContainer{
+        width: 49%;
+        margin: 0;
+        display: inline-block;
+    }
+    .featureButton{
+        width: 100%;
+        font-size: 10px;
+    }
+}
+.videoContainer{
+    width: 32%;
+    margin-left: .5%;
+    display: inline-block;
+}
+.featureButton{
+    width: 40%;
+    background-color: #212529;
+    color: gray;
+    border-radius: 4px;
+}
+.changeButton{
+    width: 40%;
+    background-color: #212529;
+    color: gray;
+    border: none;
+    border-radius: 4px;
+}
+.buttons{
+    display: flex
+}
+.blink_me {
+  animation: blinker 1.5s linear infinite;
+  background-color: #888;
+  border-radius: 3px;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0.2;
+  }
+}
+</style>
 <body>
-    
+    <div id="mainContainer">
+        <div id="navBarHeader">
+            <input id="eventIdValue" value="{{this_event.id}}" type="hidden">
+            <input id="userIdValue" value="{{this_user.id}}" type="hidden">
+        </div>
+        <div id="eventHeader">
+            <img id="headerImage" src="{{this_event.header_image}}">
+            <h2 style="text-align: center">{{this_event.name}}</h2>
+        </div>
+        <div id="contentContainer">
+            {% for this_media in media %}
+            {% csrf_token %}
+            <div class="videoContainer">
+                <video class="singleVideo mostRecentVideo" controls>
+                    <source src="{{this_media.link}}" type="video/mp4">
+                </video>
+                <div class="buttons">
+                    <input type="number" max="5" min="0" value="{{this_media.user_rating}}" id="videoCur{{this_media.id}}" class="changeButton" onclick="inputTouch('{{this_media.id}}')">
+                    <button class="changeButton" id="changeButton{{this_media.id}}" onclick="updateCuratorMediaRating('{{this_media.id}}')">Change</button>
+                    <button class="featureButton" id="media{{this_media.id}}Button" onclick="featureThisMedia('{{this_media.id}}')">Favorite</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="footer">
+
+        </div>
+    </div>
 </body>
+<script>
+    function featureThisMedia(media_id){
+    addFeaturedTpAPI(media_id);
+    var button = document.getElementById("media" + media_id + "Button");
+    button.innerHTML = "reload page";
+    button.style.backgroundColor ="transparent";
+    }
+    function unfeatureThisMedia(media_id){
+        removeFeaturedToAPI(media_id);
+        var button = document.getElementById("media" + media_id + "ButtonFeat");
+        button.innerHTML = "reload page";
+        button.style.backgroundColor ="transparent";
+    }
+    const Http = new XMLHttpRequest();
+    function addFeaturedTpAPI(media_id){
+        const media_url = "http://api.glimpsewearables.com/api/media/";
+        const media_url_id = media_url + media_id + "/";
+        console.log(media_url_id);
+        var data = Http.open("PATCH", media_url_id, true);
+        Http.setRequestHeader('Content-type', 'application/json');
+        old_data = {
+            "featured": 1
+        }
+        put_data = JSON.stringify(old_data);
+        Http.send(put_data);
+    }
+    function removeFeaturedToAPI(media_id){
+        const media_url = "http://api.glimpsewearables.com/api/media/";
+        const media_url_id = media_url + media_id + "/";
+        console.log(media_url_id);
+        var data = Http.open("PATCH", media_url_id, true);
+        Http.setRequestHeader('Content-type', 'application/json');
+        old_data = {
+            "featured": 0
+        }
+        put_data = JSON.stringify(old_data);
+        Http.send(put_data);
+    }
+    function inputTouch(mediaId){
+        var button = document.getElementById("changeButton" + mediaId);
+        button.classList.add("blink_me");
+    }
+    function updateCuratorMediaRating(mediaId){
+        var curatorRanking = document.getElementById("videoCur" + mediaId);
+        var button = document.getElementById("changeButton" + mediaId);
+        button.classList.remove("blink_me");
+        var value = curatorRanking.value;
+        updateMediaCuratorAPI(mediaId, value);
+    }
+    function updateMediaCuratorAPI(media_id, new_curator_rating){
+        const media_url = "http://api.glimpsewearables.com/api/media/";
+        // const media_url = "http://localhost:8000/api/media/";
+        const media_url_id = media_url + media_id + "/";
+        console.log(media_url_id);
+        var data = Http.open("PATCH", media_url_id, true);
+        Http.setRequestHeader('Content-type', 'application/json');
+        old_data = {
+            "user_rating": new_curator_rating
+        }
+        put_data = JSON.stringify(old_data);
+        Http.send(put_data);
+    }
+</script>
 </html>

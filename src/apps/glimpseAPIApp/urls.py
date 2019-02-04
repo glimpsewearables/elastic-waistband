@@ -56,6 +56,7 @@ urlpatterns = [
     url(r'^login$', rendering.login),
     url(r'^browsing$', rendering.browsing),
     url(r'^userPage/(?P<device_number>\d+)$', rendering.userPage),
+    url(r'^usersEventPage/(?P<eventId>\d+)/(?P<userId>\d+)$', rendering.usersEventPage),
     url(r'^artistPage/(?P<artist_id>\d+)$', rendering.artistPage),
     url(r'^adminLogin$', rendering.adminLogin),
     url(r'^adminPage$', rendering.adminPage),

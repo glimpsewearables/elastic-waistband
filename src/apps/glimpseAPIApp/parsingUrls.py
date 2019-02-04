@@ -1,8 +1,8 @@
 import boto3, csv, json
 import botocore
 import requests, datetime
-from django.db import models
-from .models import User, Device, Event, Media, MediaComment
+# from django.db import models
+# from .models import User, Device, Event, Media, MediaComment
 
 client = boto3.client('s3') #low-level functional API
 resource = boto3.resource('s3') #high-level object-oriented API
@@ -12,7 +12,7 @@ v2_raw_bucket = resource.Bucket('users-raw-content')
 v2_edited_bucket = resource.Bucket('users-edited-content') 
 
 
-def uploadToS3():
+# def uploadToS3():
     
 
 def fromDatabase():
@@ -67,8 +67,9 @@ def fromS3():
         print " the user id is " + userId + ". With a media_type of " + media_type + ". Date is " + date + ", time of " + dateTimeOf
 # fromS3()
 
-# def checkDateTime():
-#     now = datetime.datetime.now().time()
-#     today = datetime.date.today()
-#     print now
-# checkDateTime()
+def checkDateTime():
+    now = datetime.datetime.now().time()
+    today = datetime.date.today()
+    print now
+    print today
+checkDateTime()
