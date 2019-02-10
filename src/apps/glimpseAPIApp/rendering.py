@@ -25,6 +25,11 @@ def login(request):
 
 def browsing(request):
     context = {}
+    all_events = Event.objects.all()
+    all_artists = Artist.objects.all()
+    
+    context["events"] = all_events
+    context["artists"] = all_artists
     return render(request, "browsing.html", context)
 
 def userPage(request, device_number):

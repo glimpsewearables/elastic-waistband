@@ -211,17 +211,36 @@ button{
     display: inline;
 }
 .featureRecentButton{
-    width: 49%;
-    margin-left: .45%;
+    width: 50%;
     height: 40px;
     background-color: #212529;
     color: #888;
+}
+.featureFavoriteButton{
+    position: absolute;
+    right: 0px;
+    width: 50%;
+    height: 40px;
+    background-color: #212529;
+    color: #888;
+}
+button:hover{
+    opacity: 0.8;
 }
 #allContent{
     position: absolute;
 }
 .hiddenOnLoad{
     display: none;
+}
+.centered{
+    width: 100%;
+}
+#glimpseImage{
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 /* .eventButton{
 
@@ -232,16 +251,16 @@ button{
     <div style="z-index:5">
         {% include 'header.html'  %}
     </div>
-    <h1 style="text-align: center;">User {{device_number}}</h1>
+    <a href="/" class="centered">
+        <img src="https://s3-us-west-2.amazonaws.com/users-edited-content/profile_pics/user1_image_profile_GlimpseCam.jpg" id="glimpseImage">
+    </a>
+    <h1 style="text-align: center;">Device {{device_number}}</h1>
     <div id="yourInformation">
-        <h4 style="text-align: center;">Total Videos: {{total_vids}}</h4>
         <input type="hidden" value="{{device_number}}" id="device_id_value">
     </div>
     <div class="allEvents">
-        <h1 style="text-align: center;"> Available Events</h1>
         <button class="eventButton featureRecentButton" onclick="openEvent('mostRecent')">Recent</button>
-        <button class="eventButton featureRecentButton" onclick="openEvent('featuredContent')">Favorited</button>
-        <hr>
+        <button class="eventButton featureFavoriteButton" onclick="openEvent('featuredContent')">Favorited</button>
         <div id="allEventHeaders">
             {% for event in all_events %}
             {% csrf_token %}
@@ -308,10 +327,10 @@ button{
         }
     }
     function fixEventHeaders(){
-        var lastLeftTop = 330;
-        var trackLeft = 330;
-        var lastRightTop = 300;
-        var trackRight = 330;
+        var lastLeftTop = 199;
+        var trackLeft = 199;
+        var lastRightTop = 199;
+        var trackRight = 199;
         for(var i = 0; i < allEventHeaders.length - 1; i++){
             thisEventHeader = document.getElementById(allEventHeaders[i]);
             thisEventHeaderCaption = document.getElementById(allEventHeaders[i] + "Caption");

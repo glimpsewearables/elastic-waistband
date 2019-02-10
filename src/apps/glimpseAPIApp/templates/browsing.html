@@ -4,9 +4,545 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Welcome To Glimpse</title>
+    {% load static from staticfiles%}
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/browsing.css' %}">
+    <!-- Flickity for video caresoul -->
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+    <script src="https://unpkg.com/flickity@2/dist/flickity.pkgd.min.js"></script>
 </head>
 <body>
-    
+    <div id="allHiddenTeamMemberInfo">
+        <div id="KeeganHiddenInfo" class="hiddenTeamInfo">
+            <button onclick="closeTeamMemberInfo('Keegan')" class="closeButton">Close</button>
+            <h1 class="hiddenInfoName">Keegan Jordan</h1>
+            <h3 class="hiddenInfoName">CTO</h3>
+            <div class="teamMemberGlimpseInfo">
+                <p>
+                    Keegan is the team lead for all software within the GlimpseWearables company, iOS development, Web Development, Android Developement, and production code for the devices.
+                </p>
+            </div>
+            <div class="teamMemberPersonalInfo">
+                <p>
+                    When Keegan isn't working, he enjoys driving fast cars and traveling the country.
+                </p>
+            </div>
+            <div class="teamMemberProfessionalInfo">
+                <p>
+                    Keegan graduated in the spring of 2019 from the University of Washington with a Bachelor of Science in Computer Science Engineering.
+                </p>
+                <p>
+                    During the summer of 2018, he lived in San Fransisco working for Pinterest where he was working on database management and converting their previous code base from Python into Java.
+                </p>
+                <p>
+                    Upon finishing his internship with Pinterest, he was offered a full time position with the company based out of Seattle where he will be working in the Fall of 2019.
+                </p>
+            </div>
+        </div>
+        <div id="JustinHiddenInfo" class="hiddenTeamInfo">
+            <button onclick="closeTeamMemberInfo('Justin')" class="closeButton">Close</button>
+            <h1 class="hiddenInfoName">Justin Ngo</h1>
+            <h3 class="hiddenInfoName">Official Role</h3>
+            <div class="teamMemberGlimpseInfo">
+                <p>
+                   Information about Justins role in Glimpse
+                </p>
+            </div>
+            <div class="teamMemberPersonalInfo">
+                <p>
+                    Personal Information about Justin
+                </p>
+            </div>
+            <div class="teamMemberProfessionalInfo">
+                <p>
+                    Educational Info About Justin
+                </p>
+                <p>
+                    Professional Info About Justin
+                </p>
+                <p>
+                    More Professional Info about Justin
+                </p>
+            </div>
+        </div>
+        <div id="WoodyHiddenInfo" class="hiddenTeamInfo">
+            <button onclick="closeTeamMemberInfo('Woody')" class="closeButton">Close</button>
+            <h1 class="hiddenInfoName">Woody Fuller</h1>
+            <h3 class="hiddenInfoName">Official Role</h3>
+            <div class="teamMemberGlimpseInfo">
+                <p>
+                    Information about Woodys role in Glimpse
+                </p>
+            </div>
+            <div class="teamMemberPersonalInfo">
+                <p>
+                    Personal Information about Woody
+                </p>
+            </div>
+            <div class="teamMemberProfessionalInfo">
+                <p>
+                    Educational Info About Woody
+                </p>
+                <p>
+                    Professional Info About Woody
+                </p>
+                <p>
+                    More Professional Info about Woody
+                </p>
+            </div>
+        </div>
+        <div id="ClaytonHiddenInfo" class="hiddenTeamInfo">
+            <button onclick="closeTeamMemberInfo('Clayton')" class="closeButton">Close</button>
+            <h1 class="hiddenInfoName">Clayton Novotney</h1>
+            <h3 class="hiddenInfoName">Official Role</h3>
+            <div class="teamMemberGlimpseInfo">
+                <p>
+                    Information about CLayton role in Glimpse
+                </p>
+            </div>
+            <div class="teamMemberPersonalInfo">
+                <p>
+                    Personal Information about Clayton
+                </p>
+            </div>
+            <div class="teamMemberProfessionalInfo">
+                <p>
+                    Educational Info About Clayton
+                </p>
+                <p>
+                    Professional Info About Clayton
+                </p>
+                <p>
+                    More Professional Info about Clayton
+                </p>
+            </div>
+        </div>
+        <div id="DylanHiddenInfo" class="hiddenTeamInfo">
+            <button onclick="closeTeamMemberInfo('Dylan')" class="closeButton">Close</button>
+            <h1 class="hiddenInfoName">Dylan rose</h1>
+            <h3 class="hiddenInfoName">CEO</h3>
+            <div class="teamMemberGlimpseInfo">
+                <p>
+                    Information about Dylans role in Glimpse
+                </p>
+            </div>
+            <div class="teamMemberPersonalInfo">
+                <p>
+                    Personal Information about Dylan
+                </p>
+            </div>
+            <div class="teamMemberProfessionalInfo">
+                <p>
+                    Educational Info About Dylan
+                </p>
+                <p>
+                    Professional Info About Dylan
+                </p>
+                <p>
+                    More Professional Info about Dylan
+                </p>
+            </div>
+        </div>
+    </div>
+    <div id="mainContainer">
+        <div id="headerHeader">
+            <div id="headerLeft">
+                <h1>GlimpseWearables</h1>
+            </div>
+            <div id="headerRight">
+                <button class="navBarButton" onclick="scrollToContainer('about')">About</button>
+                <button class="navBarButton" onclick="scrollToContainer('events')">Events</button>
+                <button class="navBarButton" onclick="scrollToContainer('devices')">Devices</button>
+                <button class="navBarButton" onclick="scrollToContainer('members')">Members</button>
+                <button class="navBarButton" onclick="scrollToContainer('team')">Team</button>
+            </div>
+        </div>
+        <header id="headerContainer" class="masthead" style="text-align:center;">
+            <div id="glimpseLoadingInfo">
+                <strong class="strongTitle">You pick the moment, we'll capture it</strong>
+            </div>
+            <button id="checkoutMoreButton" class="buttonCustom" onclick="scrollToContainer('about')">Check it</button>
+        </header>
+        <div id="bodyContainer">
+            <div id="aboutContainer" class="regContainer">
+                <h1 class="containerHeader">What is Glimpse?</h1>
+                <hr class="titleUnderLineBlack">
+                <p class="paragraphOne">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
+                <p class="paragraphTwo">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                </p>
+            </div>
+            <div id="eventsContainer" class="regContainer">
+                <h1 class="containerHeader">Our Events</h1>
+                <hr class="titleUnderLineBlack">
+                <div class="regInnerContainer">
+                    <p class="paragraphOne">
+                        As a company, we have done user and device testing at 6 concerts and festivals where we were able to collect live data from our devices.
+                    </p>
+                    <p class="paragraphTwo">
+                        With each event that we have gone to, we have learned a lot about the devices we have created, the experiences that our users have had, and the endless possibilities that our technologies bring to the music industry.
+                    </p> 
+                    <p class="paragraphTwo">   
+                        We have the goal starting February 1st to attend at least one 1 concert a week to continue testing devices and get feedback from our users.
+                    </p>
+                    <button class="eventButton" onclick="openEventContainer('GlimpseTesting')">Glimpse Testing</button>
+                    <button class="eventButton" onclick="openEventContainer('CapitolRecords')">Capitol Records</button>
+                    <button class="eventButton" onclick="openEventContainer('BumberShoot')">Bumber Shoot</button>
+                    <button class="eventButton" onclick="openEventContainer('LollaPalooza')">Bumber Shoot</button>
+                    <button class="eventButton" onclick="openEventContainer('LouisTheChild')">Louis The Child</button>
+                    <button class="eventButton" onclick="openEventContainer('AlanWalker')">Alan Walker</button>
+                    <button class="eventButton" onclick="openEventContainer('TwoFriends')">Two Friends</button>
+                    <button class="eventButton" onclick="openEventContainer('TravisScott')">Travis Scott</button>
+                </div>
+            </div>
+            <div id="AllContentContainer" class="regContainer" style="margin-top:-3%;">
+                <h1 class="containerHeader">Device Content</h1>
+                <div class="carousel" data-flickity='{ "wrapAround": true }'>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user6_video_2018-12-01_17.15.41.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user6_video_2018-12-01_17.10.42.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user1_video_2018-12-02_07.25.08.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user1_video_2018-12-02_07.23.07.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user1_video_2018-12-02_20.21.41.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user6_video_2019-02-07_19.06.34.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user1_video_2018-12-02_07.38.15.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user6_video_2018-12-01_15.12.24.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user6_video_2018-12-01_15.16.06.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user6_video_2018-12-01_15.18.13.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user6_video_2018-12-01_18.29.35.mp4" type="video/mp4">
+                    </video>   
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user6_video_2018-12-01_17.18.04.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user1_video_2018-12-02_07.43.38.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user1_video_2018-12-02_08.06.17.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user6_video_2019-02-07_17.36.39.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user3_video_2019-02-06_18.17.43.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user3_video_2019-02-06_18.01.45.mp4" type="video/mp4">
+                    </video>   
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user5_video_2019-02-02_18.11.27.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user5_video_2019-02-02_18.34.03.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user5_video_2019-02-02_18.29.42.mp4" type="video/mp4">
+                    </video>
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user5_video_2019-02-02_18.33.03.mp4" type="video/mp4">
+                    </video> 
+                    <video class="carousel-cell" controls >
+                        <source src="https://s3-us-west-2.amazonaws.com/users-raw-content/user5_video_2019-02-02_18.12.24.mp4" type="video/mp4">
+                    </video>  
+                </div>
+            </div>
+            <div id="devicesContainer" class="regContainer">
+                <h1 class="containerHeader">The Tech</h1>
+                <hr class="titleUnderLineBlack">
+                <div class="regInnerContainer" style="display: flex;">
+                    <div class="regContainerLeftSide">
+                        <p class="paragraphOne">
+                            Our Devices are Wicked
+                        </p>
+                        <p class="paragraphTwo">
+                            Capable of patented "RetroActive Recording", our devices are able to record 15 seconds before and after you click the record button.
+                        </p> 
+                        <p class="paragraphTwo">   
+                            Along with the retroactive recording, each device is capable of live streaming 32 FPS 720p video to our platform.
+                        </p>
+                        <p class="paragraphTwo"> 
+
+                        </p>
+                    </div>
+                    <div class="regContainerRightSide">
+                        <img src="{% static 'img/tableDevices1.jpg' %}" class="techImage">
+                    </div>
+                </div>
+            </div>
+            <div id="membersContainer" class="regContainer" style="margin-top:-5%;">
+                <h1 class="containerHeader">Members</h1>
+                <hr class="titleUnderLineBlack">
+                <div id="membersInfoArea">
+                    <p class="paragraphOne">
+                        The members that are involved in Glimpsewearables can be catergorized as two different types of people. 
+                        <span class="clickableWord" onclick="scrollToContainer('users')">User</span> and <span class="clickableWord" onclick="scrollToContainer('artists')">Artists</span>
+                    </p>
+                    <p class="paragraphTwo">
+                        The <span class="clickableWord" onclick="scrollToContainer('users')">User</span> is an every day concert goer or groupie that attends a concert while wearing our headband, capturing their experience on our devices and having their media available on the platform we have created for them.
+                    </p>
+                    <p class="paragraphTwo">    
+                        Meanwhile the <span class="clickableWord" onclick="scrollToContainer('artists')">Artists</span> are getting ALL of the content captured from the attendees perspective that they would not have access to without our services/devices. 
+                        Artists, or whoever is in charge of the artist content, have access to the data we are visualizing and categorizing that has never before been captured and quanitified.
+                    </p>
+                </div>
+                <div id="usersContainer" class="regContainer">
+                    <h1 class="containerHeader">The User Experience</h1>
+                    <hr class="titleUnderLineBlack">
+                    <div class="regContainerLeftSide" style="z-index: 2;">
+                        <p class="paragraphOne" style="margin-top: 2%; margin-right:-3%;">
+                            In the Alpha phase that we are in right now, we are focusing on our concert goers that are wearing the headbands to the concerts of their choice.
+                        </p>
+                        <p class="paragraphOne" style="margin-top: 2%; margin-right:1%; z-index: 2;">
+                            Our Users/Device Testers are able to capture content at a concert that they would normally have to pull their phone out to record, 
+                            taking their eyes off that precious moment they will never get back.
+                            After the concert, instead of sifting through hours of mediocre content on their phone, each user recieves the BEST moments they recorded,
+                            and a montage with the best moments from the concert personally curated by our team.
+                        </p>
+                        <p class="paragraphOne" style="margin-top: 3%; margin-right:2%;">
+                            As we continue to grow as a company, our user base will expand from the device testers, to anyone that is interested in viewing the content that we are capturing at each event.
+                        </p>
+                        <p class="paragraphTwo">
+                            The current site you are on right now is by NO MEANS the site that our users are going to use to view their concert content from themselves and their friends. 
+                            We are developing a much nicer site for our users to view their content on. 
+                            This is simply a intermediary site that we are using while the users site is being created.
+                        </p>
+                    </div>
+                    <div class="regContainerRightSide">
+                        <img src="{% static 'img/RyanHeadBand.png' %}" id="ryanImage">
+                    </div>
+                </div>
+                <div id="artistsContainer" class="regContainer">
+                    <h1 class="containerHeader">The Artist Experience</h1>
+                    <hr class="titleUnderLineBlack">
+                    <p class="paragraphOne">
+
+                    </p>
+                    <p class="paragraphTwo">
+
+                    </p>
+                </div>
+                <div id="adminContainer" class="regContainer">
+                    <h1 class="containerHeader">Admin</h1>
+                    <hr class="titleUnderLineBlack">
+                    <p class="paragraphOne">
+                        You are currently in the Admin Portal of the API. This is where we have access to all of the information that is being stored in the database
+                    </p>
+                    <p class="paragraphTwo">
+                        We are currently polishing up the Backend Services that are the API, while simultaniously creating a high quality web application dedicated to the everyday User/Artist and Guest of the site.
+                    </p>
+                </div>
+                <div id="metricsContainer" class="regContainer">
+                    <h1 class="containerHeader">Metrics</h1>
+                    <hr class="titleUnderLineBlack">
+                    <p class="paragraphOne">
+                        The amount of data that we are collecting for each concert has never been seen before!
+                    </p>
+                    <p class="paragraphTwo">
+                        We are able to not only track the points in a concert that the fans loved, but are able to get 30+ different views of that exact moment when the entire crowd went wild.
+                    </p>
+                </div>
+            </div>
+            <div id="teamContainer" class="regContainer">
+                <h1 class="containerHeader">The Team</h1>
+                <div id="teamInfoContainer">
+                    <div id="dylanInfo" class="teamMemberInfo">
+                        <h3 class="teamMemberName">Dylan</h3>
+                        <div class="teamMemberImageArea">
+                            <img class="teamMemberImage" src="{% static 'img/peoplePics/DylanRoseLinkedIn.jpg' %}" onmouseover="displayName('Dylan')"  onclick="openTeamMemberInfo('Dylan')" onmouseout="undisplayName('Dylan')" id="DylanImage">
+                            <div class="backgroundImageText" id="DylanImageText">CEO</div>
+                        </div>
+                        <div class="teamMemberContactArea">
+                            <a href="">Linked In</a>
+                            <a href="">Email</a>
+                            <a href="">Phone</a>
+                        </div>
+                    </div>
+                    <div id="claytonInfo" class="teamMemberInfo">
+                        <h3 class="teamMemberName">Clayton</h3>
+                        <div class="teamMemberImageArea">
+                            <img class="teamMemberImage" src="{% static 'img/peoplePics/croppedClaytonSki.jpg' %}" onmouseover="displayName('Clayton')" onclick="openTeamMemberInfo('Clayton')" onmouseout="undisplayName('Clayton')" id="ClaytonImage">
+                            <div class="backgroundImageText" id="ClaytonImageText">Software Engineer</div>
+                        </div>
+                        <div class="teamMemberContactArea">
+                            <a href="">Linked In</a>
+                            <a href="">Email</a>
+                            <a href="">Phone</a>
+                        </div>
+                    </div>
+                    <div id="woodyInfo" class="teamMemberInfo">
+                        <h3 class="teamMemberName">Woody</h3>
+                        <div class="teamMemberImageArea">
+                            <img class="teamMemberImage" src="{% static 'img/peoplePics/WoodyFullerLinkedIn.jpeg' %}" onmouseover="displayName('Woody')" onclick="openTeamMemberInfo('Woody')" onmouseout="undisplayName('Woody')" id="WoodyImage">
+                            <div class="backgroundImageText" id="WoodyImageText">Business Advisor</div>
+                        </div>
+                        <div class="teamMemberContactArea">
+                            <a href="">Linked In</a>
+                            <a href="">Email</a>
+                            <a href="">Phone</a>
+                        </div>
+                    </div>
+                    <div id="justinInfo" class="teamMemberInfo">
+                        <h3 class="teamMemberName">Justin</h3>
+                        <div class="teamMemberImageArea">
+                            <img class="teamMemberImage" src="{% static 'img/peoplePics/JustinNgoLinkedIn.jpeg' %}" onmouseover="displayName('Justin')" onclick="openTeamMemberInfo('Justin')" onmouseout="undisplayName('Justin')" id="JustinImage">
+                            <div class="backgroundImageText" id="JustinImageText">Device Engineer</div>
+                        </div>
+                        <div class="teamMemberContactArea">
+                            <a href="">Linked In</a>
+                            <a href="">Email</a>
+                            <a href="">Phone</a>
+                        </div>
+                    </div>
+                    <div id="keeganInfo" class="teamMemberInfo">
+                        <h3 class="teamMemberName">Keegan</h3>
+                        <div class="teamMemberImageArea">
+                            <img class="teamMemberImage" src="{% static 'img/peoplePics/KeeganJordanLinkedIn.jpeg' %}" onmouseover="displayName('Keegan')" onclick="openTeamMemberInfo('Keegan')" onmouseout="undisplayName('Keegan')" id="KeeganImage">
+                            <div class="backgroundImageText" id="KeeganImageText">Software Engineer</div>
+                        </div>
+                        <div class="teamMemberContactArea">
+                            <a href="">Linked In</a>
+                            <a href="">Email</a>
+                            <a href="">Phone</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer id="footerContainer">
+
+        </footer>
+    </div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+var allEvents = ["LouisTheChildContainer", "TwoFriendsContainer", "AlanWalkerContainer", "CapitolRecordsContainer", "GlimpseTestingContainer"]
+function openEventContainer(eventName){
+    scrollToContainer("AllContent");
+    // eventContainerName = eventName + "Container";
+    // for(var i = 0; i < allEvents.length; i++){
+    //     if(allEvents[i] == eventContainerName){
+    //         document.getElementById(allEvents[i]).classList.add("regContainer");
+    //         document.getElementById(allEvents[i]).classList.remove("hideContainer");
+    //     } else {
+    //         document.getElementById(allEvents[i]).classList.remove("regContainer");
+    //         document.getElementById(allEvents[i]).classList.add("hideContainer");
+    //     }
+    // }
+}
+
+function scrollToContainer(containerName){
+    var toScrollTo = containerName + "Container";
+    if(containerName == "members"){
+        document.getElementById(toScrollTo).scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"});
+    } else {
+        document.getElementById(toScrollTo).scrollIntoView({behavior: "smooth", block: "center", inline: "nearest"});
+    }
+}
+function displayName(name){
+    var elementName = name + "Image";
+    var thisImage = document.getElementById(elementName);
+    thisImage.style.opacity = "0.75";
+    var thisImageTextName = elementName + "Text"
+    var thisImageText = document.getElementById(thisImageTextName);
+    if(name == "Dylan"){
+        thisImageText.style.color = "black";
+    }
+    thisImageText.classList.add("backgroundImageTextActive")
+}
+function undisplayName(name){
+    var elementName = name + "Image";
+    var thisImage = document.getElementById(elementName);
+    thisImage.style.opacity = "1.0";
+    var thisImageTextName = elementName + "Text"
+    var thisImageText= document.getElementById(thisImageTextName);
+    thisImageText.classList.remove("backgroundImageTextActive")
+}
+function openTeamMemberInfo(name){
+    var openingElement = document.getElementById(name + "HiddenInfo")
+    openingElement.classList.add("showingTeamInfo");
+    openingElement.classList.remove("hiddenTeamInfo");
+    var entireContainer = document.getElementById("mainContainer");
+    $('body').addClass('stop-scrolling');
+}
+function closeTeamMemberInfo(name){
+    var closingElement = document.getElementById(name + "HiddenInfo")
+    closingElement.classList.remove("showingTeamInfo");
+    closingElement.classList.add("hiddenTeamInfo");
+    var entireContainer = document.getElementById("mainContainer");
+    $('body').removeClass('stop-scrolling');
+}
+// var allEventTabs = ['featuredContent', "mostRecent", "event1", "event2", "event3", "event4", "event5", "event6", "event7"];
+// var allEventHeaders = ["event2Header","event1Header", "event3Header", "event4Header", "event5Header", "event6Header", "event7Header"];
+// function getEventHeaderStart(){
+//     var rec = document.getElementById("featuredContentContainer").getBoundingClientRect;
+//     console.log(rec);
+//     return rec.top + window.scrollY;
+// };
+// function fixEventHeaders(){
+//     var lastLeftTop = 199;
+//     var trackLeft = 199;
+//     var lastRightTop = 199;
+//     var trackRight = 199;
+//     for(var i = 0; i < allEventHeaders.length - 1; i++){
+//         thisEventHeader = document.getElementById(allEventHeaders[i]);
+//         thisEventHeaderCaption = document.getElementById(allEventHeaders[i] + "Caption");
+//         thisHeight = thisEventHeader.height;
+//         if(i % 2 == 0){
+//             thisEventHeader.classList.add("left");
+//             thisEventHeaderCaption.classList.add("left");
+//             thisEventHeader.style.top = trackLeft.toString() + "px";
+//             thisEventHeaderCaption.style.top = trackLeft.toString() + "px";
+//             trackLeft += thisHeight;
+//         } else {
+//             thisEventHeader.classList.add("right");
+//             thisEventHeaderCaption.classList.add("right");
+//             thisEventHeader.style.top = trackRight.toString() + "px";
+//             thisEventHeaderCaption.style.top = trackRight.toString() + "px";
+//             trackRight += thisHeight;
+//         }
+//     }
+//     maxBottom = Math.max(trackLeft, trackRight);
+//     document.getElementById("allContent").style.top = maxBottom.toString() + "px";
+// }
+// window.onload = function () { 
+//     fixEventHeaders();
+// }
+// $( window ).resize(function() {
+//     fixEventHeaders();
+// });
+// function addEventName(eventId){
+//     var thisCaption = document.getElementById("event" + eventId + "HeaderCaption");
+//     thisCaption.style.transition = "opacity .5s";
+//     thisCaption.style.display = "block";
+// }
+// function removeEventName(eventId){
+//     var thisCaption = document.getElementById("event" + eventId + "HeaderCaption");
+//     thisCaption.style.transition = "opacity .5s";
+//     thisCaption.style.display = "none";
+// }
+
+</script>
 </html>

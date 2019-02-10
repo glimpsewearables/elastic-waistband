@@ -336,6 +336,17 @@ def updateDatabase(request):
             start_time = "20:00:00",
             header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event6_header_HippieSabotage.jpg"
         )
+        Event.objects.create(
+            name = "LollaPalooza",
+            event_id = 7,
+            lat = 41.8742,
+            long = 87.6208,
+            address = "Grant Park, Chicago",
+            start_date = "2018-08-02",
+            end_date = "2018-08-05",
+            start_time = "12:00:00",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event7_header_LollaPalooza.png"
+        )
     # This function is the most important for updating the database, checking to see if all of the images
     # that are in the s3 database are accounted for in the sql database
     for data in thisUsersContentRaw:
@@ -377,6 +388,8 @@ def updateDatabase(request):
                 event_id = 5
             elif dateOf == "2019-02-09":
                 event_id = 6
+            elif dateOf == "2018-08-02" or dateOf == "2018-08-03" or dateOf =="2018-08-04" or dateOf == "2018-08-05":
+                event_id = 7
         # If else statement that helps decide whether or not this media type is a image or video
             if (not UserEvent.objects.filter(user_id = userId, event_id = event_id)) and event_id != 1 and event_id != 0:
                 UserEvent.objects.create(
@@ -451,6 +464,8 @@ def updateDatabase(request):
                     event_id = 5
                 elif dateOf =="2019-02-09":
                     event_id = 6
+                elif dateOf == "2018-08-02" or dateOf == "2018-08-03" or dateOf =="2018-08-04" or dateOf == "2018-08-05":
+                    event_id = 7
                 Media.objects.create(
                     user_id = int(userId),
                     device_id = int(userId),
