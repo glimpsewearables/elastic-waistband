@@ -136,6 +136,15 @@ header.masthead {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+.titleUnderLineWhite{
+    background-color: #E4DFDA; 
+    border: 3px solid #E4DFDA;
+    border-radius: 1px;
+    width: 5%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 #glimpseTitle{
     width: 100%;
     position: absolute;
@@ -148,9 +157,15 @@ header.masthead {
     width: 100%;
     text-align: center
 }
-.strongTitle{
+.landingTitle{
     font-size: 70px;
     color: #E4DFDA;
+    text-align: center;
+    width:100%;
+}
+.strongTitle{
+    font-size: 50px;
+    color: #404040;
     text-align: center;
     width:100%;
 }
@@ -168,6 +183,19 @@ header.masthead {
 .techImage{
     width: 100%;
 }
+#hiddenImage {
+    /* display: none; */
+    position: relative;
+    transition-duration: 500ms;
+    z-index: 1;
+}
+#hiddenImage:hover{
+    opacity: 0.0;
+    transition-duration: 500ms;
+}
+.imageBottom{
+    transform: translateY(-101%);
+}
 .hideContainer{
     display: none;
 }
@@ -177,6 +205,8 @@ header.masthead {
 .regContainerLeftSide{
     width: 60%;
     padding: 3%;
+    position: relative;
+    display: inline-block;
 }
 .regContainerRightSide{
     width: 40%;
@@ -188,12 +218,6 @@ header.masthead {
     right: 0%;
     transform: translateY(-800px);
     z-index: 1;
-}
-#aboutContainer{
-    margin-top: 100px;
-}
-#eventsContainer{
-    background-color: #D4B483;
 }
 .paragraphOne{
     margin-top: 6%;
@@ -232,8 +256,18 @@ header.masthead {
     color: #585858;
     font-size: 120%;
 }
+#aboutContainer{
+    margin-top: 100px;
+}
+#eventsContainer{
+    background-color: #48A9A6; 
+}
+#AllContentContainer{
+
+}
 #devicesContainer{
-    background-color: #48A9A6;  
+    background-color: #D4B483;
+    height: 500px;
 }
 #artistsContainer{
     background-color: #48A9A6;
@@ -261,15 +295,22 @@ header.masthead {
     width: 100%;
     display: flex;
 }
-#footerContainer{
-    height: 300px;
-}
 .teamMemberInfo{
     width: 20%;
     text-align: center;
     color: black;
 }
-.personalInfoText{
+.teamMemberGlimpseInfo{
+    margin: 5%;
+    text-align: center;
+}
+.teamMemberJoined{
+    margin: 3%;
+}
+.teamMemberName{
+    z-index: 3;
+}
+.teamMemberpersonalInfo{
     color: grey;
     text-align: left;
     margin-left: 5px;
@@ -305,15 +346,16 @@ header.masthead {
 }
 .hiddenTeamInfo{
     display: none;
+    padding-top: 5%;
 }
 .showingTeamInfo{
     position: fixed;
     top: 110px;
     display: block;
-    width: 70%;
-    height: 300px;
-    margin-left: 15%;
-    margin-right: 15%; 
+    width: 50%;
+    height: 50%;
+    margin-left: 25%;
+    margin-right: 25%; 
     background-color: #D4B483;
     transition-duration: 2s;
     border-radius: 3%;
@@ -325,8 +367,13 @@ header.masthead {
 }
 .closeButton{
     position: absolute;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    width: 5%;
     right: 15px;
     top: 15px;
+    cursor: pointer;
 }
 .hiddenInfoName{
     text-align: center;
@@ -356,3 +403,74 @@ header.masthead {
   font-size: 80px;
   color: white;
 }
+
+/* Social Contact Container */
+.personalContactInformation{
+    width: 75%;
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+}
+.fa{
+    color: #404040;
+    margin-left: 5%;
+    margin-right: 5%;
+    font-size:36px;
+}
+
+.hvr-grow {
+    display: inline-block;
+    vertical-align: middle;
+    transform: translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    backface-visibility: hidden;
+    -moz-osx-font-smoothing: grayscale;
+    transition-duration: 0.3s;
+    transition-property: transform;
+}
+
+.hvr-grow:hover,
+.hvr-grow:focus,
+.hvr-grow:active {
+    transform: scale(1.1);
+}
+
+
+@keyframes bounce {
+    0%,
+    100%,
+    20%,
+    50%,
+    80% {
+      -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+      transform: translateY(0);
+    }
+    40% {
+      -webkit-transform: translateY(-5px);
+      -ms-transform: translateY(-5px);
+      transform: translateY(-5px);
+    }
+    60% {
+      -webkit-transform: translateY(-2.5px);
+      -ms-transform: translateY(-2.5px);
+      transform: translateY(-2.5px);
+    }
+  }
+  .bouncingImage {
+    -webkit-animation-duration: 4s;
+    animation-duration: 4s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-timing-function: ease-in-out;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+  }
+  .bouncingImage:hover {
+    cursor: pointer;
+    animation-name: bounce;
+    -moz-animation-name: bounce;
+  }
