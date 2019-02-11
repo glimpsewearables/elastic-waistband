@@ -75,7 +75,7 @@ header.masthead {
     margin-top: 20px;
 }
 .navBarButton{
-    width: 19%;
+    width: 23%;
     height: 100%;
     border: transparent;
     background: transparent;
@@ -298,7 +298,7 @@ header.masthead {
 }
 #teamContainer{
     width: 100%;
-    background-color: #48A9A6;
+    background-color: #D4B483;
 }
 #teamInfoContainer{
     width: 100%;
@@ -483,6 +483,15 @@ header.masthead {
     animation-name: bounce;
     -moz-animation-name: bounce;
   }
+#glimpseImage{
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.centered{
+    width: 100%;
+}
 </style>
 <body>
     <div id="allHiddenTeamMemberInfo">
@@ -604,16 +613,13 @@ header.masthead {
                 <button class="navBarButton" onclick="scrollToContainer('about')">About</button>
                 <button class="navBarButton" onclick="scrollToContainer('devices')">Technology</button>
                 <button class="navBarButton" onclick="scrollToContainer('events')">Events</button>
-                <button class="navBarButton" onclick="scrollToContainer('members')">Members</button>
+                <!-- <button class="navBarButton" onclick="scrollToContainer('members')">Members</button> -->
                 <button class="navBarButton" onclick="scrollToContainer('team')">Contact</button>
             </div>
         </div>
-        <header id="headerContainer" class="masthead" style="text-align:center;">
-            <div id="glimpseLoadingInfo">
-                <strong class="landingTitle">You pick the moment, we'll capture it</strong>
-            </div>
-            <button id="checkoutMoreButton" class="buttonCustom" onclick="scrollToContainer('about')">Check it</button>
-        </header>
+        <a href="https://www.glimpsewearables.com/" class="centered">
+            <img src="https://s3-us-west-2.amazonaws.com/users-edited-content/profile_pics/user1_image_profile_GlimpseCam.jpg" id="glimpseImage">
+        </a>
         <div id="bodyContainer">
             <div id="aboutContainer" class="regContainer">
                 <!-- <h1 class="containerHeader" style="font-size: 40px;">What is Glimpse?</h1> -->
@@ -637,13 +643,10 @@ header.masthead {
                             Our Devices are Wicked
                         </p>
                         <p class="paragraphTwo">
-                            Capable of patented "RetroActive Recording", our devices are able to record 15 seconds before and after you click the record button.
+                            Capable of RetroActive Recording, the ability to record 10 seconds before and after you click the record button.
                         </p> 
                         <p class="paragraphTwo">   
-                            Along with the retroactive recording, each device is capable of live streaming 32 FPS 720p video to our platform.
-                        </p>
-                        <p class="paragraphTwo"> 
-                            Not only are the devices serving as a recording device, but they are also a stylish bandana that adds a layer of style to the users outfit.
+                            Along with the retroactive recording, each device is capable of live streaming 30 FPS 1080p video to our platform.
                         </p>
                     </div>
                     <div class="regContainerRightSide">
@@ -670,9 +673,7 @@ header.masthead {
                     <p class="paragraphTwo">
                         With each event that we have gone to, we have learned a lot about the devices we have created, the experiences that our users have had, and the endless possibilities that our technologies bring to the music industry.
                     </p> 
-                    <p class="paragraphTwo">   
-                        We have the goal starting February 1st to attend at least one 1 concert a week to continue testing devices and get feedback from our users.
-                    </p>
+                    <h4></h4>
                     <button class="eventButton" onclick="openEventContainer('GlimpseTesting')">Glimpse Testing</button>
                     <button class="eventButton" onclick="openEventContainer('CapitolRecords')">Capitol Records</button>
                     <button class="eventButton" onclick="openEventContainer('BumberShoot')">Bumber Shoot</button>
@@ -755,7 +756,7 @@ header.masthead {
                     </video>  
                 </div>
             </div>
-            <div id="membersContainer" class="regContainer" style="margin-top:-2%;">
+            <!-- <div id="membersContainer" class="regContainer" style="margin-top:-2%;">
                 <h1 class="containerHeader">Members</h1>
                 <hr class="titleUnderLineBlack">
                 <div id="membersInfoArea" class="regContainer" style="margin-top:-5%; display: flex;">
@@ -851,7 +852,7 @@ header.masthead {
                         We are able to not only track the points in a concert that the fans loved, but are able to get 30+ different views of that exact moment when the entire crowd went wild.
                     </p>
                 </div>
-            </div>
+            </div> -->
             <div id="teamContainer" class="regContainer">
                 <h1 class="containerHeader">Our Team</h1>
                 <div id="teamInfoContainer">
@@ -888,7 +889,6 @@ header.masthead {
                 </div>
             </div>
             <footer id="footerContainer">
-                <h1>Contact us</h1>
             </footer>
         </div>
     </div>
@@ -927,14 +927,12 @@ function openTeamMemberInfo(name){
     var openingElement = document.getElementById(name + "HiddenInfo")
     openingElement.classList.add("showingTeamInfo");
     openingElement.classList.remove("hiddenTeamInfo");
-    var entireContainer = document.getElementById("mainContainer");
     $('body').addClass('stop-scrolling');
 }
 function closeTeamMemberInfo(name){
     var closingElement = document.getElementById(name + "HiddenInfo")
     closingElement.classList.remove("showingTeamInfo");
     closingElement.classList.add("hiddenTeamInfo");
-    var entireContainer = document.getElementById("mainContainer");
     $('body').removeClass('stop-scrolling');
 }
   
