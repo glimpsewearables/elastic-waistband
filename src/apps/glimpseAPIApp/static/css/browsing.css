@@ -262,9 +262,6 @@ header.masthead {
 #eventsContainer{
     background-color: #48A9A6; 
 }
-#AllContentContainer{
-
-}
 #devicesContainer{
     background-color: #D4B483;
     height: 500px;
@@ -274,9 +271,6 @@ header.masthead {
 }
 #adminContainer{
     background-color: #4281A4
-}
-#metricsContainer{
-
 }
 #usersContainer{
     background-color: #D4B483;
