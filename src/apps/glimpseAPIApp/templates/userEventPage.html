@@ -13,17 +13,18 @@
 }
 #headerImage{
     width: 100%;
-    height: 100px;
-}
-#contentContainer{
 }
 .singleVideo{
     width: 100%;
 }
+.videoContainer{
+    width: 32%;
+    margin-left: .5%;
+    display: inline-block;
+}
 @media only screen and (max-width: 600px) {
-    .videoContainer{
-        width: 49%;
-        margin: 0;
+    .videoContainer {
+        width: 95%;
         display: inline-block;
     }
     .featureButton{
@@ -31,10 +32,16 @@
         font-size: 10px;
     }
 }
-.videoContainer{
-    width: 32%;
-    margin-left: .5%;
-    display: inline-block;
+@media only screen and (max-width: 600px) {
+    .videoContainer{
+        width: 100%;
+    }
+    .changeButton{
+        height: 30px;
+    }
+} 
+#contentContainer{
+    width: 100%;
 }
 .featureButton{
     width: 40%;
@@ -78,13 +85,13 @@
             {% for this_media in media %}
             {% csrf_token %}
             <div class="videoContainer">
-                <video class="singleVideo mostRecentVideo" controls>
+                <video id="video{{this_media.id}}" class="singleVideo" controls onclick="playVideo('video{{this_media.id}}')">
                     <source src="{{this_media.link}}" type="video/mp4">
                 </video>
                 <div class="buttons">
-                    <input type="number" max="5" min="0" value="{{this_media.user_rating}}" id="videoCur{{this_media.id}}" class="changeButton" onclick="inputTouch('{{this_media.id}}')">
+                    <input style="text-align:center;" type="number" max="5" min="0" value="{{this_media.user_rating}}" id="videoCur{{this_media.id}}" class="changeButton" onclick="inputTouch('{{this_media.id}}')">
                     <button class="changeButton" id="changeButton{{this_media.id}}" onclick="updateCuratorMediaRating('{{this_media.id}}')">Change</button>
-                    <button class="featureButton" id="media{{this_media.id}}Button" onclick="featureThisMedia('{{this_media.id}}')">Favorite</button>
+                    <button class="changeButton" id="media{{this_media.id}}Button" onclick="featureThisMedia('{{this_media.id}}')">Favorite</button>
                 </div>
             </div>
             {% endfor %}
@@ -95,11 +102,22 @@
     </div>
 </body>
 <script>
+    var videoIsPlaying = false;
+    function playVideo(videoIdElement) { 
+        var vid = document.getElementById(videoIdElement);
+        if(videoIsPlaying == true){
+            vid.pause();
+            videoIsPlaying = false;
+        } else{
+            vid.play();
+            videoIsPlaying = true;
+        }
+    } 
     function featureThisMedia(media_id){
-    addFeaturedTpAPI(media_id);
-    var button = document.getElementById("media" + media_id + "Button");
-    button.innerHTML = "reload page";
-    button.style.backgroundColor ="transparent";
+        addFeaturedTpAPI(media_id);
+        var button = document.getElementById("media" + media_id + "Button");
+        button.innerHTML = "reload page";
+        button.style.backgroundColor ="transparent";
     }
     function unfeatureThisMedia(media_id){
         removeFeaturedToAPI(media_id);
@@ -155,6 +173,28 @@
         }
         put_data = JSON.stringify(old_data);
         Http.send(put_data);
+    }
+    function scrollToContent(){
+        var headerHeight = document.getElementById("headerImage");
+        window.scrollTo({
+            top: headerHeight.clientHeight,
+            left: 0,
+            behavior: "smooth"    
+        });
+    }
+    if(window.attachEvent) {
+        window.attachEvent('onload', scrollToContent);
+    } else {
+        if(window.onload) {
+            var curronload = window.onload;
+            var newonload = function(evt) {
+                curronload(evt);
+                scrollToContent(evt);
+            };
+            window.onload = newonload;
+        } else {
+            window.onload = scrollToContent;
+        }
     }
 </script>
 </html>

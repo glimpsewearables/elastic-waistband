@@ -76,7 +76,7 @@ def usersEventPage(request, eventId, userId):
     this_user = User.objects.get(id = userId)
     this_event = Event.objects.get(id = eventId)
     this_event_content = Media.objects.filter(device_id = userId, event_id = eventId).order_by('-date', "-date_time")
-    context["media"] = this_event_content
+    context["media"] = this_event_content.order_by('-date', "-date_time")
     context["this_event"] = this_event
     context["all_events"] = all_events
     context["this_user"] = this_user

@@ -164,7 +164,6 @@ button{
 .singleVideo{
     width: 100%;
 }
-
 @media only screen and (max-width: 600px) {
     .videoContainer{
         width: 49%;
@@ -190,6 +189,7 @@ button{
 }
 .eventHeaderImage{
     width: 50%;
+    transition-duration: 0.5s;
 }
 .eventHeaderImage:hover{
     opacity: 0.7;
@@ -242,9 +242,6 @@ button:hover{
     left: 50%;
     transform: translateX(-50%);
 }
-/* .eventButton{
-
-} */
 </style>
 <body>
 <div class="mainContainer">
@@ -265,6 +262,8 @@ button:hover{
             {% for event in all_events %}
             {% csrf_token %}
             <div class="singleEventHeader">
+                <input type="hidden" class="hiddenEventInfoId" value="{{event.id}}">
+                <input type="hidden" id="hiddenEventInfoHeader{{event.id}}" value="{{event.header_image}}">
                 <img src="{{event.header_image}}" onmouseover="addEventName('{{event.id}}')" onmouseout="removeEventName('{{event.id}}')" class="eventHeaderImage" id="event{{event.event_id}}Header" onclick="openEvent('{{event.event_id}}')">
                 <h3 id="event{{event.id}}HeaderCaption" class="eventHeaderCaption">{{event.name}}</h3>
             </div>
@@ -300,8 +299,23 @@ button:hover{
 </div>
 </body>
 <script>
-    var allEventTabs = ['featuredContent', "mostRecent", "event1", "event2", "event3", "event4", "event5", "event6", "event7"]
-    var allEventHeaders = ["event2Header","event1Header", "event3Header", "event4Header", "event5Header", "event6Header", "event7Header"]
+    var allEventTabs = ['featuredContent', "mostRecent",]
+    var allEventHeaders = []
+    function getAllEvents(){
+        var allEventIds = document.getElementsByClassName("hiddenEventInfoId");
+        var lastInt = 0
+        for(var i = 0; i < allEventIds.length; i++){
+            var thisEventId = allEventIds[i].value;
+            var thisEventHeader = document.getElementById("hiddenEventInfoHeader" + thisEventId.toString()).value;
+            allEventTabs.push("event" + thisEventId.toString());
+            allEventHeaders.push("event" + thisEventId.toString() + "Header");
+            lastInt = i;
+            // console.log(thisEvent.value.header_image);
+        }
+        allEventTabs.push("event" + (lastInt + 1).toString());
+        allEventHeaders.push("event" + (lastInt + 1).toString() + "Header");
+    }
+    getAllEvents();
     function openEvent(event_id){
         var user_id = document.getElementById("device_id_value").value;
         if(event_id == "mostRecent" || event_id == "featuredContent"){
@@ -384,7 +398,7 @@ button:hover{
     // Updating all the backend
     const Http = new XMLHttpRequest();
     function addFeaturedTpAPI(media_id){
-        const media_url = "http://api.glimpsewearables.com/api/media/";
+        const media_url = "https://api.glimpsewearables.com/api/media/";
         const media_url_id = media_url + media_id + "/";
         console.log(media_url_id);
         var data = Http.open("PATCH", media_url_id, true);
@@ -396,7 +410,7 @@ button:hover{
         Http.send(put_data);
     }
     function removeFeaturedToAPI(media_id){
-        const media_url = "http://api.glimpsewearables.com/api/media/";
+        const media_url = "https://api.glimpsewearables.com/api/media/";
         const media_url_id = media_url + media_id + "/";
         console.log(media_url_id);
         var data = Http.open("PATCH", media_url_id, true);

@@ -31,6 +31,13 @@
     background-color: #CC0000;
     border-radius: 6px;
 }
+.eventRow{
+    transition-duration: 1s;
+}
+.eventRow:hover{
+    cursor: pointer;
+    background-color: blanchedalmond;
+}
 </style>
 <body>
     {% if user_type == "masterAdmin" %}
@@ -49,7 +56,8 @@
                     <h3>Registered Users</h3>
                     <div class="informationalArea">
                         <p>The users are not associated with any devices, they are simply people that are in the database and can have media associated with them depending on if they claim a device</p>
-                        <p>Users are not being used to keep track of media at all yet...</p>
+                        <p style="text-align: center">Users are not being used to keep track of media at all yet...</p>
+                        <p style="text-align: center">Click on a user to be redirected to their User page that will allow you to view all of their content</p>
                     </div>
                     <table class="table">
                         <thead >
@@ -66,7 +74,7 @@
                         <tbody>
                         {% for user in all_users %}
                             {% csrf_token %}
-                        <tr>
+                        <tr onclick="openUserContent('{{user.id}}')" class="eventRow">
                             <td>{{user.user_name}}</td>
                             <td>{{user.first_name}}</td>
                             <td>{{user.last_name}}</td>
@@ -174,7 +182,7 @@
                         </thead>
                         {% for event in all_events %}
                         {% csrf_token %}
-                        <tbody onclick="openEventContent('{{event.id}}')">
+                        <tbody onclick="openEventContent('{{event.id}}')" class="eventRow">
                             <td>{{event.id}}</td>
                             <td><a href="viewEventMedia/{{event.id}}">{{event.name}}</a></td>
                             <td>{{event.address}}</td>
@@ -220,6 +228,9 @@ function addUserEvent(){
     var eventChoice = document.getElementById("userEventEventChoice").value;
     var deviceChoice = document.getElementById("userEventDeviceChoice").value;
     AddUserEventAPI(userChoice,eventChoice,deviceChoice)
+}
+function openUserContent(userId){
+    location.replace("/userPage/" + userId.toString());
 }
 const Http = new XMLHttpRequest();
 function AddUserEventAPI(user_id, event_id, device_used_id){
