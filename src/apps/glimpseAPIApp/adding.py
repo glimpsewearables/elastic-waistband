@@ -347,6 +347,28 @@ def updateDatabase(request):
             start_time = "12:00:00",
             header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event7_header_LollaPalooza.png"
         )
+        Event.objects.create(
+            name = "Sound Off",
+            event_id = 8,
+            lat = 41.8742,
+            long = 87.6208,
+            address = "Seattle, WA",
+            start_date = "2019-02-16",
+            end_date = "2019-02-17",
+            start_time = "12:00:00",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event7_header_LollaPalooza.png"
+        )
+        Event.objects.create(
+            name = "Boogie T",
+            event_id = 9,
+            lat = 41.8742,
+            long = 87.6208,
+            address = "Seattle, WA",
+            start_date = "2019-02-17",
+            end_date = "2019-02-18",
+            start_time = "12:00:00",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event7_header_LollaPalooza.png"
+        )
     # This function is the most important for updating the database, checking to see if all of the images
     # that are in the s3 database are accounted for in the sql database
     for data in thisUsersContentRaw:
@@ -378,18 +400,24 @@ def updateDatabase(request):
                 elif part.endswith(".mp4"):
                     endingPart = part.split(".mp4")
                     dateTimeOf = endingPart[0]
-            if dateOf == "2018-12-01":
-                event_id = 3
-            elif dateOf =="2018-08-31" or dateOf == "2018-09-01" or dateOf =="2018-09-02":
-                event_id = 2
-            elif dateOf == "2019-02-02":
-                event_id = 4
-            elif dateOf == "2019-02-07":
-                event_id = 5
-            elif dateOf == "2019-02-09":
-                event_id = 6
-            elif dateOf == "2018-08-02" or dateOf == "2018-08-03" or dateOf =="2018-08-04" or dateOf == "2018-08-05":
-                event_id = 7
+
+            event_id = checkEvent(dateOf)
+            # if dateOf == "2018-12-01":
+            #     event_id = 3
+            # elif dateOf =="2018-08-31" or dateOf == "2018-09-01" or dateOf =="2018-09-02":
+            #     event_id = 2
+            # elif dateOf == "2019-02-02":
+            #     event_id = 4
+            # elif dateOf == "2019-02-07":
+            #     event_id = 5
+            # elif dateOf == "2019-02-09":
+            #     event_id = 6
+            # elif dateOf == "2018-08-02" or dateOf == "2018-08-03" or dateOf =="2018-08-04" or dateOf == "2018-08-05":
+            #     event_id = 7
+            # elif dateOf == "2019-02-16" or dateOf == "2019-02-17":
+            #     event_id = 8
+            # elif dateOf == "2019-02-18":
+            #     event_id = 9
         # If else statement that helps decide whether or not this media type is a image or video
             if (not UserEvent.objects.filter(user_id = userId, event_id = event_id)) and event_id != 1 and event_id != 0:
                 UserEvent.objects.create(
@@ -454,18 +482,23 @@ def updateDatabase(request):
                         endingPart = part.split(".mp4")
                         dateTimeOf = endingPart[0]
                 # If else statement that helps decide whether or not this media type is a image or video
-                if dateOf =="2018-08-31" or dateOf == "2018-09-01" or dateOf =="2018-09-02":
-                    event_id = 2
-                elif dateOf == "2018-12-01":
-                    event_id = 3
-                elif dateOf =="2019-02-02":
-                    event_id = 4
-                elif dateOf =="2019-02-07":
-                    event_id = 5
-                elif dateOf =="2019-02-09":
-                    event_id = 6
-                elif dateOf == "2018-08-02" or dateOf == "2018-08-03" or dateOf =="2018-08-04" or dateOf == "2018-08-05":
-                    event_id = 7
+                event_id = checkEvent(dateOf)
+                # if dateOf =="2018-08-31" or dateOf == "2018-09-01" or dateOf =="2018-09-02":
+                #     event_id = 2
+                # elif dateOf == "2018-12-01":
+                #     event_id = 3
+                # elif dateOf =="2019-02-02":
+                #     event_id = 4
+                # elif dateOf =="2019-02-07":
+                #     event_id = 5
+                # elif dateOf =="2019-02-09":
+                #     event_id = 6
+                # elif dateOf == "2018-08-02" or dateOf == "2018-08-03" or dateOf =="2018-08-04" or dateOf == "2018-08-05":
+                #     event_id = 7
+                # elif dateOf == "2019-02-16" or dateOf == "2019-02-17":
+                #     event_id = 8
+                # elif dateOf == "2019-02-18":
+                #     event_id = 9
                 Media.objects.create(
                     user_id = int(userId),
                     device_id = int(userId),
@@ -485,6 +518,14 @@ def updateDatabase(request):
                     date_time = dateTimeOf
                 )
     return HttpResponse(thisUsersContentRaw)
+
+def checkEvent(this_date):
+    this_event_id = 1
+    all_events = Event.objects.all()
+    for event in all_events:
+        if str(event.start_date) == str(this_date) or str(event.end_date) == str(this_date):
+            return event.event_id
+    return this_event_id
 
 # All internal commands
 def registerUser(request):
@@ -509,8 +550,20 @@ def createEvent(request):
         if request.session["userType"] != "masterAdmin" and request.session["userType"] != "userTestingAdmin" and request.session["userType"] != "curatorAdmin":
             return redirect("/")
         else:
-            createNewEvent(request, request.POST["eventName"], request.POST["address"], request.POST["startDate"], request.POST["endDate"], request.POST["imageHeader"])
-    return redirect("/adminPage")
+            now = datetime.date.today()
+            Event.objects.create(
+                event_id = request.POST["eventId"],
+                name = request.POST["eventName"],
+                address = request.POST["address"],
+                start_date = request.POST["startDate"],
+                end_date = request.POST["endDate"],
+                long = 0.00,
+                lat = 0.00,
+                created_at = now,
+                updated_at = now,
+                header_image = request.POST["imageHeader"]
+            )
+    return redirect("/curatorPortal")
 
 def createMedia(request):
     if request.POST:
@@ -571,23 +624,6 @@ def createNewUser(request, user_name, first_name, last_name, email, password, ph
         created_at = datetime.date.today(),
         updated_at = datetime.date.today()
     )
-
-def createNewEvent(request, name, address, start_date, end_date, image_header):
-    if request.session["userType"] != "admin":
-        return redirect("/")
-    else:
-        now = datetime.date.today()
-        Event.objects.create(
-            name = name,
-            address = address,
-            start_date = start_date,
-            end_date = end_date,
-            long = 0.00,
-            lat = 0.00,
-            created_at = now,
-            updated_at = now,
-            header_image = image_header
-        )
 
 def createNewMedia(request, url_link, device_id, event_id):
     if request.session["userType"] != "admin":

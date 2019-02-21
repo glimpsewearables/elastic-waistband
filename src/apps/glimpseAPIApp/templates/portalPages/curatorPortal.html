@@ -15,6 +15,13 @@
 #mainContainer{
     margin-top: 60px;
 }
+.eventRow{
+    transition-duration: 1s;
+}
+.eventRow:hover{
+    cursor: pointer;
+    background-color: blanchedalmond;
+}
 </style>
 <body>
     {% if user_type == "masterAdmin" %}
@@ -26,6 +33,9 @@
         <h1 style="text-align:center;"> Content Curator Portal</h1>
         <div id="importantLinks">
             <h3>Important Links</h3>
+            <h3>Portal Directions</h3>
+            <p>To view the content for each event, click on the event you want.</p>
+            <p>You will be able to view ALL of the content for this event and edit the curator rating of it</p>
         </div>
         <div class="informationArea" id="mediaInfoArea">
             <div class="informationArea" id="eventInfoArea">
@@ -35,7 +45,8 @@
                             <table class="table">
                                 <thead class="thead-dark" onclick="eventPage()">
                                     <tr>
-                                        <th scope="col">Event Id</th>
+                                        <th scope="col">DB Event Id</th>
+                                        <th scope="col">Our Event Id</th>
                                         <th scope="col">Event Name</th>
                                         <th scope="col">Address</th>
                                         <th scope="col">Start Date</th>
@@ -44,8 +55,9 @@
                                 </thead>
                                 {% for event in all_events %}
                                 {% csrf_token %}
-                                <tbody onclick="openEventContent('{{event.id}}')">
+                                <tbody onclick="openEventContent('{{event.id}}')" class="eventRow">
                                     <td>{{event.id}}</td>
+                                    <td>{{event.event_id}}</td>
                                     <td><a href="viewEventMedia/{{event.id}}">{{event.name}}</a></td>
                                     <td>{{event.address}}</td>
                                     <td>{{event.start_date}}</td>
@@ -62,6 +74,9 @@
                             </div>
                             <div class="form-group">
                                 <input type="text" name="address" id="eventAddress" tabindex="2" class="form-control" placeholder="Event Address">
+                            </div>
+                            <div class="form-group">
+                                <input type="number" name="eventId" id="eventId" tabindex="2" class="form-control" placeholder="Event Id">
                             </div>
                             <div class="form-group">
                                 <input type="text" name="imageHeader" id="imageHeader" tabindex="2" class="form-control" placeholder="URL for Image Header">

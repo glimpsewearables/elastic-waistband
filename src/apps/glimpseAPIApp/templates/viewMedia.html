@@ -264,8 +264,7 @@ function updateCuratorMediaRating(mediaId){
 
 const Http = new XMLHttpRequest();
 function updateMediaCuratorAPI(media_id, new_curator_rating){
-    const media_url = "http://api.glimpsewearables.com/api/media/";
-    // const media_url = "http://localhost:8000/api/media/";
+    const media_url = "https://api.glimpsewearables.com/api/media/";
     const media_url_id = media_url + media_id + "/";
     console.log(media_url_id);
     var data = Http.open("PATCH", media_url_id, true);
