@@ -58,6 +58,16 @@ def uploadMediaToS3(request):
 # to the api that we are using
 # Once the api is able to continually update the sql database every time an image is uploaded 
 # this function will never have to be run again
+
+def fixErrors():
+    head =  {"Content-type":"application/json"}
+    for i in range(first_num, last_num):
+        new_url = base_url + str(i) + "/"
+        payload = {'event_id' : 9}
+        new_payload = json.dumps(payload)
+        r = requests.patch(new_url, new_payload, headers = head)
+        print r
+
 def updateDatabase(request):
     request.session["currentEventId"] = 1
     thisUsersContentRaw = v2_raw_bucket.objects.filter()
@@ -354,9 +364,9 @@ def updateDatabase(request):
             long = 87.6208,
             address = "Seattle, WA",
             start_date = "2019-02-16",
-            end_date = "2019-02-17",
+            end_date = "2019-02-16",
             start_time = "12:00:00",
-            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event7_header_LollaPalooza.png"
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event8_header_SoundOff.png"
         )
         Event.objects.create(
             name = "Boogie T",
@@ -367,7 +377,7 @@ def updateDatabase(request):
             start_date = "2019-02-17",
             end_date = "2019-02-18",
             start_time = "12:00:00",
-            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event7_header_LollaPalooza.png"
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event9_header_BoogieT.jpg"
         )
     # This function is the most important for updating the database, checking to see if all of the images
     # that are in the s3 database are accounted for in the sql database
@@ -375,7 +385,7 @@ def updateDatabase(request):
         urlHeader = "https://s3-us-west-2.amazonaws.com/users-raw-content/"
         linkCheck = urlHeader + data.key
         if Media.objects.filter(link = linkCheck):
-            print(data.key + "data.key already exists")
+            print(data.key + " data.key already exists")
         elif not data.key.endswith(".jpg") and not data.key.endswith(".mp4"):
             print("data key is not a proper link")
         else:

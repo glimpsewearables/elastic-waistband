@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^$', rendering.index),
     url(r'^media$', views.mediaHome),
     url(r'^updateDatabase$', adding.updateDatabase),
+    # url(r'^fixDatabase$', adding.fixDatabase),
     url(r'^checkUrls$', views.checkUrls),
     url(r'^removeDuplicates$', views.removeDuplicates),
     url(r'^logout$', views.logout),
