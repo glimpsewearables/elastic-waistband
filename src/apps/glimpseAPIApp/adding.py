@@ -66,7 +66,7 @@ def fixErrors():
         payload = {'event_id' : 9}
         new_payload = json.dumps(payload)
         r = requests.patch(new_url, new_payload, headers = head)
-        print r
+        print(r)
 
 def updateDatabase(request):
     request.session["currentEventId"] = 1
