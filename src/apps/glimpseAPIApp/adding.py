@@ -549,46 +549,46 @@ def registerUser(request):
 
 def createUser(request):
     if request.POST:
-        if request.session["userType"] != "masterAdmin" and request.session["userType"] != "userTestingAdmin" and request.session["userType"] != "curatorAdmin":
-            return redirect("/")
-        else:
-            createNewUser(request, request.POST["usersName"], request.POST["firstName"], request.POST["lastName"], request.POST["usersEmail"], request.POST["password"], request.POST["usersPhone"] )
+        # if request.session["userType"] != "masterAdmin" and request.session["userType"] != "userTestingAdmin" and request.session["userType"] != "curatorAdmin":
+        #     return redirect("/")
+        # else:
+        createNewUser(request, request.POST["usersName"], request.POST["firstName"], request.POST["lastName"], request.POST["usersEmail"], request.POST["password"], request.POST["usersPhone"] )
     return redirect("/adminPage")
 
 def createEvent(request):
     if request.POST:
-        if request.session["userType"] != "masterAdmin" and request.session["userType"] != "userTestingAdmin" and request.session["userType"] != "curatorAdmin":
-            return redirect("/")
-        else:
-            now = datetime.date.today()
-            Event.objects.create(
-                event_id = request.POST["eventId"],
-                name = request.POST["eventName"],
-                address = request.POST["address"],
-                start_date = request.POST["startDate"],
-                end_date = request.POST["endDate"],
-                long = 0.00,
-                lat = 0.00,
-                created_at = now,
-                updated_at = now,
-                header_image = request.POST["imageHeader"]
-            )
+        # if request.session["userType"] != "masterAdmin" and request.session["userType"] != "userTestingAdmin" and request.session["userType"] != "curatorAdmin":
+        #     return redirect("/")
+        # else:
+        now = datetime.date.today()
+        Event.objects.create(
+            event_id = request.POST["eventId"],
+            name = request.POST["eventName"],
+            address = request.POST["address"],
+            start_date = request.POST["startDate"],
+            end_date = request.POST["endDate"],
+            long = 0.00,
+            lat = 0.00,
+            created_at = now,
+            updated_at = now,
+            header_image = request.POST["imageHeader"]
+        )
     return redirect("/curatorPortal")
 
 def createMedia(request):
     if request.POST:
-        if request.session["userType"] != "masterAdmin" and request.session["userType"] != "curatorAdmin" and request.session["userType"] != "userTestingAdmin":
-            return redirect("/")
-        else:
-            createNewMedia(request, request.POST["url_link"], request.POST["device_id"], request.POST["event_id"])
-            return redirect("/adminPage")
+        # if request.session["userType"] != "masterAdmin" and request.session["userType"] != "curatorAdmin" and request.session["userType"] != "userTestingAdmin":
+        #     return redirect("/")
+        # else:
+        createNewMedia(request, request.POST["url_link"], request.POST["device_id"], request.POST["event_id"])
+        return redirect("/adminPage")
 
 def createDevice(request):
     if request.POST:
-        if request.session["userType"] != "masterAdmin" and request.session["userType"] != "deviceAdmin":
-            return redirect("/")
-        else:
-            createNewDevice(request, request.POST["device_number"], request.POST["user_id"], request.POST["serial_number"])
+        # if request.session["userType"] != "masterAdmin" and request.session["userType"] != "deviceAdmin":
+        #     return redirect("/")
+        # else:
+        createNewDevice(request, request.POST["device_number"], request.POST["user_id"], request.POST["serial_number"])
     return redirect("/adminPage")
 
 def deleteUser(request, user_id):
@@ -636,24 +636,24 @@ def createNewUser(request, user_name, first_name, last_name, email, password, ph
     )
 
 def createNewMedia(request, url_link, device_id, event_id):
-    if request.session["userType"] != "admin":
-        return redirect("/")
-    else:
-        now = datetime.datetime.now(pytz.timezone('US/Pacific'))
-        Media.objects.create(
-            user_id = device_id,
-            device_id = device_id,
-            event_id = event_id,
-            media_type = "video",
-            link = url_link,
-            raw_or_edited = "raw",
-            downloaded = 0,
-            ranking = 1,
-            created_at = now,
-            updated_at = now,
-            gif_link = "",
-            views = 0,
-            starred = 0,
-            date = datetime.date.today(),
-            date_time = datetime.datetime.now().time()
-        )
+    # if request.session["userType"] != "admin":
+    #     return redirect("/")
+    # else:
+    now = datetime.datetime.now(pytz.timezone('US/Pacific'))
+    Media.objects.create(
+        user_id = device_id,
+        device_id = device_id,
+        event_id = event_id,
+        media_type = "video",
+        link = url_link,
+        raw_or_edited = "raw",
+        downloaded = 0,
+        ranking = 1,
+        created_at = now,
+        updated_at = now,
+        gif_link = "",
+        views = 0,
+        starred = 0,
+        date = datetime.date.today(),
+        date_time = datetime.datetime.now().time()
+    )
