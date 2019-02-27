@@ -130,9 +130,9 @@ def curatorPortal(request):
     # if request.session["userType"] == "curatorAdmin" or request.session["userType"] == "masterAdmin":
     all_images = Media.objects.filter(media_type = "image")
     all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
-    userType = request.session["userType"]
+    # userType = request.session["userType"]
     context = {
-        "user_type" : userType,
+        # "user_type" : userType,
         "image_number" : len(all_images), 
         "all_videos" : all_videos,
         "video_number" : len(all_videos),
@@ -150,9 +150,9 @@ def softwarePortal(request):
     # if request.session["userType"] == "softwareAdmin" or request.session["userType"] == "masterAdmin":
     all_images = Media.objects.filter(media_type = "image")
     all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
-    userType = request.session["userType"]
+    # userType = request.session["userType"]
     context = {
-        "user_type" : userType,
+        # "user_type" : userType,
         "image_number" : len(all_images), 
         "all_videos" : all_videos,
         "video_number" : len(all_videos),
@@ -171,10 +171,10 @@ def userTestingPortal(request):
     all_images = Media.objects.filter(media_type = "image")
     all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
     all_user_events = UserEvent.objects.all()
-    userType = request.session["userType"]
+    # userType = request.session["userType"]
     context = {
         "all_user_events": all_user_events,
-        "user_type" : userType,
+        # "user_type" : userType,
         "image_number" : len(all_images), 
         "all_videos" : all_videos,
         "video_number" : len(all_videos),
@@ -192,9 +192,9 @@ def devicePortal(request):
     # if request.session["userType"] == "deviceAdmin" or request.session["userType"] == "masterAdmin":
     all_images = Media.objects.filter(media_type = "image")
     all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
-    userType = request.session["userType"]
+    # userType = request.session["userType"]
     context = {
-        "user_type" : userType,
+        # "user_type" : userType,
         "image_number" : len(all_images), 
         "all_videos" : all_videos,
         "video_number" : len(all_videos),
