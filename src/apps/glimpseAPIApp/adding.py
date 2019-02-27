@@ -561,6 +561,7 @@ def createEvent(request):
         #     return redirect("/")
         # else:
         now = datetime.date.today()
+        print(request.POST["startDate"])
         Event.objects.create(
             event_id = request.POST["eventId"],
             name = request.POST["eventName"],

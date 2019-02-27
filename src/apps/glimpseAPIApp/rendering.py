@@ -127,86 +127,86 @@ def adminLogin(request):
             return redirect('/')
 
 def curatorPortal(request):
-    if request.session["userType"] == "curatorAdmin" or request.session["userType"] == "masterAdmin":
-        all_images = Media.objects.filter(media_type = "image")
-        all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
-        userType = request.session["userType"]
-        context = {
-            "user_type" : userType,
-            "image_number" : len(all_images), 
-            "all_videos" : all_videos,
-            "video_number" : len(all_videos),
-            "all_users" : User.objects.all(),
-            "all_events" : Event.objects.all(),
-            "event_number" :len(Event.objects.all()),
-            "all_devices" : Device.objects.all(),
-            "device_number" : len(Device.objects.all()),
-        }
-        return render(request, "portalPages/curatorPortal.html", context)
-    else:
-        return redirect("/")
+    # if request.session["userType"] == "curatorAdmin" or request.session["userType"] == "masterAdmin":
+    all_images = Media.objects.filter(media_type = "image")
+    all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
+    userType = request.session["userType"]
+    context = {
+        "user_type" : userType,
+        "image_number" : len(all_images), 
+        "all_videos" : all_videos,
+        "video_number" : len(all_videos),
+        "all_users" : User.objects.all(),
+        "all_events" : Event.objects.all(),
+        "event_number" :len(Event.objects.all()),
+        "all_devices" : Device.objects.all(),
+        "device_number" : len(Device.objects.all()),
+    }
+    return render(request, "portalPages/curatorPortal.html", context)
+    # else:
+    #     return redirect("/")
 
 def softwarePortal(request):
-    if request.session["userType"] == "softwareAdmin" or request.session["userType"] == "masterAdmin":
-        all_images = Media.objects.filter(media_type = "image")
-        all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
-        userType = request.session["userType"]
-        context = {
-            "user_type" : userType,
-            "image_number" : len(all_images), 
-            "all_videos" : all_videos,
-            "video_number" : len(all_videos),
-            "all_users" : User.objects.all(),
-            "all_events" : Event.objects.all(),
-            "event_number" :len(Event.objects.all()),
-            "all_devices" : Device.objects.all(),
-            "device_number" : len(Device.objects.all()),
-        }
-        return render(request, "portalPages/softwarePortal.html", context)
-    else:
-        return redirect("/")
+    # if request.session["userType"] == "softwareAdmin" or request.session["userType"] == "masterAdmin":
+    all_images = Media.objects.filter(media_type = "image")
+    all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
+    userType = request.session["userType"]
+    context = {
+        "user_type" : userType,
+        "image_number" : len(all_images), 
+        "all_videos" : all_videos,
+        "video_number" : len(all_videos),
+        "all_users" : User.objects.all(),
+        "all_events" : Event.objects.all(),
+        "event_number" :len(Event.objects.all()),
+        "all_devices" : Device.objects.all(),
+        "device_number" : len(Device.objects.all()),
+    }
+    return render(request, "portalPages/softwarePortal.html", context)
+    # else:
+    #     return redirect("/")
 
 def userTestingPortal(request):
-    if request.session["userType"] == "userTestingAdmin" or request.session["userType"] == "masterAdmin":
-        all_images = Media.objects.filter(media_type = "image")
-        all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
-        all_user_events = UserEvent.objects.all()
-        userType = request.session["userType"]
-        context = {
-            "all_user_events": all_user_events,
-            "user_type" : userType,
-            "image_number" : len(all_images), 
-            "all_videos" : all_videos,
-            "video_number" : len(all_videos),
-            "all_users" : User.objects.all(),
-            "all_events" : Event.objects.all(),
-            "event_number" :len(Event.objects.all()),
-            "all_devices" : Device.objects.all(),
-            "device_number" : len(Device.objects.all()),
-        }
-        return render(request, "portalPages/userTestingPortal.html", context)
-    else:
-        return redirect("/")
+    # if request.session["userType"] == "userTestingAdmin" or request.session["userType"] == "masterAdmin":
+    all_images = Media.objects.filter(media_type = "image")
+    all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
+    all_user_events = UserEvent.objects.all()
+    userType = request.session["userType"]
+    context = {
+        "all_user_events": all_user_events,
+        "user_type" : userType,
+        "image_number" : len(all_images), 
+        "all_videos" : all_videos,
+        "video_number" : len(all_videos),
+        "all_users" : User.objects.all(),
+        "all_events" : Event.objects.all(),
+        "event_number" :len(Event.objects.all()),
+        "all_devices" : Device.objects.all(),
+        "device_number" : len(Device.objects.all()),
+    }
+    return render(request, "portalPages/userTestingPortal.html", context)
+    # else:
+    #     return redirect("/")
 
 def devicePortal(request):
-    if request.session["userType"] == "deviceAdmin" or request.session["userType"] == "masterAdmin":
-        all_images = Media.objects.filter(media_type = "image")
-        all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
-        userType = request.session["userType"]
-        context = {
-            "user_type" : userType,
-            "image_number" : len(all_images), 
-            "all_videos" : all_videos,
-            "video_number" : len(all_videos),
-            "all_users" : User.objects.all(),
-            "all_events" : Event.objects.all(),
-            "event_number" :len(Event.objects.all()),
-            "all_devices" : Device.objects.all(),
-            "device_number" : len(Device.objects.all()),
-        }
-        return render(request, "portalPages/devicePortal.html", context)
-    else:
-        return redirect("/")
+    # if request.session["userType"] == "deviceAdmin" or request.session["userType"] == "masterAdmin":
+    all_images = Media.objects.filter(media_type = "image")
+    all_videos = Media.objects.filter(media_type = "video").order_by('-date', "-date_time")
+    userType = request.session["userType"]
+    context = {
+        "user_type" : userType,
+        "image_number" : len(all_images), 
+        "all_videos" : all_videos,
+        "video_number" : len(all_videos),
+        "all_users" : User.objects.all(),
+        "all_events" : Event.objects.all(),
+        "event_number" :len(Event.objects.all()),
+        "all_devices" : Device.objects.all(),
+        "device_number" : len(Device.objects.all()),
+    }
+    return render(request, "portalPages/devicePortal.html", context)
+    # else:
+    #     return redirect("/")
 
 
 def adminPage(request):
