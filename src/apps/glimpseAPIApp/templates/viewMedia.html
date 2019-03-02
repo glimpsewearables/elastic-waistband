@@ -175,7 +175,7 @@ function updateMediaCuratorAPI(media_id, new_curator_rating){
     }
     put_data = JSON.stringify(old_data);
     Http.send(put_data);
-    Http.send(put_data);
+    setTimeout(Http.send(put_data), 100);
 }
 </script>
 </html>
