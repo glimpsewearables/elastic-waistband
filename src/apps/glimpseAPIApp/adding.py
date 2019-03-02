@@ -360,8 +360,8 @@ def updateDatabase(request):
         Event.objects.create(
             name = "Sound Off",
             event_id = 8,
-            lat = 41.8742,
-            long = 87.6208,
+            lat = 47.6062,
+            long = 122.3321,
             address = "Seattle, WA",
             start_date = "2019-02-16",
             end_date = "2019-02-16",
@@ -371,13 +371,24 @@ def updateDatabase(request):
         Event.objects.create(
             name = "Boogie T",
             event_id = 9,
-            lat = 41.8742,
-            long = 87.6208,
+            lat = 47.6062,
+            long = 122.3321,
             address = "Seattle, WA",
             start_date = "2019-02-17",
             end_date = "2019-02-18",
             start_time = "12:00:00",
             header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event9_header_BoogieT.jpg"
+        )
+        Event.objects.create(
+            name = "Zomboy",
+            event_id = 10,
+            lat = 47.2373,
+            long = 122.4260,
+            address = "Tacoma Dome",
+            start_date = "2019-02-23",
+            end_date = "2019-02-23",
+            start_time = "12:00:00",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event10_header_Zomboy.jpeg"
         )
     # This function is the most important for updating the database, checking to see if all of the images
     # that are in the s3 database are accounted for in the sql database

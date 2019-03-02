@@ -239,6 +239,7 @@ def viewEventMedia(request, event_id):
     this_event_images = Media.objects.filter(event_id = event_id, media_type = "image").order_by('-date', "-date_time")
     this_event_videos = Media.objects.filter(event_id = event_id, media_type = "video").order_by('-date', "-date_time")
     context["this_event"] = this_event
+    context["all_events"] = Event.objects.all()
     context["this_event_images"] = this_event_images
     context["this_event_videos"] = this_event_videos
     context["desktop"] =  desktop

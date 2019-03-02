@@ -82,7 +82,9 @@ button{
 }
 </style>
 <body>
-    {% include 'header.html' %}
+    <div id="adminHeader">
+        {% include 'adminHeader.html' %}
+    </div>
     <div class="singleEventHeader">
         <img src="{{this_event.header_image}}" class="eventHeaderImage">
     </div>
@@ -172,6 +174,7 @@ function updateMediaCuratorAPI(media_id, new_curator_rating){
         "curator_rating": new_curator_rating
     }
     put_data = JSON.stringify(old_data);
+    Http.send(put_data);
     Http.send(put_data);
 }
 </script>

@@ -4,26 +4,106 @@
     top: 0px;
     height: 50px;
     width: 100%;
+    background-color: #B5BEC6;
+    z-index: 100;
 }
-#redirectButtons{
+.dropbtn {
+  background-color: gray;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  height: 50px;
+  width: 100%;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition-duration: 1s;
+}
+.dropdown {
+  position: relative;
+  display: flex;
+  transition-duration: 1s;
+}
+.dropdown-content {
+  display: none;
+  position: fixed;
+  top: 50px;
+  opacity: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  transition-duration: 1s;
+}
+.glimpseContainer{
+    width: 25%;
+    text-align: center;
+    vertical-align: middle;
+}
+.buttonContainer{
+    width: 75%;
     display: flex;
+    transition-duration: 1s;
 }
-.btn{
+.redirectButton{
+    width: 100%;
+    height: 100%;
     background-color: gray;
-    color: black;
-    border-radius: 4px;
+    color: white;
+    transition-duration: 300ms
+}
+.redirectButton:hover{
+    background-color: #B5BEC6;
+    color: #071108;
 }
 </style>
-<div id="adminHeader">
-    <div id="redirectButtons">
-        <button onclick="redirectTo('curatorPortal')" class="form-control btn btn-login">Curator Portal</button>
-        <button onclick="redirectTo('devicePortal')" class="form-control btn btn-login">Device Portal</button>
-        <button onclick="redirectTo('userTestingPortal')" class="form-control btn btn-login">User Testing Portal</button>
-        <button onclick="redirectTo('softwarePortal')" class="form-control btn btn-login">Software Portal</button>
+{% load static from staticfiles%}
+<div id="adminHeader" class="dropdown">
+    <div class="glimpseContainer">
+        <h3>Glimpse V 1.1</h3>
+    </div>
+    <div class="buttonContainer">
+        <button class="dropbtn" onmouseover="showPortals()" onclick="showPortals()" onmouseout="hidePortals()">Portals</button>
+        <button class="dropbtn" onmouseover="showEvents()" onclick="showEvents()" onmouseout="hideEvents()">Events</button>
+    </div>
+    <div id="portalButtons" class="dropdown-content" onmouseover="showPortals()" onmouseout="hidePortals()" style="left: 25%;">
+        <button onclick="redirectTo('curatorPortal')" class="redirectButton">Curator Portal</button>
+        <button onclick="redirectTo('devicePortal')" class="redirectButton">Device Portal</button>
+        <button onclick="redirectTo('userTestingPortal')" class="redirectButton">User Testing Portal</button>
+        <button onclick="redirectTo('softwarePortal')" class="redirectButton">Software Portal</button>
+    </div>
+    <div id="eventsButtons" class="dropdown-content" onmouseover="showEvents()" onmouseout="hideEvents()" style="left: 62.5%;">
+            {% for event in all_events %}
+            {% csrf_token %}
+            <button onclick="redirectToEvent('{{event.id}}')" class="redirectButton">{{event.name}}</button>
+            {% endfor %}
     </div>
 </div>
 <script>
 function redirectTo(url){
     window.location.replace("/" + url);
+}
+function redirectToEvent(id){
+    window.location.replace("/viewEventMedia/" + id);
+}
+function showPortals(){
+    var portalsTab =  document.getElementById("portalButtons");
+    portalsTab.style.display = "block";
+    portalsTab.style.opacity = "1.0";
+}
+function hidePortals(){
+    var portalsTab =  document.getElementById("portalButtons");
+    portalsTab.style.display = "none";
+    portalsTab.style.opacity = "0.0";
+}
+function showEvents(){
+    var eventsTab =  document.getElementById("eventsButtons");
+    eventsTab.style.display = "block";
+    eventsTab.style.opacity = "1.0";
+}
+function hideEvents(){
+    var eventsTab =  document.getElementById("eventsButtons");
+    eventsTab.style.display = "none";
+    eventsTab.style.opacity = "0.0";
 }
 </script>
