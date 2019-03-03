@@ -56,6 +56,7 @@ urlpatterns = [
     # Views for portal
     url(r'^login$', rendering.login),
     url(r'^browsing$', rendering.browsing),
+    url(r'^SoundOff$', rendering.soundOff),
     url(r'^userPage/(?P<device_number>\d+)$', rendering.userPage),
     url(r'^usersEventPage/(?P<eventId>\d+)/(?P<userId>\d+)$', rendering.usersEventPage),
     url(r'^artistPage/(?P<artist_id>\d+)$', rendering.artistPage),

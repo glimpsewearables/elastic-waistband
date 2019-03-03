@@ -390,6 +390,17 @@ def updateDatabase(request):
             start_time = "12:00:00",
             header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event10_header_Zomboy.jpeg"
         )
+        Event.objects.create(
+            name = "Sound Off Finals",
+            event_id = 11,
+            lat = 47.2373,
+            long = 122.4260,
+            address = "Crocodile",
+            start_date = "2019-02-23",
+            end_date = "2019-02-23",
+            start_time = "12:00:00",
+            header_image = "https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event8_header_SoundOff.png"
+        )
     # This function is the most important for updating the database, checking to see if all of the images
     # that are in the s3 database are accounted for in the sql database
     for data in thisUsersContentRaw:

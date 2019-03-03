@@ -275,6 +275,9 @@ button{
                 <div>
                     <button class="form-control btn btn-login" id="browsingButton" onclick="redirectToHomePage()">Just Browsing?</button>
                 </div>
+                <div style="margin-top: 3%; background-color: #ccc; color: #212529; ">
+                    <button class="form-control btn btn-login" id="browsingButton" onclick="soundoff()" style="background-color: #ccc; color: #212529; ">SoundOff?</button>
+                </div>
             </div>
         </div>
     </div>
@@ -287,6 +290,9 @@ function setIcon(){
     icon.setAttribute("height", distanceToTop);
 }
 setIcon();
+function soundoff(){
+    window.location.replace("/SoundOff");
+}
 $(function() {
     $('#login-form-link').click(function(e) {
         $("#login-form").delay(100).fadeIn(100);

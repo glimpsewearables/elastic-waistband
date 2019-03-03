@@ -32,6 +32,18 @@ def browsing(request):
     context["artists"] = all_artists
     return render(request, "browsing.html", context)
 
+def soundOff(request):
+    all_media = Media.objects.all()
+    all_sound_off_media = all_media.filter(date = "2019-03-02").order_by('-date', "-date_time")
+    all_users = User.objects.all()
+    context = {
+        "all_media": all_sound_off_media,
+        "all_users" : all_users
+    }
+    for i in range(1,10):
+        context["device_" + str(i) + "_media"] =  all_sound_off_media.filter(device_id = i)
+    return render(request,"featuredEvents/soundoff.html", context)
+
 def userPage(request, device_number):
     this_device_content = Media.objects.filter(user_id = device_number, media_type = "video").order_by('created_at')
     all_events = Event.objects.all().order_by('id').reverse()
