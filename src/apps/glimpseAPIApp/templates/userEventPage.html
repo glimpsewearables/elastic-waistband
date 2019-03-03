@@ -70,8 +70,16 @@
     opacity: 0.2;
   }
 }
+#stickyHeader{
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
 </style>
 <body>
+<div style="z-index:5;" id="stickyHeader">
+    {% include 'header.html'  %}
+</div>
     <div id="mainContainer">
         <div id="navBarHeader">
             <input id="eventIdValue" value="{{this_event.id}}" type="hidden">
@@ -115,11 +123,13 @@
     } 
     function featureThisMedia(media_id){
         addFeaturedTpAPI(media_id);
+        addFeaturedTpAPI(media_id);
         var button = document.getElementById("media" + media_id + "Button");
         button.innerHTML = "reload page";
         button.style.backgroundColor ="transparent";
     }
     function unfeatureThisMedia(media_id){
+        removeFeaturedToAPI(media_id);
         removeFeaturedToAPI(media_id);
         var button = document.getElementById("media" + media_id + "ButtonFeat");
         button.innerHTML = "reload page";

@@ -164,7 +164,7 @@ button{
 }
 </style>
 <body>
-    {% include 'header.html' %}
+    {% include 'adminHeader.html' %}
     <div id="mainContainer">
         <h1 style="text-align: center;">Admin Portal</h1>
         <div id="redirectButtons">
@@ -467,5 +467,16 @@ function downloadCSVFile(){
 function redirectTo(url){
     window.location.replace("/" + url);
 }
+$(window).bind('mousewheel', function(event) {
+    var mainHeader = document.getElementById("adminHeader");
+    var topPage = document.documentElement.scrollTop;
+    if (event.originalEvent.wheelDelta >= 0) {
+        document.getElementById("adminHeader").classList.add("pinned");
+        document.getElementById("adminHeader").classList.remove("unpinned");
+    } else {
+        document.getElementById("adminHeader").classList.remove("pinned");
+        document.getElementById("adminHeader").classList.add("unpinned");
+    }
+});
 </script>
 </html>

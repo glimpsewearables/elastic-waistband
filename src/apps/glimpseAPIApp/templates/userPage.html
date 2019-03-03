@@ -15,7 +15,6 @@
     <LINK REL="SHORTCUT ICON" HREF="{% static 'img/clipcamicon.png' %}" >
 </head>
 <style>
-xf
 a{
    color: #212529;
 }
@@ -236,21 +235,17 @@ button:hover{
 .centered{
     width: 100%;
 }
-#glimpseImage{
-    position: absolute;
-    top: 5px;
-    left: 50%;
-    transform: translateX(-50%);
+#stickyHeader{
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 </style>
 <body>
+<div style="z-index:5;" id="stickyHeader">
+    {% include 'header.html'  %}
+</div>
 <div class="mainContainer">
-    <div style="z-index:5">
-        {% include 'header.html'  %}
-    </div>
-    <a href="/" class="centered">
-        <img src="https://s3-us-west-2.amazonaws.com/users-edited-content/profile_pics/user1_image_profile_GlimpseCam.jpg" id="glimpseImage">
-    </a>
     <h1 style="text-align: center;">Device {{device_number}}</h1>
     <div id="yourInformation">
         <input type="hidden" value="{{device_number}}" id="device_id_value">
@@ -327,7 +322,7 @@ button:hover{
             if(eventOpeningName == allEventTabs[i]){
                 document.getElementById(allEventTabs[i]).style.display = "block";
                 window.scrollTo({
-                    top: 700,
+                    top: 1600,
                     left: 0,
                     behavior: "smooth"    
                 });
@@ -385,11 +380,13 @@ button:hover{
     // Adding media to the featured section, or removing
     function featureThisMedia(media_id){
         addFeaturedTpAPI(media_id);
+        addFeaturedTpAPI(media_id);
         var button = document.getElementById("media" + media_id + "Button");
         button.innerHTML = "reload page";
         button.style.backgroundColor ="transparent";
     }
     function unfeatureThisMedia(media_id){
+        removeFeaturedToAPI(media_id);
         removeFeaturedToAPI(media_id);
         var button = document.getElementById("media" + media_id + "ButtonFeat");
         button.innerHTML = "reload page";
@@ -421,5 +418,6 @@ button:hover{
         put_data = JSON.stringify(old_data);
         Http.send(put_data);
     }
+
 </script>
 </html>

@@ -80,6 +80,7 @@ def usersEventPage(request, eventId, userId):
     context["this_event"] = this_event
     context["all_events"] = all_events
     context["this_user"] = this_user
+    context["device_number"] =  userId
     return render(request, "userEventPage.html", context)
 
 # Break up all of the videos into segments of nine in order to deal with rendering issues for massive ammounts of videos in html

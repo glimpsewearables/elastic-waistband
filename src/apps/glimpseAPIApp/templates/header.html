@@ -11,167 +11,134 @@
     <LINK REL="SHORTCUT ICON" HREF="{% static 'img/clipcamwhite.svg' %}" >
 </head>
 <style>
-a{
-   color: #212529;
+#header{
+    position: fixed;
+    top: 0px;
+    height: 50px;
+    width: 100%;
+    background-color: #B5BEC6;
+    z-index: 100;
 }
-a:hover{
-    color: black;
-}
-tr:hover{
-    background-color: #666;
-}
-thead{
-    background: black;
-}
-.panel-login {
-    -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
-    -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
-    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
-}
-.panel-login>.panel-heading {
-    color: #00415d;
-    border-color: #fff;
-    text-align:center;
-}
-.panel-login>.panel-heading a{
-    text-decoration: none;
-    color: #666;
-    font-weight: bold;
-    font-size: 15px;
-    -webkit-transition: all 0.1s linear;
-    -moz-transition: all 0.1s linear;
-    transition: all 0.1s linear;
-}
-.panel-login>.panel-heading a.active{
-    color: #212529;
-    font-size: 18px;
-}
-.panel-login>.panel-heading hr{
-    margin-top: 10px;
-    margin-bottom: 0px;
-    clear: both;
-    border: 0;
-    height: 1px;
-    background-image: -webkit-linear-gradient(left,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.15),rgba(0, 0, 0, 0));
-    background-image: -moz-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
-    background-image: -ms-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
-    background-image: -o-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
-}
-.panel-login input[type="text"],.panel-login input[type="email"],.panel-login input[type="password"] {
-    height: 45px;
-    border: 1px solid #ddd;
+.dropbtn {
+    background-color: gray;
+    color: white;
+    padding: 16px;
     font-size: 16px;
-    -webkit-transition: all 0.1s linear;
-    -moz-transition: all 0.1s linear;
-    transition: all 0.1s linear;
-}
-.panel-login input:hover,
-.panel-login input:focus {
-    outline:none;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-    border-color: #ccc;
-}
-.btn-login {
-    background-color: black;
+    height: 56px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
     outline: none;
-    color: #fff;
-    font-size: 14px;
-    height: auto;
-    font-weight: normal;
-    padding: 14px 0;
-    text-transform: uppercase;
-    border-color: #212529;
+    color: #212529;
+    transition-duration: 1s;
 }
-.btn-login:hover,
-.btn-login:focus {
-    color: #fff;
+.dropdown {
+    position: relative;
+    display: flex;
+    transition-duration: 1s;
+}
+.dropdown-content {
+    display: none;
+    position: fixed;
+    top: 50px;
+    opacity: 0;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    transition-duration: 1s;
+}
+.glimpseContainer{
+    width: 25%;
+    text-align: center;
+    vertical-align: middle;
     background-color: #212529;
-    border-color: #212529;
-}
-.forgot-password {
-    text-decoration: underline;
     color: #888;
 }
-.forgot-password:hover,
-.forgot-password:focus {
-    text-decoration: underline;
-    color: #666;
+.buttonContainer{
+    width: 75%;
+    display: flex;
+    transition-duration: 1s;
 }
-
-.btn-register {
-    background-color: #931a00;
-    color: #fff;
-    font-size: 14px;
-    height: auto;
-    font-weight: normal;
-    padding: 14px 0;
-    text-transform: uppercase;
-    border-color: #212529;
-}
-.btn-register:hover,
-.btn-register:focus {
-    color: #fff;
-    opacity: .7;
-    border-color: #212529;
-}
-button{
-    border: none;
-    outline:none;
-}
-
-.headerStyle{
-    position: fixed;
-    top: 0;
-    height: 3%;
+.redirectButton{
     width: 100%;
+    height: 100%;
+    background-color: #888;
+    color: white;
+    transition-duration: 300ms
 }
-.eventHeaderImage{
-    width: 100%l
+.redirectButton:hover{
+    background-color: #B5BEC6;
+    color: #071108;
 }
-.headerButton{
-    background-color: #212529;
-    color: #ccc;
-    float: right;
-    border-radius: 5px;
+.pinned{
+    top: 0px;
 }
-.headerButton:hover{
-    opacity: 0.7;
-}
-.scrollToButton{
-    background: #212529;
-    color: #ccc;
-    text-align: center;
-}
-#contentContainer{
-    width: 70%;
-    height: 70%;
-    margin: 15%;
-    top: 0;
-    position: fixed;
-    background-color: yellow;
-    display: none;
-}
-.displayEventVid{
-    width: 100%;
+.unpinned{
+    top: -100px;
 }
 </style>
-<body>
-    <div class="headerStyle">
-        {% if userType == 'admin' %}
-        {% csrf_token %}
-        <button onclick="adminPage()" class="headerButton">Admin Page</button>
-        {% endif %}
-        <button onclick="logOut()" class="headerButton">Logout</button>
+{% load static from staticfiles%}
+<div id="adminHeader" class="dropdown pinned">
+    <div class="glimpseContainer">
+        <h3>Glimpse</h3>
     </div>
-</body>
+    <div class="buttonContainer">
+        <button class="dropbtn" onmouseover="showEvents()" onclick="showEvents()" onmouseout="hideEvents()" style="width:80%;">Events</button>
+        <button class="dropbtn" onmouseover="showActions()" onmouseout="hideActions()" onclick="showActions()" style="width:20%;">Actions</button>
+    </div>
+    <div id="actionButtons" class="dropdown-content" onmouseover="showActions()" onmouseout="hideActions()" style="left: 85%;">
+        <button onclick="redirectTo('home', '{{device_number}}')" class="redirectButton" style="width:125%;">Home</button>
+        <button onclick="redirectTo('logout', '{{device_number}}')" class="redirectButton" style="width:125%;">LogOut</button>
+    </div>
+    <div id="eventsButtons" class="dropdown-content" onmouseover="showEvents()" onmouseout="hideEvents()" style="left: 25%;">
+            {% for event in all_events %}
+            {% csrf_token %}
+            <button onclick="redirectToEvent('{{event.id}}', '{{device_number}}')" class="redirectButton">{{event.name}}</button>
+            {% endfor %}
+    </div>
+</div>
 <script>
-function adminPage(){
-    location.href = "/adminPage"
+function redirectTo(url, user_id){
+    if(url == "home"){
+        window.location.replace("/userPage/" + user_id);
+    } else {
+        window.location.replace("/logout");
+    }
 }
-function logOut(){
-    location.href = "/logout"
+function redirectToEvent(event_id, user_id){
+    window.location.replace("/usersEventPage/" + event_id + "/" + user_id);
 }
+function showActions(){
+    var actionsTab =  document.getElementById("actionButtons");
+    actionsTab.style.display = "block";
+    actionsTab.style.opacity = "1.0";
+}
+function hideActions(){
+    var actionsTab =  document.getElementById("actionButtons");
+    actionsTab.style.display = "none";
+    actionsTab.style.opacity = "0";
+}
+function showEvents(){
+    var eventsTab =  document.getElementById("eventsButtons");
+    eventsTab.style.display = "block";
+    eventsTab.style.opacity = "1.0";
+}
+function hideEvents(){
+    var eventsTab =  document.getElementById("eventsButtons");
+    eventsTab.style.display = "none";
+    eventsTab.style.opacity = "0.0";
+}
+$(window).bind('mousewheel', function(event) {
+    var mainHeader = document.getElementById("adminHeader");
+    var topPage = document.documentElement.scrollTop;
+    if (event.originalEvent.wheelDelta >= 0) {
+        document.getElementById("adminHeader").classList.add("pinned");
+        document.getElementById("adminHeader").classList.remove("unpinned");
+    } else {
+        document.getElementById("adminHeader").classList.remove("pinned");
+        document.getElementById("adminHeader").classList.add("unpinned");
+    }
+});
 </script>
 </html>
