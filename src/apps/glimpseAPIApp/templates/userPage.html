@@ -305,6 +305,90 @@ button:hover{
     from { opacity: 0; }
     to   { opacity: 1; }
 }
+#stage {
+  position: fixed;
+  text-align: center;
+  width: 100%;
+  font-size: 4vh;
+  line-height: 1;
+  letter-spacing: 0.5vh;
+  -webkit-filter: contrast(20);
+}
+#loadingAnimationText{
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    left:0px;
+    top:10%;
+}
+
+#letterAnimations {
+  display: none;
+  font-family: Futura, Helvetica Neue;
+  color: rgb(192, 192, 192);
+  font-size: 3rem;
+}
+
+#letterAnimations.letterified {
+  display: initial;
+}
+[data-letter] {
+  transform: translate3d(0, 0, 0);
+  position: relative;
+  font-weight: 100;
+  margin: 0 4px;
+  left: 0;
+  opacity: 0;
+  animation: 2s focus 1s forwards ease-in-out, 2s blur 5s forwards ease-in-out, 2s slideright 5s forwards ease-in-out;
+}
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideleft {
+  from {
+    left: -7px;
+  }
+  to {
+    left: 0px;
+  }
+}
+@keyframes slideright {
+  from {
+    left: 0px;
+  }
+  to {
+    left: -50px;
+  }
+}
+@keyframes focus {
+  from {
+    opacity: 0;
+    /*color: white;*/
+    -webkit-filter: blur(10px);
+  }
+  to {
+    /*color: black;*/
+    opacity: 1;
+    -webkit-filter: blur(0px);
+  }
+}
+@keyframes blur {
+  from {
+    /*color: black;*/
+    opacity: 1;
+    -webkit-filter: blur(0px);
+  }
+  to {
+    /*color: white;*/
+    opacity: 0;
+    -webkit-filter: blur(10px);
+  }
+}
 </style>
 <body>
 <div style="z-index:5;" id="stickyHeader" class="hiddenOnLoad">
@@ -339,7 +423,7 @@ button:hover{
 </div>
 <div class="loadingContainer" id="loadingAnimationText">
     <div id="stage">
-        <h1 id="letterAnimations"></h1>
+        <h1 id="letterAnimations" style="color: black;"></h1>
     </div>
 </div>
 <div id="mainContainer" class="hiddenOnLoad">
@@ -391,145 +475,208 @@ button:hover{
 </div>
 </body>
 <script>
-    function showPage(){
-        var allHidden = document.getElementsByClassName("hiddenOnLoad");
-        console.log(allHidden)
-        for(var i = 0; i < allHidden.length; i++){
-            var entireContainer = allHidden[i];
-            entireContainer.classList.add("showContainer");
-            entireContainer.classList.remove("hiddenOnLoad")
-        }
-        var mainContainer = document.getElementById("mainContainer");
-        mainContainer.classList.add("showContainer");
-        mainContainer.classList.remove("hiddenOnLoad");
-        var loadingAnimation = document.getElementById("loadingAnimation");
-        fixEventHeaders();
-        loadingAnimation.classList.add("hiddenOnLoad");
+function letterify(userOptions) {
+	var options = {
+		scope: document,
+		selector: false,
+		segmentClass: 'letterified'
+	};
+	if (typeof userOptions === "string") {
+		options.selector = userOptions;
+	} else if (typeof userOptions === 'object') {
+		Object.keys(userOptions).forEach(function(key) {
+			options[key] = userOptions[key];
+		});
+	}
+	var selected;
+	if (!options.selector) {
+		return false
+	} else {
+		selected = document.querySelector(options.selector);
+	}
+	selected.classList.remove('letterified');
+	var elems = options.scope.querySelectorAll(options.selector);
+	[].forEach.call(elems, function(el, idx) {
+		var split = el.textContent.split('');
+		var frag = document.createDocumentFragment();
+		split.forEach(function(letter) {
+			var span = document.createElement('span');
+			span.textContent = letter;
+			span.setAttribute('data-letter', letter);
+			span.className = options.segmentClass;
+      span.style.animationDelay = '0,0,2s,5s,5s';
+			frag.appendChild(span);
+
+		});
+		el.textContent = null;
+		el.appendChild(frag);
+	});
+	selected.classList.add('letterified');
+}
+var strings = [
+    "Welcome To Glimpse"
+];
+var holder = document.querySelector('#letterAnimations');
+function putText(text, strings){
+    holder.classList.remove('letterified');
+    holder.textContent = text.toUpperCase();
+    letterify('#letterAnimations');
+    queueText(strings);
+}
+var lastQueuedAnim;
+function queueText(strings){
+    var next = strings.shift();
+    if (next) {
+      lastQueuedAnim =  setTimeout(putText.bind(null, next, strings), 6500);
     }
-    setTimeout(showPage, 4000);
-    var allEventTabs = ['featuredContent', "mostRecent",]
-    var allEventHeaders = []
-    function getAllEvents(){
-        var allEventIds = document.getElementsByClassName("hiddenEventInfoId");
-        var lastInt = 0
-        for(var i = 0; i < allEventIds.length; i++){
-            var thisEventId = allEventIds[i].value;
-            var thisEventHeader = document.getElementById("hiddenEventInfoHeader" + thisEventId.toString()).value;
-            allEventTabs.push("event" + thisEventId.toString());
-            allEventHeaders.push("event" + thisEventId.toString() + "Header");
-            lastInt = i;
-        }
-        allEventTabs.push("event" + (lastInt + 1).toString());
-        allEventHeaders.push("event" + (lastInt + 1).toString() + "Header");
+}
+function go(){
+  	if (lastQueuedAnim){
+      clearTimeout(lastQueuedAnim);
     }
-    getAllEvents();
-    function openEvent(event_id){
-        var user_id = document.getElementById("device_id_value").value;
-        if(event_id == "mostRecent" || event_id == "featuredContent"){
-            var eventOpeningName = event_id.toString();
+    var text = strings.slice();
+    putText(text.shift(), text);
+}
+go();
+function showPage(){
+    var allHidden = document.getElementsByClassName("hiddenOnLoad");
+    console.log(allHidden)
+    for(var i = 0; i < allHidden.length; i++){
+        var entireContainer = allHidden[i];
+        entireContainer.classList.add("showContainer");
+        entireContainer.classList.remove("hiddenOnLoad")
+    }
+    var mainContainer = document.getElementById("mainContainer");
+    mainContainer.classList.add("showContainer");
+    mainContainer.classList.remove("hiddenOnLoad");
+    var loadingAnimation = document.getElementById("loadingAnimation");
+    fixEventHeaders();
+    loadingAnimation.classList.add("hiddenOnLoad");
+}
+setTimeout(showPage, 4000);
+var allEventTabs = ['featuredContent', "mostRecent",]
+var allEventHeaders = []
+function getAllEvents(){
+    var allEventIds = document.getElementsByClassName("hiddenEventInfoId");
+    var lastInt = 0
+    for(var i = 0; i < allEventIds.length; i++){
+        var thisEventId = allEventIds[i].value;
+        var thisEventHeader = document.getElementById("hiddenEventInfoHeader" + thisEventId.toString()).value;
+        allEventTabs.push("event" + thisEventId.toString());
+        allEventHeaders.push("event" + thisEventId.toString() + "Header");
+        lastInt = i;
+    }
+    allEventTabs.push("event" + (lastInt + 1).toString());
+    allEventHeaders.push("event" + (lastInt + 1).toString() + "Header");
+}
+getAllEvents();
+function openEvent(event_id){
+    var user_id = document.getElementById("device_id_value").value;
+    if(event_id == "mostRecent" || event_id == "featuredContent"){
+        var eventOpeningName = event_id.toString();
+    } else {
+        window.location.href = "/usersEventPage/" + event_id.toString() + "/" + user_id.toString();
+    }
+    for(i = 0; i < allEventTabs.length; i++){
+        if(eventOpeningName == allEventTabs[i]){
+            document.getElementById(allEventTabs[i]).style.display = "block";
+            window.scrollTo({
+                top: 1600,
+                left: 0,
+                behavior: "smooth"    
+            });
+            var theseVideos = document.getElementsByClassName(eventOpeningName + "Video");
+            for(video in theseVideos){
+                video.preload;
+            }
         } else {
-            window.location.href = "/usersEventPage/" + event_id.toString() + "/" + user_id.toString();
-        }
-        for(i = 0; i < allEventTabs.length; i++){
-            if(eventOpeningName == allEventTabs[i]){
-                document.getElementById(allEventTabs[i]).style.display = "block";
-                window.scrollTo({
-                    top: 1600,
-                    left: 0,
-                    behavior: "smooth"    
-                });
-                var theseVideos = document.getElementsByClassName(eventOpeningName + "Video");
-                for(video in theseVideos){
-                    video.preload;
-                }
-            } else {
-                document.getElementById(allEventTabs[i]).style.display = "none"
-            }
+            document.getElementById(allEventTabs[i]).style.display = "none"
         }
     }
-    function fixEventHeaders(){
-        var lastLeftTop = 199;
-        var trackLeft = 199;
-        var lastRightTop = 199;
-        var trackRight = 199;
-        for(var i = 0; i < allEventHeaders.length - 1; i++){
-            thisEventHeader = document.getElementById(allEventHeaders[i]);
-            thisEventHeaderCaption = document.getElementById(allEventHeaders[i] + "Caption");
-            thisHeight = thisEventHeader.height;
-            if(i % 2 == 0){
-                thisEventHeader.classList.add("left");
-                thisEventHeaderCaption.classList.add("left");
-                thisEventHeader.style.top = trackLeft.toString() + "px";
-                thisEventHeaderCaption.style.top = trackLeft.toString() + "px";
-                trackLeft += thisHeight;
-            } else {
-                thisEventHeader.classList.add("right");
-                thisEventHeaderCaption.classList.add("right");
-                thisEventHeader.style.top = trackRight.toString() + "px";
-                thisEventHeaderCaption.style.top = trackRight.toString() + "px";
-                trackRight += thisHeight;
-            }
+}
+function fixEventHeaders(){
+    var lastLeftTop = 199;
+    var trackLeft = 199;
+    var lastRightTop = 199;
+    var trackRight = 199;
+    for(var i = 0; i < allEventHeaders.length - 1; i++){
+        thisEventHeader = document.getElementById(allEventHeaders[i]);
+        thisEventHeaderCaption = document.getElementById(allEventHeaders[i] + "Caption");
+        thisHeight = thisEventHeader.height;
+        if(i % 2 == 0){
+            thisEventHeader.classList.add("left");
+            thisEventHeaderCaption.classList.add("left");
+            thisEventHeader.style.top = trackLeft.toString() + "px";
+            thisEventHeaderCaption.style.top = trackLeft.toString() + "px";
+            trackLeft += thisHeight;
+        } else {
+            thisEventHeader.classList.add("right");
+            thisEventHeaderCaption.classList.add("right");
+            thisEventHeader.style.top = trackRight.toString() + "px";
+            thisEventHeaderCaption.style.top = trackRight.toString() + "px";
+            trackRight += thisHeight;
         }
-        maxBottom = Math.max(trackLeft, trackRight);
-        document.getElementById("allContent").style.top = maxBottom.toString() + "px";
     }
-    window.onload = function () { 
-        fixEventHeaders();
+    maxBottom = Math.max(trackLeft, trackRight);
+    document.getElementById("allContent").style.top = maxBottom.toString() + "px";
+}
+window.onload = function () { 
+    fixEventHeaders();
+}
+$( window ).resize(function() {
+    fixEventHeaders();
+});
+function addEventName(eventId){
+    var thisCaption = document.getElementById("event" + eventId + "HeaderCaption");
+    thisCaption.style.transition = "opacity .5s";
+    thisCaption.style.display = "block";
+}
+function removeEventName(eventId){
+    var thisCaption = document.getElementById("event" + eventId + "HeaderCaption");
+    thisCaption.style.transition = "opacity .5s";
+    thisCaption.style.display = "none";
+}
+// Adding media to the featured section, or removing
+function featureThisMedia(media_id){
+    addFeaturedTpAPI(media_id);
+    addFeaturedTpAPI(media_id);
+    var button = document.getElementById("media" + media_id + "Button");
+    button.innerHTML = "reload page";
+    button.style.backgroundColor ="transparent";
+}
+function unfeatureThisMedia(media_id){
+    removeFeaturedToAPI(media_id);
+    removeFeaturedToAPI(media_id);
+    var button = document.getElementById("media" + media_id + "ButtonFeat");
+    button.innerHTML = "reload page";
+    button.style.backgroundColor ="transparent";
+}
+// Updating all the backend
+const Http = new XMLHttpRequest();
+function addFeaturedTpAPI(media_id){
+    const media_url = "https://api.glimpsewearables.com/api/media/";
+    const media_url_id = media_url + media_id + "/";
+    console.log(media_url_id);
+    var data = Http.open("PATCH", media_url_id, true);
+    Http.setRequestHeader('Content-type', 'application/json');
+    old_data = {
+        "featured": 1
     }
-    $( window ).resize(function() {
-        fixEventHeaders();
-    });
-    function addEventName(eventId){
-        var thisCaption = document.getElementById("event" + eventId + "HeaderCaption");
-        thisCaption.style.transition = "opacity .5s";
-        thisCaption.style.display = "block";
+    put_data = JSON.stringify(old_data);
+    Http.send(put_data);
+}
+function removeFeaturedToAPI(media_id){
+    const media_url = "https://api.glimpsewearables.com/api/media/";
+    const media_url_id = media_url + media_id + "/";
+    console.log(media_url_id);
+    var data = Http.open("PATCH", media_url_id, true);
+    Http.setRequestHeader('Content-type', 'application/json');
+    old_data = {
+        "featured": 0
     }
-    function removeEventName(eventId){
-        var thisCaption = document.getElementById("event" + eventId + "HeaderCaption");
-        thisCaption.style.transition = "opacity .5s";
-        thisCaption.style.display = "none";
-    }
-    // Adding media to the featured section, or removing
-    function featureThisMedia(media_id){
-        addFeaturedTpAPI(media_id);
-        addFeaturedTpAPI(media_id);
-        var button = document.getElementById("media" + media_id + "Button");
-        button.innerHTML = "reload page";
-        button.style.backgroundColor ="transparent";
-    }
-    function unfeatureThisMedia(media_id){
-        removeFeaturedToAPI(media_id);
-        removeFeaturedToAPI(media_id);
-        var button = document.getElementById("media" + media_id + "ButtonFeat");
-        button.innerHTML = "reload page";
-        button.style.backgroundColor ="transparent";
-    }
-    // Updating all the backend
-    const Http = new XMLHttpRequest();
-    function addFeaturedTpAPI(media_id){
-        const media_url = "https://api.glimpsewearables.com/api/media/";
-        const media_url_id = media_url + media_id + "/";
-        console.log(media_url_id);
-        var data = Http.open("PATCH", media_url_id, true);
-        Http.setRequestHeader('Content-type', 'application/json');
-        old_data = {
-            "featured": 1
-        }
-        put_data = JSON.stringify(old_data);
-        Http.send(put_data);
-    }
-    function removeFeaturedToAPI(media_id){
-        const media_url = "https://api.glimpsewearables.com/api/media/";
-        const media_url_id = media_url + media_id + "/";
-        console.log(media_url_id);
-        var data = Http.open("PATCH", media_url_id, true);
-        Http.setRequestHeader('Content-type', 'application/json');
-        old_data = {
-            "featured": 0
-        }
-        put_data = JSON.stringify(old_data);
-        Http.send(put_data);
-    }
+    put_data = JSON.stringify(old_data);
+    Http.send(put_data);
+}
 
 </script>
 </html>
