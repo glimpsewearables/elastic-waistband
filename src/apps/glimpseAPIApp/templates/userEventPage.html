@@ -281,8 +281,6 @@
                     <source src="{{this_media.link}}" type="video/mp4">
                 </video>
                 <div class="buttons">
-                    <input style="text-align:center;" type="number" max="5" min="0" value="{{this_media.user_rating}}" id="videoCur{{this_media.id}}" class="changeButton" onclick="inputTouch('{{this_media.id}}')">
-                    <button class="changeButton" id="changeButton{{this_media.id}}" onclick="updateCuratorMediaRating('{{this_media.id}}')">Change</button>
                     <button class="changeButton" id="media{{this_media.id}}Button" onclick="featureThisMedia('{{this_media.id}}')">Favorite</button>
                 </div>
             </div>
@@ -309,17 +307,17 @@
         loadingAnimation.classList.add("hiddenOnLoad");
     }
     setTimeout(showPage, 2000);
-    var videoIsPlaying = false;
-    function playVideo(videoIdElement) { 
-        var vid = document.getElementById(videoIdElement);
-        if(videoIsPlaying == true){
-            vid.pause();
-            videoIsPlaying = false;
-        } else{
-            vid.play();
-            videoIsPlaying = true;
-        }
-    } 
+    // var videoIsPlaying = false;
+    // function playVideo(videoIdElement) { 
+    //     var vid = document.getElementById(videoIdElement);
+    //     if(videoIsPlaying == true){
+    //         vid.pause();
+    //         videoIsPlaying = false;
+    //     } else{
+    //         vid.play();
+    //         videoIsPlaying = true;
+    //     }
+    // } 
     function featureThisMedia(media_id){
         addFeaturedTpAPI(media_id);
         addFeaturedTpAPI(media_id);
