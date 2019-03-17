@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  {% load static from staticfiles%}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/testing.css' %}">
+  <script type="text/javascript" src="{% static 'js/testing.js' %}"></script>
+  <title>Testing Page</title>
+</head>
+<style>
+
+</style>
+<body>
+  <div id="mainContainer">
+    <h1>{{event.name}}</h1>
+    <div id="openingButtons">
+      <div class="nextPreviousButton">
+        <button onclick="lastVideoSection()" class="topButton">Last Section</button>
+      </div>
+      <button class="dropdown topButton" id="showDropDownButton" onmouseover="openSectionButtons()" onmouseout="closeSectionButtons()">Sections</button>
+      <div id="sectionButtonHolder" class="dropdown-content" onmouseover="openSectionButtons()" onmouseout="closeSectionButtons()">
+        {% for device in devices_attending %}
+          {% csrf_token %}
+          <div class="openingButton">
+            <button onclick="openDeviceSection('device{{device}}', 'section0')">{{device}}</button>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="openingButton nextPreviousButton">
+        <button onclick="nextDeviceSection()" class="topButton">Next Section</button>
+      </div>
+    </div>
+    <div id="displayingContent">
+        {% for device_number, section in allSections.items %}
+          {% csrf_token %}
+            <div id="{{device_number}}" class="hiddenSection">
+              <h1>{{device_number}} is the device_number</h1>
+              <input type="hidden" class="hiddenDeviceNumber" value="{{device_number}}">
+              {% for section, videos in section.items %}
+              <div class="singleSectionContainer {{device_number}}AllSections">
+                <input type="hidden" class="hiddenDeviceSectionName" value="{{device_number}}_{{section}}"></h1>
+                <div id="{{device_number}}{{section}}" class="hiddenDeviceSection">
+                  <h3>{{device_number}}{{section}} is the section name</h3>
+                  {% for video in videos %}
+                      {{video.link}}
+                  {% endfor %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+        {% endfor %}
+      </div>
+    </div>
+  </body>
+<script>
+  function openSectionButtons(){
+    var buttons = document.getElementById("sectionButtonHolder");
+    buttons.style.display = "block";
+  }
+  function closeSectionButtons(){
+    var buttons = document.getElementById("sectionButtonHolder");
+    buttons.style.display = "none";
+  }
+</script>
+</html>

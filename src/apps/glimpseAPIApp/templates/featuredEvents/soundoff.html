@@ -51,7 +51,7 @@ body{
     height: auto;
 }
 .singleDeviceButton{
-    width: 25%;
+    width: 33.33%;
     height: 50px;
     margin: 0px;
     border-radius: 1px;
@@ -65,38 +65,36 @@ body{
 .singleDeviceButton:hover{
     background-color: gray;
 }
+@media only screen and (max-width: 600px) {
+  body {
+    background-color: lightblue;
+  }
+}
 </style>
 <body>
+    <img id="headerImage" src="https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event8_header_SoundOff.png">
     <div id="mainContainer">
         <div id="headerInformation">
             <h1 class="headerTitle">Sound Off Finals</h1>
             <h3>March 2nd 2019</h3>
-            <img id="headerImage" src="https://s3-us-west-2.amazonaws.com/users-edited-content/headerImages/event8_header_SoundOff.png">
         </div>
         <div id="devicesButtons">
-            <button onclick="openDeviceContent('device_2_media')" class="singleDeviceButton">Device 2</button>
+            <button onclick="openDeviceContent('featured_content')" class="singleDeviceButton">Featured</button>
             <button onclick="openDeviceContent('device_3_media')" class="singleDeviceButton">Device 3</button>
             <button onclick="openDeviceContent('device_4_media')" class="singleDeviceButton">Device 4</button>
-            <button onclick="openDeviceContent('device_6_media')" class="singleDeviceButton">Device 6</button>
         </div>
         <div id="allContentContainer">
-            <div class="hiddenContent regContainer" id="device_1_media">
-                <h1 class="deviceTitle">Device Content For</h1>
-                <h1 class="deviceTitle">Device 1</h1>
-                {% for video in device_1_media %}
-                <video class="singleVideo featuredContentVideo" controls preload="metadata">
-                    <source src="{{video.link}}" type="video/mp4">
-                </video>
-                {% endfor %}
-            </div>
-            <div class="hiddenContent regContainer" id="device_2_media">
-                <h1 class="deviceTitle">Device Content For</h1>
-                <h1 class="deviceTitle">Device 2</h1>
-                {% for video in device_2_media %}
-                <video class="singleVideo featuredContentVideo" controls preload="metadata">
-                    <source src="{{video.link}}" type="video/mp4">
-                </video>
-                {% endfor %}
+            <div class="hiddenContent" id="featured_content">
+                <h1 class="deviceTitle">Featured Content For</h1>
+                <h1 class="deviceTitle">Sound Off Finals</h1>
+                <div class="mainFeaturedVideo">
+                    <video class="singleVideo featuredContentVideo">
+                        <source src="https://vod-server.wix.com/dcf1e6cb-a86c-430a-b224-6db2849ba2c8" type="video/mp4">
+                    </video>
+                </div>
+                <div class="featuredVideos">
+
+                </div>
             </div>
             <div class="hiddenContent" id="device_3_media">
                 <h1 class="deviceTitle">Device Content For</h1>
@@ -116,57 +114,12 @@ body{
                     </video>
                 {% endfor %}
             </div>
-            <div class="hiddenContent regContainer" id="device_5_media">
-                <h1 class="deviceTitle">Device Content For</h1>
-                <h1 class="deviceTitle">Device 5</h1>
-                {% for video in device_5_media %}
-                    <video class="singleVideo featuredContentVideo" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                {% endfor %}
-            </div>
-            <div class="hiddenContent regContainer" id="device_6_media">
-                <h1 class="deviceTitle">Device Content For</h1>
-                <h1 class="deviceTitle">Device 6</h1>
-                {% for video in device_6_media %}
-                    <video class="singleVideo featuredContentVideo" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                {% endfor %}
-            </div>
-            <div class="hiddenContent regContainer" id="device_7_media">
-                <h1 class="deviceTitle">Device Content For</h1>
-                <h1 class="deviceTitle">Device 7</h1>
-                {% for video in device_7_media %}
-                    <video class="singleVideo featuredContentVideo" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                {% endfor %}
-            </div>
-            <div class="hiddenContent regContainer" id="device_8_media">
-                <h1 class="deviceTitle">Device Content For</h1>
-                <h1 class="deviceTitle">Device 8</h1>
-                {% for video in device_9_media %}
-                    <video class="singleVideo featuredContentVideo" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                {% endfor %}
-            </div>
-            <div class="hiddenContent regContainer" id="device_9_media">
-            <h1 class="deviceTitle">Device Content For</h1>
-            <h1 class="deviceTitle">Device 9</h1>
-                {% for video in device_9_media %}
-                    <video class="singleVideo featuredContentVideo" controls preload="metadata">
-                        <source src="{{video.link}}" type="video/mp4">
-                    </video>
-                {% endfor %}
-            </div>
         </div>
     </div>
 
 </body>
 <script>
-var allTabs = ["device_1_media","device_2_media","device_3_media","device_4_media","device_5_media","device_6_media","device_7_media","device_8_media", "device_9_media"]
+var allTabs = ["device_3_media","device_4_media", "featured_content"]
 function openDeviceContent(idOpening){
     for(var i = 0; i <allTabs.length; i++){
         if(allTabs[i] == idOpening){
@@ -179,6 +132,16 @@ function openDeviceContent(idOpening){
             closing.classList.remove("openTab");
         }
     }
+    window.scrollTo({
+        top: 1000,
+        left: 0,
+        behavior: "smooth"    
+    });
 }
+window.scrollTo({
+    top: 1000,
+    left: 0,
+    behavior: "smooth"    
+});
 </script>
 </html>

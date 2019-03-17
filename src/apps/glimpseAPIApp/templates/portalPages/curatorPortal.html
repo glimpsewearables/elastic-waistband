@@ -102,27 +102,6 @@
                     <p>The last video was taken on {{last_video.date}} at {{last_video.date_time}} by device {{last_video.device_id}}</p>
                     <p><a href="{{last_video.link}}" target="_blank">{{last_video.link}}</a></p>
                 </div>
-                <form action="/createMedia" method="POST" role="form" id="createNewMedia">
-                    <h1 style="text-align: center">Add New Media</h1>
-                    <h6 style="text-align: center">Make sure the link you are entering is an active URL link to the S3 Database</h6>
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <input type="text" name="url_link" tabindex="1" class="form-control" placeholder="Url Link" value="">
-                    </div>
-                    <div class="form-group">
-                        <input type="number" name="device_id" tabindex="2" class="form-control" placeholder="Device/User Id">
-                    </div>
-                    <div class="form-group">
-                        <input type="number" name="event_id" tabindex="2" class="form-control" placeholder="Event Id">
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-sm-6 col-sm-offset-3">
-                                <input type="submit" name="login-submit" tabindex="4" class="form-control btn btn-login" value="Create Media">
-                            </div>
-                        </div>
-                    </div>
-                </form>
                 <form action="/uploadMediaToS3" method="POST" role="form">
                     <h1 style="text-align: center">Upload Video</h1>
                     <h3 style="text-align: center">The Video MUST be located on your desktop to upload</h3>

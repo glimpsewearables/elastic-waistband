@@ -30,7 +30,7 @@ tr:hover{
     background-color: #666;
 }
 thead{
-    background: black;
+    background: #666;
 }
 tbody{
     background: #666;
@@ -39,7 +39,6 @@ tbody{
 
 .eventHeaderImage{
     width: 100%;
-    
 }
 .headerButton{
     background-color: #212529;
@@ -80,67 +79,132 @@ button{
     opacity: 0.2;
   }
 }
+#openingButtons{
+    display: flex;
+    width: 100%;
+}
+.openingButton{
+    width: 100%;
+    margin: 0;
+    color: white;
+    height: 100%;
+    background: black;
+}
+.nextPreviousButton{
+    width: 50%;
+
+}
+#showDropDownButton{
+    width: 60%;
+}
+.topButton{
+    width: 100%;
+    height: 60px;
+    background: black;
+    color: white;
+    transition-duration: .5s;
+    outline: none;
+    border: none;
+}
+.topButton:hover{
+    background: #696969;
+}
+
+.dropdown-btn-device{
+    display: none;
+    background: black;
+    color: white;
+    width: 100%;
+    height: 50px;
+    opacity: 0.9;
+    transition-duration: 400ms;
+}
+.dropdown-btn-device:hover{
+    transition-duration: 400ms;
+    background-color: #888;
+    opacity: 1.0;
+}
+#deviceNumberContainer{
+    z-index: 4;
+    width: 100%;
+    transition-duration: 400ms;
+}
+#allVideosArea{
+    height: 700px;
+}
 </style>
 <body>
     <div id="adminHeader">
         {% include 'adminHeader.html' %}
     </div>
-    <div class="singleEventHeader">
+    <!-- <div class="singleEventHeader">
         <img src="{{this_event.header_image}}" class="eventHeaderImage">
-    </div>
-    <div id="mainContainer">
+    </div> -->
+    <div id="mainContainer" style="margin-top:5%">
         <h1 style="text-align: center">{{this_event.name}}</h1>
+        <h1 style="text-align: center">{{this_event.start_date}} to {{this_event.end_date}}</h1>
+        <h1 style="text-align: center">{{this_event.address}}</h1>
         <div id="allVideosArea">
             <div class="table-wrapper">
-                <h3>Videos</h3>
-                <table class="table table-hover">
+                <div id="openingButtons">
+                    <div class="nextPreviousButton">
+                        <button onclick="lastDeviceSection()" class="topButton">Last Section</button>
+                    </div>
+                    <div id="deviceNumberContainer" class="nextPreviousButton topButton"  onmouseover="showDevicesAttending()" onmouseout="hideDevicesAttending()">
+                        <h3 id="deviceNumberDisplay" style="text-align:center;">Device: 1</h3>
+                        <div id="deviceNumberDropDown" onmouseover="showDevicesAttending()" onmouseout="hideDevicesAttending()">
+                            {% for device in devices_attending %}
+                            {% csrf_token %}
+                            <div class="dropdown-btn-device">
+                                <button onclick="openDeviceSection('device{{device}}', 'section0')" class="openingButton">Device: {{device}}</button>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>  
+                    <div id="sectionNumberContainer" class="nextPreviousButton topButton">
+                        <h3 id="sectionNumberDisplay" style="text-align:center;">Section: 0/0</h3>
+                    </div>  
+                    <div class="openingButton nextPreviousButton">
+                        <button onclick="nextDeviceSection()" class="topButton">Next Section</button>
+                    </div>
+                </div>
+                <table class="table table-hover" id="contentTable">
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col">User</th>
                             <th scope="col">Device</th>
                             <th scope="col">Link</th>
+                            <th scope="col">Time Taken</th>
                             <th scope="col">Curator Ranking</th>
                             <th scope="col">Favorited</th>
                             <th scope="col"><button class="changeButton" style="color:white;" onclick="pushUpdatedMedia()">Update DB</button></th>
                         </tr>
                     </thead>
-                    {% for image in this_event_videos %}
-                    {% csrf_token %}
-                    <tbody>
-                        <tr>
-                            <td>{{image.user_id}}</td>
-                            <td>{{image.device_id}}</td>
-                            <td><a href="{{image.link}}" target="_blank">{{image.link}}</a></td>
-                            <td onclick="inputTouch('{{image.id}}')"><input type="number" max="5" min="0" value="{{image.curator_rating}}" id="videoCur{{image.id}}" class="changeButton"></td>
-                            <td>{{image.featured}}</td>
-                            <td><button class="changeButton" id="changeButton{{image.id}}" onclick="updateCuratorMediaRating('{{image.id}}')">Change</button></td>
-                        </tr>
-                    </tbody>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
-        <div id="allImagesArea">
-            <div class="table-wrapper">
-                <h3>Images</h3>
-                <table class="table table-hover">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">User</th>
-                            <th scope="col">Device</th>
-                            <th scope="col">Link</th>
-                            <th scope="col">Ranking</th>
-                        </tr>
-                    </thead>
-                    {% for image in this_event_images %}
-                    {% csrf_token %}
-                    <tbody>
-                        <td>{{image.user_id}}</td>
-                        <td>{{image.device_id}}</td>
-                        <td><a href="{{image.link}}" target="_blank">{{image.link}}</a></td>
-                        <td>{{image.ranking}}</td>
-                    </tbody>
-                    {% endfor %}
+                    {% for device_number, section in allSections.items %}
+                        {% csrf_token %}
+                            <div id="{{device_number}}" class="hiddenSection">
+                                <input type="hidden" class="hiddenDeviceNumber" value="{{device_number}}">
+                                {% for section, videos in section.items %}
+                                <div class="singleSectionContainer {{device_number}}AllSections">
+                                    <input type="hidden" class="hiddenDeviceSectionName" value="{{device_number}}_{{section}}"></h1>
+                                    <tbody id="{{device_number}}{{section}}" class="hiddenDeviceSection">
+                                        {% for video in videos %}
+                                            <tr id="{{video.id}}Row" onclick="rowClick('{{video.id}}')">
+                                                <td>{{video.user_id}}</td>
+                                                <td>{{video.device_id}}</td>
+                                                <td><a href="{{video.link}}" target="_blank">{{video.link}}</a></td>
+                                                <td>{{video.date_time}}</td>
+                                                <td onclick="inputTouch('{{video.id}}')"><input type="number" max="5" min="0" value="{{video.curator_rating}}" id="videoCur{{image.id}}" class="changeButton"></td>
+                                                <td>{{video.featured}}</td>
+                                                <td><button class="changeButton" id="changeButton{{video.id}}" onclick="updateCuratorMediaRating('{{video.id}}')">Change</button></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            </div>
+                        {% endfor %}
                 </table>
             </div>
         </div>
@@ -150,7 +214,10 @@ button{
 downloadList = [];
 var desktop = "{{desktop}}";
 var desktopDownloadRoute = desktop + "/";
-
+function rowClick(mediaId){
+    var row = document.getElementById(mediaId + "Row");
+    row.style.backgroundColor = "white";
+}
 function inputTouch(mediaId){
     var button = document.getElementById("changeButton" + mediaId);
     button.classList.add("blink_me");
@@ -161,9 +228,7 @@ function updateCuratorMediaRating(mediaId){
     button.classList.remove("blink_me");
     var value = curatorRanking.value;
     updateMediaCuratorAPI(mediaId, value);
-    updateMediaCuratorAPI(mediaId, value);
 }
-
 const Http = new XMLHttpRequest();
 function updateMediaCuratorAPI(media_id, new_curator_rating){
     const media_url = "https://api.glimpsewearables.com/api/media/";
@@ -177,5 +242,126 @@ function updateMediaCuratorAPI(media_id, new_curator_rating){
     put_data = JSON.stringify(old_data);
     Http.send(put_data);
 }
+function openSectionButtons(){
+    var buttons = document.getElementById("sectionButtonHolder");
+    buttons.style.display = "";
+  }
+  function closeSectionButtons(){
+    var buttons = document.getElementById("sectionButtonHolder");
+    buttons.style.display = "none";
+  }
+
+  function showDevicesAttending(){
+    var deviceButtons = document.getElementsByClassName("dropdown-btn-device");
+    for(var i = 0; i < deviceButtons.length; i++){
+        deviceButtons[i].style.display = "block";
+    }
+  }
+  function hideDevicesAttending(){
+    var deviceButtons = document.getElementsByClassName("dropdown-btn-device");
+    for(var i = 0; i < deviceButtons.length; i++){
+        deviceButtons[i].style.display = "none";
+    }
+  }
+var allSections = []
+var allDevices = []
+var allDeviceSections = {}
+var currentDevice;
+var deviceSectionIndex = 0;
+function getAllSections(){
+    var devicesAttending = document.getElementsByClassName("hiddenDeviceNumber");
+    for(var i = 0; i < devicesAttending.length; i++){
+        allDevices.push(devicesAttending[i].value);
+    }
+    var deviceSections = document.getElementsByClassName("hiddenDeviceSectionName");
+    for(var i = 0; i < deviceSections.length; i++){
+        var split = deviceSections[i].value.split("_");
+        var thisDevice = split[0];
+        var thisSection = split[1];
+        if(!(thisDevice in allDeviceSections)){
+            allDeviceSections[thisDevice] = [];
+
+        }
+        allDeviceSections[thisDevice].push(thisSection);
+    }
+    for(var i = 0; i < allDevices.length; i++){
+        for(var j = 0; j < allDeviceSections[allDevices[i]].length; j++){
+            var thisDeviceSectionName = allDeviceSections[allDevices[i]][j];
+            var thisDeviceSection = document.getElementById(allDevices[i].toString() + "" + thisDeviceSectionName);
+            thisDeviceSection.style.display = "none";
+        }
+    }
+    openDeviceSection(allDevices[0].toString(), allDeviceSections[allDevices[0]][0].toString());
+    currentDevice = allDevices[0].toString()
+}
+function openDeviceSection(deviceNumber, sectionNumber){
+    deviceSectionIndex = 0;
+    var allDeviceSectionContainers = document.getElementsByClassName("hiddenSection");
+    var allSectionsContainers = document.getElementsByClassName("hiddenDeviceSection");
+    for(var i = 0; i < allSectionsContainers.length - 1; i++){
+        var closing = allSectionsContainers[i];
+        closing.style.display = "none";
+    }
+    for(var i = 0; i < allDeviceSectionContainers.length; i++){
+        var thisDevice = allDeviceSectionContainers[i];
+        thisDevice.style.display = "none";
+    }
+    var deviceName = deviceNumber.toString();
+    var openingDevice = document.getElementById(deviceName);
+    openingDevice.style.display = "";
+    currentDevice = deviceName;
+    var sectionName = sectionNumber.toString();
+    var elementOpening = document.getElementById(deviceName + "" + sectionName);
+    elementOpening.style.display = "";
+    var sectionNumberShow = document.getElementById("sectionNumberDisplay");
+    sectionNumberShow.innerHTML = "Section: " + (deviceSectionIndex+1).toString() + "/" + allDeviceSections[deviceNumber].length.toString();
+    var deviceNumberShow = document.getElementById("deviceNumberDisplay");
+    var newDeviceName = deviceName.split("device")[1];
+    deviceNumberShow.innerHTML = "Device: " + newDeviceName.toString();
+}
+function nextDeviceSection(){
+    var thisDevice = currentDevice;
+    var lastSectionName = "section" + deviceSectionIndex.toString();
+    deviceSectionIndex++;
+    if(deviceSectionIndex > allDeviceSections[thisDevice].length - 1){
+        deviceSectionIndex = 0;
+    }
+    if(allDeviceSections[thisDevice].length == 1){
+        var lastSection = document.getElementById(thisDevice.toString() + "" + lastSectionName);
+        lastSection.style.display = "";
+    } else {
+        var newSectionName = "section" + deviceSectionIndex.toString();
+        var nextSection = document.getElementById(thisDevice.toString() + "" + newSectionName);
+        var lastSection = document.getElementById(thisDevice.toString() + "" + lastSectionName);
+        nextSection.style.display = "";
+        lastSection.style.display = "none";
+    }
+    var sectionNumberShow = document.getElementById("sectionNumberDisplay");
+    sectionNumberShow.innerHTML = "Section: " + (deviceSectionIndex+1).toString() + "/" + allDeviceSections[thisDevice].length.toString() ;
+}
+function lastDeviceSection(){
+    var thisDevice = currentDevice;
+    var lastSectionName = "section" + deviceSectionIndex.toString();
+    deviceSectionIndex--;
+    if(deviceSectionIndex < 0){
+        deviceSectionIndex = allDeviceSections[thisDevice].length - 1;
+    }
+    if(allDeviceSections[thisDevice].length == 1){
+        var lastSection = document.getElementById(thisDevice.toString() + "" + lastSectionName);
+        lastSection.style.display = "";
+    } else {
+        var newSectionName = "section" + deviceSectionIndex.toString();
+        var nextSection = document.getElementById(thisDevice.toString() + "" + newSectionName);
+        var lastSection = document.getElementById(thisDevice.toString() + "" + lastSectionName);
+        nextSection.style.display = "";
+        lastSection.style.display = "none";
+    }
+    var sectionNumberShow = document.getElementById("sectionNumberDisplay");
+    sectionNumberShow.innerHTML = "Section: " + (deviceSectionIndex+1).toString() + "/" + allDeviceSections[thisDevice].length.toString();
+}
+function startPage(){
+    setTimeout(getAllSections, 200);
+}
+startPage();
 </script>
 </html>

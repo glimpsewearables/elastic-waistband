@@ -1,5 +1,5 @@
 from django.conf.urls import url, include
-from . import views, models, adding, rendering, currentEvent
+from . import views, models, adding, rendering, currentEvent, fixingErrors
 from .resources import UserResource, UserEventResource, ArtistResource, ArtistEventResource, EventResource, MediaResource, DeviceResource, CommentResource, LikeResource
 from django.conf import settings
 from django.conf.urls.static import static
@@ -84,4 +84,7 @@ urlpatterns = [
     # S3 Calls
     url(r'^testS3Download$', adding.testS3Download), 
     url(r'^uploadMediaToS3$', adding.uploadMediaToS3), 
+
+    # Testing Calls
+    url(r'^fixingErrors$', fixingErrors.partitionVideos), 
 ]

@@ -95,22 +95,6 @@ def usersEventPage(request, eventId, userId):
     context["device_number"] =  userId
     return render(request, "userEventPage.html", context)
 
-# Break up all of the videos into segments of nine in order to deal with rendering issues for massive ammounts of videos in html
-def partitionVideos(request, event_id, device_id):
-    allVideos = Media.objects.filter(device_id = device_id, event_id = event_id, media_type = "video")
-    all_videos = []
-    groupedVideos = {}
-    for video in allVideos:
-        all_videos.append(video.link)
-    for i in range(0, (len(all_videos) / 9) + 1):
-        groupedVideos["videos" + str(i)] = []
-    section = 0
-    for i in range(0, len(all_videos)):
-        groupedVideos["videos" + str(section)].append(all_videos[i])
-        if i % 9 == 0 and i != 0:
-            section += 1
-    return groupedVideos
-
 def checkLogin():
     if request.session["deviceNumber"]:
         return True
@@ -242,6 +226,37 @@ def adminPage(request):
     }
     return render(request, "adminPage.html", context)
 
+# Break up all of the videos into segments of nine in order to deal with rendering issues for massive ammounts of videos in html
+def partitionVideos(request, event_id):
+    context = {}
+    context["event"] = Event.objects.get(id = event_id)
+    eventTwoMedia = Media.objects.filter(event_id = event_id, media_type = "video").order_by('-date', "-date_time")
+    sections = {}
+    devicesAttending = []
+    numMedia = len(eventTwoMedia)
+    sectionNumber = 0
+    sectionTracker = numMedia
+    while sectionTracker >= 0:
+        sections["section" + str(sectionNumber)] = []
+        sectionTracker -= 14
+        sectionNumber += 1
+    context["sections"] = sections
+    for section in sections:
+        context[section] = []
+    section = 0
+    vidTracker = 1
+    for video in eventTwoMedia:
+        if video.device_id not in devicesAttending:
+            devicesAttending.append(video.device_id)
+        thisSection = "section" + str(section)
+        sections.get(thisSection).append(video)
+        context["section" + str(section)].append(video)
+        if vidTracker - 14 == 0:
+            vidTracker = 0
+            section+=1
+        vidTracker+=1
+    return sections, devicesAttending
+
 def viewEventMedia(request, event_id):
     # if request.session["userType"] != "admin":
     #     return redirect("/")
@@ -249,14 +264,43 @@ def viewEventMedia(request, event_id):
     desktop = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop') 
     context = {}
     this_event = Event.objects.get(id = event_id)
-    this_event_images = Media.objects.filter(event_id = event_id, media_type = "image").order_by('-date', "-date_time")
-    this_event_videos = Media.objects.filter(event_id = event_id, media_type = "video").order_by('-date', "-date_time")
     context["this_event"] = this_event
     context["all_events"] = Event.objects.all()
-    context["this_event_images"] = this_event_images
-    context["this_event_videos"] = this_event_videos
     context["desktop"] =  desktop
+    devicesAttending = getDevices(request, event_id)
+    context["devices_attending"] = devicesAttending
+    allSections = {}
+    for device in devicesAttending:
+        thisMedia = Media.objects.filter(event_id = event_id, media_type = "video", device_id = device).order_by('-date', "-date_time")
+        totalMedia = len(thisMedia)
+        sectionNumber = 0
+        sectionTracker = totalMedia
+        sections = {}
+        print(totalMedia)
+        while sectionTracker >= 0:
+            sections["section" + str(sectionNumber)] = []
+            sectionTracker -= 15
+            sectionNumber += 1
+        allSections["device" + str(device)] = sections
+        section = 0
+        vidTracker = 1
+        for video in thisMedia:
+            thisSection = "section" + str(section)
+            allSections["device" + str(device)]["section" + str(section)].append(video)
+            if vidTracker - 15 == 0:
+                vidTracker = 0
+                section+=1
+            vidTracker+=1
+        context["allSections"] = allSections
     return render(request, "viewMedia.html", context)
+
+def getDevices(request, event_id):
+    thisEventMedia = Media.objects.filter(event_id = event_id, media_type = "video")
+    devicesAttending = []
+    for media in thisEventMedia:
+        if media.device_id not in devicesAttending:
+            devicesAttending.append(media.device_id)
+    return devicesAttending
 
 def artistPage(request, artist_id):
     thisArtist = Artist.objects.get(id = artist_id)
