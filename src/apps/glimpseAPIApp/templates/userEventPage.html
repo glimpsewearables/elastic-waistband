@@ -75,19 +75,200 @@
     top: 0;
     width: 100%;
 }
+.loadingContainer {
+    position: absolute;
+    width: 10%;
+    height: auto;
+    top:50%;
+    left:45%;
+    text-align:center;
+}
+.loadingContainer .loadingSpan {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 4px;
+    height: 10px;
+    left: 0px;
+    background: #FF5722;
+    animation: loading 1.9s infinite ease-in-out
+}
+.loadingSpan:nth-of-type(2) {
+  left: 11px;
+  animation-delay: .2s;
+}
+
+.loadingSpan:nth-of-type(3) {
+  left: 22px;
+  animation-delay: .3s;
+}
+
+.loadingSpan:nth-of-type(4) {
+  left: 33px;
+  animation-delay: .4s;
+}
+.loadingSpan:nth-of-type(5) {
+  left: 44px;
+  animation-delay: .5s;
+}
+.loadingSpan:nth-of-type(6) {
+  left: 55px;
+  animation-delay: .4s;
+}
+
+.loadingSpan:nth-of-type(7) {
+  left: 66px;
+  animation-delay: .3s;
+}
+
+.loadingSpan:nth-of-type(8) {
+  left: 77px;
+  animation-delay: .2s;
+}
+.loadingSpan:nth-of-type(9) {
+  left: 88px;
+  animation-delay: .3s;
+}
+.loadingSpan:nth-of-type(10) {
+  left: 99px;
+  animation-delay: .4s;
+}
+.loadingSpan:nth-of-type(11) {
+  left: 110px;
+  animation-delay: .5s;
+}
+.loadingSpan:nth-of-type(12) {
+  left: 121px;
+  animation-delay: .4s;
+}
+.loadingSpan:nth-of-type(13) {
+  left: 132px;
+  animation-delay: .3s;
+}
+.loadingSpan:nth-of-type(14) {
+  left: 143px;
+  animation-delay: .2s;
+}
+.loadingSpan:nth-of-type(15) {
+  left: 154px;
+  animation-delay: .3s;
+}
+.loadingSpan:nth-of-type(16) {
+  left: 165px;
+  animation-delay: .4s;
+}
+.loadingSpan:nth-of-type(17) {
+  left: 176px;
+  animation-delay: .5s;
+}
+.loadingSpan:nth-of-type(18) {
+  left: 187px;
+  animation-delay: .4s;
+}
+.loadingSpan:nth-of-type(19) {
+  left: 198px;
+  animation-delay: .3s;
+}
+.loadingSpan:last-of-type {
+  left: 209px;
+  animation-delay: .2s;
+}
+@keyframes loading {
+  0%, 25%, 100% {
+    background: #FF5722;
+    height: 50px;
+    transform: translateY(0);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1)
+  }
+  
+  50% {
+    background: #FF9800;
+    height: 110px;
+    transform: translateY(15px);
+    
+    box-shadow: 0 20px 3px rgba(0, 0, 0, 0.1)
+  }
+  
+}
+.hiddenOnLoad{
+    opacity: 0.0;
+    transition-duration: 1s;
+}
+.showContainer{
+    transition-duration: 1s;
+    -webkit-animation: fadein 2s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 2s; /* Firefox < 16 */
+        -ms-animation: fadein 2s; /* Internet Explorer */
+         -o-animation: fadein 2s; /* Opera < 12.1 */
+            animation: fadein 2s;
+}
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
 </style>
 <body>
-<div style="z-index:5;" id="stickyHeader">
+<div style="z-index:5;" id="stickyHeader" class="hiddenOnLoad">
     {% include 'header.html'  %}
 </div>
-    <div id="mainContainer">
+<div class="loadingContainer" id="loadingAnimation">
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+    <span class="loadingSpan"></span>
+</div>
+    <div id="mainContainer" class="hiddenOnLoad">
         <div id="navBarHeader">
             <input id="eventIdValue" value="{{this_event.id}}" type="hidden">
             <input id="userIdValue" value="{{this_user.id}}" type="hidden">
         </div>
         <div id="eventHeader">
-            <img id="headerImage" src="{{this_event.header_image}}">
-            <h2 style="text-align: center">{{this_event.name}}</h2>
+            <!-- <img id="headerImage" src="{{this_event.header_image}}"> -->
+            <h2 style="text-align: center" id="headerImage">{{this_event.name}}</h2>
         </div>
         <div id="contentContainer">
             {% for this_media in media %}
@@ -110,6 +291,21 @@
     </div>
 </body>
 <script>
+    function showPage(){
+        var allHidden = document.getElementsByClassName("hiddenOnLoad");
+        console.log(allHidden)
+        for(var i = 0; i < allHidden.length; i++){
+            var entireContainer = allHidden[i];
+            entireContainer.classList.add("showContainer");
+            entireContainer.classList.remove("hiddenOnLoad")
+        }
+        var mainContainer = document.getElementById("mainContainer");
+        mainContainer.classList.add("showContainer");
+        mainContainer.classList.remove("hiddenOnLoad");
+        var loadingAnimation = document.getElementById("loadingAnimation");
+        loadingAnimation.classList.add("hiddenOnLoad");
+    }
+    setTimeout(showPage, 2000);
     var videoIsPlaying = false;
     function playVideo(videoIdElement) { 
         var vid = document.getElementById(videoIdElement);

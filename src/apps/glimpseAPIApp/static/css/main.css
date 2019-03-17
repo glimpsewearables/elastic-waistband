@@ -1,7 +1,8 @@
 body {
     padding-top: 90px;
-    background-color: #fff;
-    color: black;
+    background-color: black;
+    color: gray;
+    font-family: 'Fjalla One', Arial, sans-serif;
 }
 a{
    color: #212529;
