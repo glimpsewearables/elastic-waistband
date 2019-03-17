@@ -91,8 +91,8 @@ def usersEventPage(request, eventId, userId):
     all_events = Event.objects.all()
     this_user = User.objects.get(id = userId)
     this_event = Event.objects.get(id = eventId)
-    this_device_content = Media.objects.filter(device_id = userId)
-    this_event_content = Media.objects.filter(device_id = userId, event_id = eventId).order_by('-date', "-date_time")
+    this_device_content = Media.objects.filter(device_id = userId, media_type = "video")
+    this_event_content = Media.objects.filter(device_id = userId, event_id = eventId, media_type = "video").order_by('-date', "-date_time")
     all_my_events = []
     for event in all_events:
         if this_device_content.filter(event_id = event.id):

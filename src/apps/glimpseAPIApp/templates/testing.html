@@ -10,7 +10,122 @@
   <title>Testing Page</title>
 </head>
 <style>
+.loadingContainer {
+    position: absolute;
+    width: 100%;
+    height: auto;
+    top:50%;
+    text-align:center;
+}
+.loadingContainer .loadingSpan {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 1.5%;
+    height: 10%;
+    left: 20%;
+    background: #FF5722;
+    animation: loading 1.9s infinite ease-in-out
+}
+.loadingSpan:nth-of-type(2) {
+  left: 23%;
+  animation-delay: .2s;
+}
+.loadingSpan:nth-of-type(3) {
+  left: 26%;
+  animation-delay: .3s;
+}
+.loadingSpan:nth-of-type(4) {
+  left: 29%;
+  animation-delay: .4s;
+}
+.loadingSpan:nth-of-type(5) {
+  left: 32%;
+  animation-delay: .5s;
+}
+.loadingSpan:nth-of-type(6) {
+  left: 35%;
+  animation-delay: .4s;
+}
 
+.loadingSpan:nth-of-type(7) {
+  left: 38%;
+  animation-delay: .3s;
+}
+
+.loadingSpan:nth-of-type(8) {
+  left: 41%;
+  animation-delay: .2s;
+}
+.loadingSpan:nth-of-type(9) {
+  left: 44%;
+  animation-delay: .3s;
+}
+.loadingSpan:nth-of-type(10) {
+  left: 47%;
+  animation-delay: .4s;
+}
+.loadingSpan:nth-of-type(11) {
+  left: 50%;
+  animation-delay: .5s;
+}
+.loadingSpan:nth-of-type(12) {
+  left: 53%;
+  animation-delay: .4s;
+}
+.loadingSpan:nth-of-type(13) {
+  left: 56%;
+  animation-delay: .3s;
+}
+.loadingSpan:nth-of-type(14) {
+  left: 59%;
+  animation-delay: .2s;
+}
+.loadingSpan:nth-of-type(15) {
+  left: 62%;
+  animation-delay: .3s;
+}
+.loadingSpan:nth-of-type(16) {
+  left: 65%;
+  animation-delay: .4s;
+}
+.loadingSpan:nth-of-type(17) {
+  left: 68%;
+  animation-delay: .5s;
+}
+.loadingSpan:nth-of-type(18) {
+  left: 71%;
+  animation-delay: .4s;
+}
+.loadingSpan:nth-of-type(19) {
+  left: 74%;
+  animation-delay: .3s;
+}
+.loadingSpan:nth-of-type(20) {
+  left: 77%;
+  animation-delay: .2s;
+}
+.loadingSpan:last-of-type {
+  left: 80%;
+  animation-delay: .3s;
+}
+@keyframes loading {
+  0%, 25%, 100% {
+    background: #FF5722;
+    height: 50px;
+    transform: translateY(0);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1)
+  }
+  
+  50% {
+    background: #FF9800;
+    height: 110px;
+    transform: translateY(15px);
+    
+    box-shadow: 0 20px 3px rgba(0, 0, 0, 0.1)
+  }
+  
+}
 </style>
 <body>
   <div id="mainContainer">
@@ -52,6 +167,33 @@
             </div>
         {% endfor %}
       </div>
+    </div>
+    <div class="loadingContainer" id="loadingAnimation">
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
+        <span class="loadingSpan"></span>
     </div>
   </body>
 <script>
