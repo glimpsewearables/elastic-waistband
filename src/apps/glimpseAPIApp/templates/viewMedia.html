@@ -194,7 +194,7 @@ button{
                                                 <td>{{video.device_id}}</td>
                                                 <td><a href="{{video.link}}" target="_blank">{{video.link}}</a></td>
                                                 <td>{{video.date_time}}</td>
-                                                <td onclick="inputTouch('{{video.id}}')"><input type="number" max="5" min="0" value="{{video.curator_rating}}" id="videoCur{{image.id}}" class="changeButton"></td>
+                                                <td onclick="inputTouch('{{video.id}}')"><input type="number" max="5" min="0" value="{{video.curator_rating}}" id="videoCur{{video.id}}" class="changeButton"></td>
                                                 <td>{{video.featured}}</td>
                                                 <td><button class="changeButton" id="changeButton{{video.id}}" onclick="updateCuratorMediaRating('{{video.id}}')">Change</button></td>
                                             </tr>
@@ -223,7 +223,7 @@ function inputTouch(mediaId){
     button.classList.add("blink_me");
 }
 function updateCuratorMediaRating(mediaId){
-    var curatorRanking = document.getElementById("videoCur" + mediaId);
+    var curatorRanking = document.getElementById("videoCur" + mediaId.toString());
     var button = document.getElementById("changeButton" + mediaId);
     button.classList.remove("blink_me");
     var value = curatorRanking.value;
