@@ -49,9 +49,13 @@ def userPage(request, device_number):
     all_events = Event.objects.all().order_by('id').reverse()
     most_recent = this_device_content.order_by('-date', "-date_time")[:9]
     featured = this_device_content.filter(featured = 1)
+    all_my_events = []
+    for event in all_events:
+        if this_device_content.filter(event_id = event.id):
+            all_my_events.append(event)
     this_users_event_content = {}
     this_users_event_content["all_artists"] = Artist.objects.all()
-    this_users_event_content["all_events"] = all_events
+    this_users_event_content["all_events"] = all_my_events
     this_users_event_content["my_events"] = []
     this_users_event_content["device_number"] = device_number
     this_users_event_content["most_recent"] = most_recent
@@ -87,10 +91,15 @@ def usersEventPage(request, eventId, userId):
     all_events = Event.objects.all()
     this_user = User.objects.get(id = userId)
     this_event = Event.objects.get(id = eventId)
+    this_device_content = Media.objects.filter(device_id = userId)
     this_event_content = Media.objects.filter(device_id = userId, event_id = eventId).order_by('-date', "-date_time")
+    all_my_events = []
+    for event in all_events:
+        if this_device_content.filter(event_id = event.id):
+            all_my_events.append(event)
     context["media"] = this_event_content.order_by('-date', "-date_time")
     context["this_event"] = this_event
-    context["all_events"] = all_events
+    context["all_events"] = all_my_events
     context["this_user"] = this_user
     context["device_number"] =  userId
     return render(request, "userEventPage.html", context)
