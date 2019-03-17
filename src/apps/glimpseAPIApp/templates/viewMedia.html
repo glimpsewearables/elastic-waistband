@@ -174,7 +174,8 @@ button{
                             <th scope="col">User</th>
                             <th scope="col">Device</th>
                             <th scope="col">Link</th>
-                            <th scope="col">Time Taken</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Time</th>
                             <th scope="col">Curator Ranking</th>
                             <th scope="col">Favorited</th>
                             <th scope="col"><button class="changeButton" style="color:white;" onclick="pushUpdatedMedia()">Update DB</button></th>
@@ -193,6 +194,7 @@ button{
                                                 <td>{{video.user_id}}</td>
                                                 <td>{{video.device_id}}</td>
                                                 <td><a href="{{video.link}}" target="_blank">{{video.link}}</a></td>
+                                                <td>{{video.date}}</td>
                                                 <td>{{video.date_time}}</td>
                                                 <td onclick="inputTouch('{{video.id}}')"><input type="number" max="5" min="0" value="{{video.curator_rating}}" id="videoCur{{video.id}}" class="changeButton"></td>
                                                 <td>{{video.featured}}</td>
