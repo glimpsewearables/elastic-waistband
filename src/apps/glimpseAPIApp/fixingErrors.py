@@ -51,28 +51,6 @@ def partitionVideos(request):
                                 section+=1
                         vidTracker+=1
         context["allSections"] = allSections
-        # eventTwoMedia = Media.objects.filter(event_id = 3, media_type = "video")
-        # sections = {}
-        # numMedia = len(eventTwoMedia)
-        # sectionNumber = 0
-        # sectionTracker = numMedia
-        # while sectionTracker >= 0:
-        #         sections["section" + str(sectionNumber)] = []
-        #         sectionTracker -= 30
-        #         sectionNumber += 1
-        # context["sections"] = sections
-        # for section in sections:
-        #         context[section] = []
-        # section = 0
-        # vidTracker = 0
-        # for video in eventTwoMedia:
-        #         thisSection = "section" + str(section)
-        #         sections.get(thisSection).append(video)
-        #         context["section" + str(section)].append(video)
-        #         if vidTracker - 30 == 0:
-        #                 vidTracker = 0
-        #                 section+=1
-        #         vidTracker+=1
         return render(request, "testing.html", context)
 
 def getDevices(request, event_id):
@@ -82,3 +60,15 @@ def getDevices(request, event_id):
                 if media.device_id not in devicesAttending:
                         devicesAttending.append(media.device_id)
         return devicesAttending
+
+def updateEvents():
+        baseUrl = "https://api.glimpsewearables.com/api/media/"
+        start = 1555
+        end = 1651
+        headers = {'Content-type':'application/json'}
+        payload = {"event_id" : 11}
+        payload = json.dumps(payload)
+        # requests.patch("https://api.glimpsewearables.com/api/media/1600/", payload)
+        for i in range(start, end):
+                newUrl = base_url + str(i) + "/"
+                requests.patch(newUrl, payload, headers=headers)

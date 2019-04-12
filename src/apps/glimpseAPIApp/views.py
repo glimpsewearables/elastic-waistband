@@ -121,7 +121,7 @@ def getAllDeviceMedia(request, deviceId): # grabs ALL images connected to the sp
 
 def getAllEvents(request): # grabs ALL events from mysql database
     all_events = Event.objects.all()
-    newContext = json.dumps(jsonifyEventData(all_events))
+    newContext = json.dumps(jsonifyEventData(all_events, 0))
     return HttpResponse(newContext, content_type="application/json")
 
 def getSpecificEvent(request, eventId): # grabs a specific event from the mySQL database
@@ -131,7 +131,7 @@ def getSpecificEvent(request, eventId): # grabs a specific event from the mySQL 
         response = "Getting a single specific event with a event id of"
         this_event = Event.objects.get(event_id = eventId)
         this_event_content = Media.objects.filter(event_id = eventId)
-        context["this_event"] = jsonifyEventData(this_event)
+        context["this_event"] = jsonifyEventData(this_event, 0)
         context["this_event_content"] = jsonifyMediaData(this_event_content)
         newContext = json.dumps(context)
     else:
@@ -170,13 +170,16 @@ def getSpecificUser(request, user_id): # grabs all users from the mySQL database
     context = {}
     if User.objects.filter(id = user_id):
         this_user = User.objects.filter(id=user_id)
+        all_user_events = []
+        all_events = Event.objects.all().order_by('id').reverse()
         all_media = Media.objects.filter(user_id = user_id).order_by('-date', "-date_time")
-        thisUsersEvents = UserEvent.objects.filter(user_id = user_id)
-        json_media = jsonifyMediaData(all_media)
-        json_events = jsonifyUserEventData(thisUsersEvents, user_id)
+        for event in all_events:
+            if all_media.filter(event_id = event.event_id):
+                all_user_events.append(event)
+        # json_events = jsonifyUserEventData(thisUsersEvents, user_id)
+        json_events = jsonifyEventData(all_user_events, user_id)
         context["user"] = jsonifyUserData(this_user)
-        context["user_events"] = json_events
-        context["media"] = json_media
+        context["events"] = json_events
     else:
         context["error"] = "You entered a user that does not exist"
     newContext = json.dumps(context)
@@ -240,8 +243,8 @@ def getAllUserVideos(request, userId): # grabs ALL videos connected to the speci
     context = {}
     if User.objects.filter(id = userId):
         response = "Getting all videos specific to a user..."
-        videos_raw = Media.objects.filter(user_id = userId, media_type = "video", raw_or_edited = "raw")
-        videos_edited = Media.objects.filter(user_id = userId, media_type = "video", raw_or_edited = "edited")
+        videos_raw = Media.objects.filter(user_id = userId, media_type = "video", raw_or_edited = "raw").reverse()
+        videos_edited = Media.objects.filter(user_id = userId, media_type = "video", raw_or_edited = "edited").reverse()
         json_raw_videos = jsonifyMediaData(videos_raw)
         json_edited_videos = jsonifyMediaData(videos_edited)
         context["raw_videos"] = json_raw_videos
@@ -265,7 +268,7 @@ def getAllImagesUserEvent(request, userId, eventId): # grabs all images for a sp
 def getAllVideosUserEvent(request, userId, eventId): # grabs all videos for a specific user at a specific event
     context = {}
     if Event.objects.filter(id = eventId):
-        user_event_videos = Media.objects.filter(event_id = eventId, user_id = userId, media_type="video")
+        user_event_videos = Media.objects.filter(event_id = eventId, user_id = userId, media_type="video").order_by('-date', "-date_time")
         json_user_event_videos = jsonifyMediaData(user_event_videos)
         context["user_event_videos"] = json_user_event_videos
     else:
@@ -314,30 +317,40 @@ def jsonifyMediaData(data):
     })
     return context
 
-def jsonifyEventData(data):
+def jsonifyEventData(data, device_id):
     context = {}
-    if len(data) == 1:
+    if type(data) is Event:
+        if device_id == 0:
+            num_videos = len(Media.objects.filter(event_id = data.event_id))
+        else:
+            num_videos = len(Media.objects.filter(device_id = device_id, event_id = data.event_id))
         adding_context = {
-            "id" : data[0].id,
-            "event_id" : data[0].event_id,
-            "name" : data[0].name,
-            "header_image": data[0].header_image,
-            "address" : data[0].address,
-            "start_date" : str(data[0].start_date),
-            "end_date" : str(data[0].end_date),
-            "header_image": str(data[0].header_image),
-            "long" : str(data[0].long),
-            "lat" : str(data[0].lat),
-            "created_at" : str(data[0].created_at),
-            "updated_at" : str(data[0].updated_at)
+            "id" : data.id,
+            "num_videos": num_videos,
+            "event_id" : data.event_id,
+            "name" : data.name,
+            "header_image": data.header_image,
+            "address" : data.address,
+            "start_date" : str(data.start_date),
+            "end_date" : str(data.end_date),
+            "header_image": str(data.header_image),
+            "long" : str(data.long),
+            "lat" : str(data.lat),
+            "created_at" : str(data.created_at),
+            "updated_at" : str(data.updated_at)
         }
         return adding_context
     else:
         all_events = []
         for data_point in data:
+            if device_id == 0:
+                num_videos = len(Media.objects.filter(event_id = data_point.event_id))
+            else:
+                num_videos = len(Media.objects.filter(device_id = device_id, event_id = data_point.event_id))
             adding_context = {
                 "id" : data_point.id,
                 "event_id" : data_point.event_id,
+                "num_videos": num_videos,
                 "name" : data_point.name,
                 "header_image": data_point.header_image,
                 "address" : data_point.address,
@@ -384,7 +397,7 @@ def jsonifyArtistEventData(data):
     all_events = []
     all_events_media = []
     for data_point in data:
-        all_events.append(jsonifyEventData(Event.objects.filter(event_id = data_point.event_id)))
+        all_events.append(jsonifyEventData(Event.objects.filter(event_id = data_point.event_id), 0))
         all_events_media.append(jsonifyMediaData(Media.objects.filter(event_id = data_point.event_id)))
     context["events"] = all_events
     context["events_media"] = all_events_media
