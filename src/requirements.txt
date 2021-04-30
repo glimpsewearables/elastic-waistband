@@ -61,7 +61,7 @@ PyYAML==3.13
 redis==2.10.6
 requests==2.11.1
 requests-toolbelt==0.7.0
-rsa==3.4.2
+rsa==4.7
 s3transfer==0.1.13
 scandir==1.9.0
 schedule==0.5.0
