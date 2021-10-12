@@ -40,7 +40,7 @@ MarkupSafe==1.0
 matplotlib==2.2.3
 more-itertools==5.0.0
 numpy==1.16.0
-opencv-contrib-python==4.0.0.21
+opencv-contrib-python==4.2.0.32
 opencv-python==4.0.0.21
 pandas==0.23.4
 pathlib2==2.3.3
