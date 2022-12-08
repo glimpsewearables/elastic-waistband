@@ -9,7 +9,7 @@ Beaker==1.10.0
 boto3==1.9.18
 botocore==1.12.18
 bottle==0.12.13
-certifi==2018.8.24
+certifi==2022.12.7
 cffi==1.11.5
 chardet==3.0.4
 Click==7.0
